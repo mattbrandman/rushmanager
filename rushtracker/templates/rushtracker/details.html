@@ -1,0 +1,21 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+<div class="row">
+	<div class="col-md-4">
+		<form action="" method="post" class="form">{% csrf_token %}
+		    <div class="form_control">{{form.rush_number}}</div>
+		    <div class="form_controle">{{form.rush_name}}</div>
+			<div class="form_controle">{{form.rush_contact}}</div>
+			<div class="form_controle">{{form.rush_facebook_link}}</div>
+			<div class="form_controle">{{form.rush_photo_link}}</div>
+			<div class="form_controle">{{form.rush_contacted_date}}</div>
+			<div class="form_controle">{{form.rush_rank}}</div>
+
+		    <input type="submit" value="Update" />
+		</form>
+	</div>
+</div>

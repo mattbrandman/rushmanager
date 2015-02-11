@@ -1,0 +1,53 @@
+
+{% load staticfiles %}
+<!--This loads in the bootstrap css ands javascript files-->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+<!--This loads in all jquery and jquery ui scripts and css files-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+
+<!--This loads in teh bootstrap theme for tablesorter-->
+<link rel = "stylesheet" href="{% static 'rushtracker/tablesorter/css/bootstrap.min.css' %}"/>
+<link rel = "stylesheet" href="{% static 'rushtracker/tablesorter/css/theme.bootstrap.css'%}"/>
+
+<!--This loads in the tablesorter widget and app-->
+<script type="text/javascript" src="{% static 'rushtracker/tablesorter/js/jquery.tablesorter.js' %}"></script>
+<script type="text/javascript" src="{% static 'rushtracker/tablesorter/js/jquery.tablesorter.widgets.js' %}"></script>
+
+
+<table class = "tablesorter">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>FaceBook Profile</th>
+			<th>Phone Number</th>
+			<th>Assigned Contact</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for rush in all_rushes %}
+	<tr>
+		<td><a href="{% url 'rushtracker:detail' rush.id%}" target='_blank'>{{rush.rush_name}}</a></td>
+		<td><a href="{{rush.rush_facebook_link}}" target='_blank'>{{rush.rush_name}}</a></td>
+		<td>{{rush.rush_number}}</td>
+		<td>{{rush.rush_contact}}</td>
+	</tr>
+{% endfor %}
+	</tbody>
+</table>
+<script> 
+  $(function() {
+  	$("table").tablesorter({
+  		theme: "bootstrap",
+
+  		widthFixed: true,
+
+  		headerTemplate : '{content} {icon}',
+
+  		widgets: ["uitheme"]
+  	})
+  });
+</script>

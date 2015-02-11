@@ -1,0 +1,33 @@
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, render
+from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
+from django.views import generic
+from rushtracker.forms import DetailForm
+from rushtracker.models import Brother, Rush
+from django.core import serializers
+from django.http import JsonResponse
+import json
+class IndexView(generic.ListView):
+	template_name = 'rushtracker/index.html'
+	context_object_name = 'all_rushes'
+
+	def get_queryset(self):
+		return Rush.objects.all()
+
+class UpdateView(generic.UpdateView):
+	#model is used for indicate what to pass to the detail view
+	#that it can use to pull data
+	template_name = 'rushtracker/details.html'
+	model = Rush
+	form_class = DetailForm
+
+	def get_success_url(self):
+		return reverse('rushtracker:index')
+
+class JSONUpdateView(generic.TemplateView):
+	def get(self, request, *args, **kwargs):
+		return json.dumps(list(Rush.objects.all().values(
+			'rush_name',
+			'rush_rank')))
