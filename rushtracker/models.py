@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 class Brother(models.Model):
 	brother_name = models.CharField(max_length = 200)
 	brother_year = models.IntegerField(default = 1)
@@ -20,3 +20,8 @@ class Rush(models.Model):
 	
 	def __str__(self):
 		return self.rush_name
+
+class UserProfile(models.Model):
+	user = models.OneToOneField(User)
+	def __str__(self):
+		return self.user.username
