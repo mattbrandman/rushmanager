@@ -27,6 +27,5 @@ class UserProfileForm(forms.ModelForm):
 
 	class Meta:
 		model = UserProfile
-		fields = ('user',)
 	helper = FormHelper();
 	helper.add_input(Submit('submit', 'Submit', css_class='btn-primary'))

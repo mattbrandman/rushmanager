@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.views import generic
 from rushtracker.forms import DetailForm, UserForm, UserProfileForm
-from rushtracker.models import Brother, Rush
+from rushtracker.models import Brother, Rush, UserProfile
 from django.core import serializers
 from django.http import JsonResponse
 from django.contrib.auth.models import User
@@ -33,5 +33,10 @@ class SignUpFormView(generic.CreateView):
 	form_class = UserForm
 	model = User
 
+	def form_valid(self, form):
+		UserProfileTemp = UserProfile()
+		UserProfileTemp.user = form.save(commit=False)
+		UserProfileTemp.save()
+		return super(SignUpFormView, self).form_valid(form)
 	def get_success_url(self):
 		return reverse('rushtracker:index')
