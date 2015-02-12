@@ -37,9 +37,11 @@ class SignUpFormView(generic.CreateView):
 	def form_valid(self, form):
 		UserProfileTemp = UserProfileForm()
 		UserProfileObject = UserProfileTemp.save(commit=False)
-		self.object = form.save()
+		#this would be a call to CreateView super ModelForMixin but I needed
+		#access to the Id that 
+		returnHolder = super(SignUpFormView, self).form_valid(form)
 		UserProfileObject.user = self.object
 		UserProfileObject.save()
-		return super(ModelFormMixin, self).form_valid(form)
+		return returnHolder
 	def get_success_url(self):
 		return reverse('rushtracker:index')
