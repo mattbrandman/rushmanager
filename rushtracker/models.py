@@ -14,8 +14,8 @@ class Rush(models.Model):
 	rush_contact = models.ForeignKey(Brother)
 	rush_number = models.CharField(max_length=30)
 	rush_facebook_link = models.CharField(max_length = 200)
-	rush_photo_link = models.CharField(max_length = 200)
-	rush_contacted_date = models.DateTimeField('Date Contacted')
+	rush_contacted_date = models.DateField('Date Contacted')
+	rush_email_address = models.CharField(max_length=100)
 	rush_rank = models.IntegerField(default = 5)
 	
 	def __str__(self):

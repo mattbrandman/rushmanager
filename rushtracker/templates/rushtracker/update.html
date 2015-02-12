@@ -4,18 +4,9 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
-<div class="row">
-	<div class="col-md-4">
-		<form action="" method="post" class=>{% csrf_token %}
-		    {{form.rush_number}}
-		    {{form.rush_name}}
-		    {{form.rush_contact}}
-		    {{form.rush_facebook_link}}
-		    {{form.rush_photo_link}}
-		    {{form.rush_contacted_date}}
-		    {{form.rush_rank}}
-
-		    <input type="submit" value="Update" />
-		</form>
+<div class="container">
+	<div class="row">
+		{% load crispy_forms_tags %}
+		{% crispy form %}
 	</div>
 </div>

@@ -19,7 +19,7 @@ class IndexView(generic.ListView):
 class UpdateView(generic.UpdateView):
 	#model is used for indicate what to pass to the detail view
 	#that it can use to pull data
-	template_name = 'rushtracker/details.html'
+	template_name = 'rushtracker/update.html'
 	model = Rush
 	form_class = DetailForm
 

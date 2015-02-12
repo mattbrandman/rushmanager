@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django_extensions',
     'django_tables2',
+    'crispy_forms',
     'rushtracker',
 )
 
@@ -70,6 +71,8 @@ STATICFILES_FINDERS = (
 ROOT_URLCONF = 'rushmanager.urls'
 
 WSGI_APPLICATION = 'rushmanager.wsgi.application'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 
 # Database
