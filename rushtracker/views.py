@@ -6,11 +6,8 @@ from django.core.urlresolvers import reverse
 from django.views import generic
 from rushtracker.forms import DetailForm, UserForm, UserProfileForm
 from rushtracker.models import Brother, Rush, UserProfile
-from django.core import serializers
-from django.http import JsonResponse
 from django.contrib.auth.models import User
-from django.views.generic.edit import ModelFormMixin
-import json
+from django.contrib.auth import authenticate
 class IndexView(generic.ListView):
 	template_name = 'rushtracker/index.html'
 	context_object_name = 'all_rushes'
@@ -37,10 +34,15 @@ class SignUpFormView(generic.CreateView):
 	def form_valid(self, form):
 		UserProfileTemp = UserProfileForm()
 		UserProfileObject = UserProfileTemp.save(commit=False)
-		#access to the Id that 
+		#holds the return value after the save 
+		#uses the fact that self.object is assigned to the created user
+		#to access that userId and assign it to a user profile
 		returnHolder = super(SignUpFormView, self).form_valid(form)
-		UserProfileObject.user = self.object
+		user = self.object
+		print("%s" % user.__class__.__name__)
+		UserProfileObject.user = user
 		UserProfileObject.save()
+		authenticate(username = user.username, password = user.password)
 		return returnHolder
 	def get_success_url(self):
 		return reverse('rushtracker:index')
