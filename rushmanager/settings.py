@@ -74,6 +74,8 @@ WSGI_APPLICATION = 'rushmanager.wsgi.application'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
+AUTH_PROFILE_MODULE = "rushtracker.UserProfile"
+
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases

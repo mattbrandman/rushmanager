@@ -4,10 +4,11 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.views import generic
-from rushtracker.forms import DetailForm
+from rushtracker.forms import DetailForm, UserForm, UserProfileForm
 from rushtracker.models import Brother, Rush
 from django.core import serializers
 from django.http import JsonResponse
+from django.contrib.auth.models import User
 import json
 class IndexView(generic.ListView):
 	template_name = 'rushtracker/index.html'
@@ -26,8 +27,11 @@ class UpdateView(generic.UpdateView):
 	def get_success_url(self):
 		return reverse('rushtracker:index')
 
-class JSONUpdateView(generic.TemplateView):
-	def get(self, request, *args, **kwargs):
-		return json.dumps(list(Rush.objects.all().values(
-			'rush_name',
-			'rush_rank')))
+
+class SignUpFormView(generic.CreateView):
+	template_name = 'rushtracker/register.html'
+	form_class = UserForm
+	model = User
+
+	def get_success_url(self):
+		return reverse('rushtracker:index')

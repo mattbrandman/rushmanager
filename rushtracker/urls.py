@@ -7,4 +7,5 @@ urlpatterns = patterns('',
 	url(r'^$', views.IndexView.as_view(), name='index'),
 	url(r'^JSONUpdateView$', views.JSONUpdateView.as_view(), name='json'),
 	url(r'^(?P<pk>\d+)/$', views.UpdateView.as_view(), name='update'),
+	url(r'^sign_up$', views.SignUpFormView.as_view(), name='sign_up'),
 )
