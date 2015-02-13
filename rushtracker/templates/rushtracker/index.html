@@ -17,7 +17,6 @@
 <script type="text/javascript" src="{% static 'rushtracker/tablesorter/js/jquery.tablesorter.js' %}"></script>
 <script type="text/javascript" src="{% static 'rushtracker/tablesorter/js/jquery.tablesorter.widgets.js' %}"></script>
 
-
 <table class = "tablesorter">
 	<thead>
 		<tr>
@@ -38,6 +37,7 @@
 {% endfor %}
 	</tbody>
 </table>
+<a class="btn btn-default" href="{% url 'rushtracker:create_rush' %}" role="button">Create New Rush</a>
 <script> 
   $(function() {
   	$("table").tablesorter({

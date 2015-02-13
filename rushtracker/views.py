@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.views import generic
-from rushtracker.forms import DetailForm, UserForm, UserProfileForm
+from rushtracker.forms import DetailForm, UserForm, UserProfileForm, CreateRushForm
 from rushtracker.models import Brother, Rush, UserProfile
 from django.contrib.auth.models import User
 from django.contrib.auth import  authenticate, login
@@ -54,5 +54,12 @@ class SignUpFormView(generic.CreateView):
 
 		return returnHolder
 
+	def get_success_url(self):
+		return reverse('rushtracker:index')
+
+class RushCreateView(generic.CreateView):
+	template_name = 'rushtracker/create_rush.html'
+	form_class = CreateRushForm
+	model = Rush
 	def get_success_url(self):
 		return reverse('rushtracker:index')
