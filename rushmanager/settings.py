@@ -74,6 +74,8 @@ WSGI_APPLICATION = 'rushmanager.wsgi.application'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
+AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',)
+
 
 
 # Database

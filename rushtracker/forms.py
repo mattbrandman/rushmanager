@@ -4,6 +4,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from rushtracker.models import UserProfile
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 from django import forms
 
 class DetailForm(ModelForm):
@@ -14,11 +15,10 @@ class DetailForm(ModelForm):
 	helper = FormHelper();
 	helper.add_input(Submit('submit', 'Submit', css_class='btn-primary'))
 
-class UserForm(ModelForm):
-	password = forms.CharField(widget=forms.PasswordInput())
+class UserForm(UserCreationForm):
 	class Meta:
 		model = User
-		fields = ('username', 'email', 'password')
+		fields = ('username', 'password1', 'password2')
 	helper = FormHelper();
 	helper.add_input(Submit('submit', 'Submit', css_class='btn-primary'))
 
