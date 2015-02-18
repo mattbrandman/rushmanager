@@ -19,14 +19,23 @@ class DetailForm(ModelForm):
     helper = FormHelper()
     helper.add_input(Submit('submit', 'Update', css_class='btn-primary'))
 
-
 class UserForm(UserCreationForm):
-
+    first_name = forms.CharField(max_length=50, required=True)
+    last_name = forms.CharField(max_length=50, required=True)
     class Meta:
         model = User
-        fields = ('username', 'email', 'password1', 'password2')
+        fields = ('first_name', 'last_name', 'username', 
+            'email', 'password1', 'password2')
     helper = FormHelper()
     helper.add_input(Submit('submit', 'Submit', css_class='btn-primary'))
+
+    def save(self, commit=True):
+        if not commit:
+            raise NotImplementedError("Can't create User and UserProfile without database save")
+        user = super(UserForm, self).save(commit=True)
+        user_profile = UserProfile(user=user)
+        user_profile.save()
+        return user, user_profile
 
 
 class UserProfileForm(forms.ModelForm):

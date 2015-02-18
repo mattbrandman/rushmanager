@@ -7,14 +7,16 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('rushtracker', '0004_userprofile'),
+        ('rushtracker', '0003_auto_20150218_1600'),
     ]
 
     operations = [
-        migrations.AddField(
+        migrations.RemoveField(
             model_name='userprofile',
-            name='rand_text',
-            field=models.CharField(default='hello', max_length=20),
-            preserve_default=False,
+            name='first_name',
+        ),
+        migrations.RemoveField(
+            model_name='userprofile',
+            name='last_name',
         ),
     ]

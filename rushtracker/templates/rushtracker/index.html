@@ -20,13 +20,12 @@
 <div class="row">
 {% if user.is_authenticated %}
 	<div class = "col-md-12">
-	<h5><p class = "text-right">{{user.get_username}}</p></h5>
+	<a href ="{%url 'rushtracker:sign_out' %}" class="pull-right">Hello, {{user.username}} Click To Sign Out</a>
 	</div>
 {% else %}
-	<a href ="{%url 'rushtracker:sign_in' %}" class="btn btn-primary pull-right">Sign In</a>
+	<a href ="{%url 'rushtracker:sign_in' %}" class="pull-right">Sign In</a>
 {% endif %}
-</div>
-
+	</div>
 <div class = "row">
 		<table class = "tablesorter">
 			<thead>

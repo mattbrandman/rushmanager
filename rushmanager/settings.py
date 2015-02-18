@@ -25,6 +25,7 @@ DEBUG = True
 TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
+LOGIN_URL = '/rushtracker/sign_in'
 
 
 # Application definition
@@ -40,6 +41,7 @@ INSTALLED_APPS = (
     'django_tables2',
     'crispy_forms',
     'rushtracker',
+    'braces',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
