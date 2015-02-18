@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, url
 from rushtracker import views
+from rushtracker.forms import AuthenticationFormAny
 
 urlpatterns = patterns('', 
 	#the carrot and dollar sign are there to ensure what is 
@@ -8,4 +9,7 @@ urlpatterns = patterns('',
 	url(r'^(?P<pk>\d+)/$', views.UpdateView.as_view(), name='update'),
 	url(r'^sign_up$', views.SignUpFormView.as_view(), name='sign_up'),
 	url(r'^create_rush$', views.RushCreateView.as_view(), name='create_rush'),
+	url(r'^sign_in$', 'django.contrib.auth.views.login', {'template_name' : 'rushtracker/sign_in.html', 
+		'authentication_form' : AuthenticationFormAny}, name='sign_in'),
+
 )

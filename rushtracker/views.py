@@ -8,6 +8,7 @@ from rushtracker.forms import DetailForm, UserForm, UserProfileForm, CreateRushF
 from rushtracker.models import Brother, Rush, UserProfile
 from django.contrib.auth.models import User
 from django.contrib.auth import  authenticate, login
+from django.contrib.auth.forms import AuthenticationForm
 
 
 class IndexView(generic.ListView):
@@ -46,7 +47,6 @@ class SignUpFormView(generic.CreateView):
 		user = self.object
 		UserProfileObject.user = user
 		UserProfileObject.save()
-		print("%s" % self.request.POST['password1'])
 		user = authenticate(username = form.cleaned_data['username'], password = form.cleaned_data['password1'])
 		if user is not None:
 			login(self.request, user)

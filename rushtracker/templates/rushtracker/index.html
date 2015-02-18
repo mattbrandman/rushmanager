@@ -9,35 +9,48 @@
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 
-<!--This loads in teh bootstrap theme for tablesorter-->
+<!--This loads in the bootstrap theme for tablesorter-->
 <link rel = "stylesheet" href="{% static 'rushtracker/tablesorter/css/bootstrap.min.css' %}"/>
 <link rel = "stylesheet" href="{% static 'rushtracker/tablesorter/css/theme.bootstrap.css'%}"/>
 
 <!--This loads in the tablesorter widget and app-->
 <script type="text/javascript" src="{% static 'rushtracker/tablesorter/js/jquery.tablesorter.js' %}"></script>
 <script type="text/javascript" src="{% static 'rushtracker/tablesorter/js/jquery.tablesorter.widgets.js' %}"></script>
+<div class="container-fluid">
+<div class="row">
+{% if user.is_authenticated %}
+	<div class = "col-md-12">
+	<h5><p class = "text-right">{{user.get_username}}</p></h5>
+	</div>
+{% else %}
+	<a href ="{%url 'rushtracker:sign_in' %}" class="btn btn-primary pull-right">Sign In</a>
+{% endif %}
+</div>
 
-<table class = "tablesorter">
-	<thead>
-		<tr>
-			<th>Name</th>
-			<th>FaceBook Profile</th>
-			<th>Phone Number</th>
-			<th>Assigned Contact</th>
-		</tr>
-	</thead>
-	<tbody>
-{% for rush in all_rushes %}
-	<tr>
-		<td><a href="{% url 'rushtracker:update' rush.id %}" target='_blank'>{{rush.rush_name}}</a></td>
-		<td><a href="{{rush.rush_facebook_link}}" target='_blank'>{{rush.rush_name}}</a></td>
-		<td>{{rush.rush_number}}</td>
-		<td>{{rush.rush_contact}}</td>
-	</tr>
-{% endfor %}
-	</tbody>
-</table>
+<div class = "row">
+		<table class = "tablesorter">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>FaceBook Profile</th>
+					<th>Phone Number</th>
+					<th>Assigned Contact</th>
+				</tr>
+			</thead>
+			<tbody>
+		{% for rush in all_rushes %}
+			<tr>
+				<td><a href="{% url 'rushtracker:update' rush.id %}" target='_blank'>{{rush.rush_name}}</a></td>
+				<td><a href="{{rush.rush_facebook_link}}" target='_blank'>{{rush.rush_name}}</a></td>
+				<td>{{rush.rush_number}}</td>
+				<td>{{rush.rush_contact}}</td>
+			</tr>
+		{% endfor %}
+			</tbody>
+		</table>
+</div>
 <a class="btn btn-default" href="{% url 'rushtracker:create_rush' %}" role="button">Create New Rush</a>
+
 <script> 
   $(function() {
   	$("table").tablesorter({

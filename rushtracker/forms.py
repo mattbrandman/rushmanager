@@ -4,9 +4,10 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from rushtracker.models import UserProfile
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
-from crispy_forms.layout import Layout, Field, ButtonHolder, Submit
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from crispy_forms.layout import Layout, Field, ButtonHolder, Submit, Hidden
 from django import forms
+from django.core.urlresolvers import reverse
 
 
 class DetailForm(ModelForm):
@@ -16,7 +17,7 @@ class DetailForm(ModelForm):
         widgets = {
             'rush_contacted_date': DateInput(attrs={'type': 'date'})}
     helper = FormHelper()
-    helper.add_input(Submit('submit', 'Submit', css_class='btn-primary'))
+    helper.add_input(Submit('submit', 'Update', css_class='btn-primary'))
 
 
 class UserForm(UserCreationForm):
@@ -46,3 +47,11 @@ class CreateRushForm(forms.ModelForm):
 
     class Meta:
         model = Rush
+
+class AuthenticationFormAny(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super(AuthenticationFormAny, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.add_input(Submit('submit', 'Submit', css_class='btn_primary'))
+        self.helper.add_input(Hidden('next', reverse('rushtracker:index')))
+
