@@ -61,6 +61,7 @@ class AuthenticationFormAny(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super(AuthenticationFormAny, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
+        self.helper.render_hidden_fields = True
+        self.helper.form_tag = False
         self.helper.add_input(Submit('submit', 'Submit', css_class='btn_primary'))
-        self.helper.add_input(Hidden('next', reverse('rushtracker:index')))
 

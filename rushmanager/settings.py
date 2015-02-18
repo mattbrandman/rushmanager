@@ -25,7 +25,11 @@ DEBUG = True
 TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
+
 LOGIN_URL = '/rushtracker/sign_in'
+
+#Change this once profile views are up and running 
+LOGIN_REDIRECT_URL = '/rushtracker/'
 
 
 # Application definition
