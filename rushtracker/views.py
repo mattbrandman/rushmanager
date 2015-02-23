@@ -4,11 +4,10 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.views import generic
-from rushtracker.forms import DetailForm, UserForm, UserProfileForm, CreateRushForm
+from rushtracker.forms import DetailForm, CreateRushForm
 from rushtracker.models import  Rush, UserProfile
 from django.contrib.auth.models import User
 from django.contrib.auth import  authenticate, login
-from django.contrib.auth.forms import AuthenticationForm
 from braces.views import LoginRequiredMixin
 
 class IndexView(LoginRequiredMixin, generic.ListView):
@@ -25,13 +24,6 @@ class UpdateView(LoginRequiredMixin, generic.UpdateView):
 	model = Rush
 	form_class = DetailForm
 
-	def get_success_url(self):
-		return reverse('rushtracker:index')
-
-class SignUpFormView(generic.CreateView):
-	template_name = 'rushtracker/register.html'
-	form_class = UserForm
-	model = User
 	def get_success_url(self):
 		return reverse('rushtracker:index')
 

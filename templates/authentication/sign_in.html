@@ -6,10 +6,10 @@
 <div class = "container">
 	<div class = "row">
 		<div class = "col-md-12">
-			<form method="post" action = "{% url 'rushtracker:sign_in' %}">
+			<form method="post" action = "{% url 'authentication:sign_in' %}">
 				{% load crispy_forms_tags %}
 				{% crispy form %}
-				<a href="{%url 'rushtracker:sign_up' %}" class="btn btn-primary">Sign Up Now!</a>
+				<a href="{%url 'authentication:sign_up' %}" class="btn btn-primary">Sign Up Now!</a>
 				<input type="hidden" name="next" value="{{next}}"/>
 			</form>
 		</div>

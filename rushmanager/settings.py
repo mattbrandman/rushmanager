@@ -26,7 +26,7 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
-LOGIN_URL = '/rushtracker/sign_in'
+LOGIN_URL = '/authentication/sign_in'
 
 #Change this once profile views are up and running 
 LOGIN_REDIRECT_URL = '/rushtracker/'
@@ -82,7 +82,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',)
 
-
+TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
