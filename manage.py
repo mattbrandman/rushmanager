@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/Users/matthewbrandman/Envs/rushsite/bin/python
 import os
 import sys
 
