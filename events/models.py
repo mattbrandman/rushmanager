@@ -1,7 +1,7 @@
 from django.db import models
-from rushmanager.models import Rush
+from rushtracker.models import Rush
 
-class Event(models.model):
+class Event(models.Model):
     title = models.CharField('Event Title', max_length=200)
     description = models.CharField(max_length=2000)
     date = models.DateField('Event Date')
