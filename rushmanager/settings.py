@@ -45,6 +45,7 @@ INSTALLED_APPS = (
     'django_tables2',
     'crispy_forms',
     'rushtracker',
+    'events',
     'braces',
 )
 
