@@ -5,7 +5,6 @@ from django.utils import timezone
 from events.models import Event
 from rushtracker.models import Rush
 
-
 from django.db import models
 
 class Comment(models.Model):
