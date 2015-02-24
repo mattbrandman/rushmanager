@@ -11,19 +11,21 @@ class CreateEventForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(CreateEventForm, self).__init__(*args, **kwargs)
 
-        widgets = {
-          'description': Textarea(attrs={'rows':4, 'cols':1}),
-        }
-
         self.helper = FormHelper(self)
-        self.helper['contacted_date'].wrap(Field, css_class="datepicker")
-        self.helper.add_input(Submit('submit', 'Submit', css_class='btn-primary'))
 
         self.helper.layout = Layout(
             Field('title'),
-            Field('description', widget='description'),
-            Field('date'),
-            Field('attendance'))
+            # TODO: maybe add description field
+            # Field('description', widget='description', required=False),
+            Field('date', widget='event_date'),
+            # TODO: should attendance be part of this create form?
+            # Field('attendance', required=False),
+            Submit('submit', 'Submit', css_class='btn-primary'))
 
     class Meta:
         model = Event
+
+        widgets = {
+          'description': Textarea(attrs={'rows':4, 'cols':1}),
+          'event_date': DateInput(attrs={'type': 'date'})
+        }
