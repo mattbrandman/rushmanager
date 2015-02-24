@@ -15,7 +15,7 @@ class DetailForm(ModelForm):
     class Meta:
         model = Rush
         widgets = {
-            'rush_contacted_date': DateInput(attrs={'type': 'date'})}
+            'contacted_date': DateInput(attrs={'type': 'date'})}
     helper = FormHelper()
     helper.add_input(Submit('submit', 'Update', css_class='btn-primary'))
 
@@ -24,7 +24,7 @@ class CreateRushForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CreateRushForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
-        self.helper['rush_contacted_date'].wrap(Field, css_class="datepicker")
+        self.helper['contacted_date'].wrap(Field, css_class="datepicker")
         self.helper.add_input(Submit('submit', 'Submit', css_class='btn-primary'))
 
     class Meta:
