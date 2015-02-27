@@ -18,13 +18,13 @@ class CreateCommentForm(ModelForm):
                     Div(
                         Field('user'),
                         Field('event'),
-                        css_class="span4",
+                        css_class="col-md-4",
                         ),
                     Div(
                         Field('comment'),
-                        css_class="span8",
+                        css_class="col-md-8",
                     ),
-                    css_class="container-fluid",
+                    css_class="row",
                 ),
                 Submit('submit', 'Submit', css_class='btn-primary'))
 
