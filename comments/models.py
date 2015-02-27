@@ -27,3 +27,6 @@ class Comment(models.Model):
         ('1', 'Postive',),
     )
     '''
+
+    def __str__(self):
+        return "" + self.user.username + "'s comment on " + self.rush.name
