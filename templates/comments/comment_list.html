@@ -1,28 +1,35 @@
-<table>
+<!--This loads in the bootstrap css ands javascript files-->
+<!-- TODO: remove when we have a base template that imports everything -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
-    {% if rush_comments %}
-        {% for rush_comment in rush_comments %}
+<table class="table table-striped table-bordered">
+    <tbody>
 
-        <tr>
-            <td>
-                {{ rush_comment.user }}
-            </td>
-            <td>
-                {{ rush_comment.comment }}
-            </td>
-        </tr>
+        {% if rush_comments %}
+            {% for rush_comment in rush_comments %}
 
-        {% comment %}
-        TODO: 
-        -reskin
+            <tr>
+                <td class="span2">
+                    {{ rush_comment.user }}
+                </td>
+                <td class="span10">
+                    {{ rush_comment.comment }}
+                </td>
+            </tr>
 
-        -gonna need an ajax form here for submitting new comments
+            {% comment %}
+            TODO: 
+            -reskin
 
-        -in the response well add some nifty js that will add the new comment to the table its gonna be dope
-        {% endcomment %}
+            -gonna need an ajax form here for submitting new comments
 
-        {% endfor %}
-    {% else %}
-        no comments about this rush
-    {% endif %}
+            -in the response well add some nifty js that will add the new comment to the table its gonna be dope
+            {% endcomment %}
+
+            {% endfor %}
+        {% else %}
+            no comments about this rush
+        {% endif %}
+    </tbody>
 </table>
