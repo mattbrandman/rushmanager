@@ -14,4 +14,4 @@ class Rush(models.Model):
 	dorm = models.CharField('Dorm', max_length=200, blank=True, null=True)
 	
 	def __str__(self):
-		return self.name
+		return self.first_name + " " + self.last_name

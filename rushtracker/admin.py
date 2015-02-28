@@ -1,10 +1,13 @@
 from django.contrib import admin
 from rushtracker.models import Rush
 from authentication.models import UserProfile
+from comments.models import Comment
 
-
-class RushInLine(admin.StackedInline):
-	model = Rush
-	extra = 3
-admin.site.register(Rush)
-admin.site.register(UserProfile)
+class CommentInline(admin.StackedInline):
+	model = Comment
+	extra = 1
+class RushAdmin(admin.ModelAdmin):
+	inlines = [
+		CommentInline,
+	]
+admin.site.register(Rush, RushAdmin)
