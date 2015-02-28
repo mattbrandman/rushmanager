@@ -1,7 +1,7 @@
 from django.forms import ModelForm, DateInput, PasswordInput
-from rushtracker.models import Rush, UserProfile
+from rushtracker.models import Rush
 from crispy_forms.helper import FormHelper
-from rushtracker.models import UserProfile
+from authentication.models import UserProfile
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from crispy_forms.layout import Layout, Field, ButtonHolder, Submit, Hidden

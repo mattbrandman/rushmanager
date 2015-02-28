@@ -5,7 +5,8 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.views import generic
 from rushtracker.forms import DetailForm, CreateRushForm
-from rushtracker.models import  Rush, UserProfile
+from rushtracker.models import  Rush
+from authentication.models import UserProfile
 from django.contrib.auth.models import User
 from django.contrib.auth import  authenticate, login
 from braces.views import LoginRequiredMixin
