@@ -48,6 +48,7 @@ INSTALLED_APPS = (
     'comments',
     'events',
     'braces',
+    'authentication',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
