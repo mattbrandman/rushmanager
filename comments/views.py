@@ -14,7 +14,7 @@ class CommentListView(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         self.rush = get_object_or_404(Rush, pk=self.kwargs['pk'])
-        return Comment.objects.filter(rush=self.rush)
+        return Comment.objects.filter(rush=self.rush).order_by('created_at')
 
     def get_context_data(self):
         context = super(CommentListView, self).get_context_data()
