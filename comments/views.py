@@ -18,8 +18,8 @@ class CommentListView(LoginRequiredMixin, generic.ListView):
 
     def get_context_data(self):
         context = super(CommentListView, self).get_context_data()
-        context['CommentForm'] = CreateCommentForm
-        context['rushKey'] = self.kwargs['pk']
+        context['CommentForm'] = CreateCommentForm(initial={'rush': self.kwargs['pk']})
+        context['rush_key'] = self.kwargs['pk']
         return context
 class CommentCreationView(LoginRequiredMixin, generic.CreateView):
 	model = Comment

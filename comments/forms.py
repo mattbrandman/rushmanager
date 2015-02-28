@@ -1,7 +1,7 @@
 from django import forms
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Submit, Div
+from crispy_forms.layout import Layout, Field, Submit, Div, HTML, Hidden
 from django.forms import DateInput, ModelForm, Textarea
 from comments.models import Comment
 
@@ -13,7 +13,6 @@ class CreateCommentForm(ModelForm):
             self.helper.layout = Layout(
                 Div(
                     Div(
-                        Field('rush'),
                         Field('user'),
                         Field('event'),
                         css_class="col-md-4",
@@ -24,7 +23,9 @@ class CreateCommentForm(ModelForm):
                     ),
                     css_class="row",
                 ),
+                Field('rush', type="hidden"),
                 Submit('submit', 'Submit', css_class='btn-primary'))
+
 
     class Meta:
         model = Comment

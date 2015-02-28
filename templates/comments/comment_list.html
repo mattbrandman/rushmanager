@@ -60,7 +60,6 @@ $(document).ready(function(){
       },
       success: function(data){
         // Append with fadeIn see http://stackoverflow.com/a/978731
-        //var item = $(data).hide().fadeIn(800);
         var item = $('<tr><td class="span2">' + data.username + '</td><td>' + data.comment + '</td></tr>').hide()
         $('table > tbody:last').append(item);
         item.fadeIn("slow");
