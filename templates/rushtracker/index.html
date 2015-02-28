@@ -7,19 +7,19 @@
 			<thead>
 				<tr>
 					<th>Name</th>
-					<th>Comments</th>
 					<th>Phone Number</th>
 					<th>Assigned Contact</th>
+                    <th>Edit</th>
 				</tr>
 			</thead>
 			<tbody>
 		{% for rush in all_rushes %}
 			<tr>
 			<!--Could display comment up/down vote and amount here-->
-				<td><a href="{% url 'rushtracker:update' rush.id %}" target='_self'>{{rush.first_name}}</a></td>
-				<td><a href="{% url 'comments:comments' rush.id %}" target='_self'>Comments</a></td>
+				<td><a href="{% url 'comments:comments' rush.id %}" target='_self'>{{rush.first_name}}</a></td>
 				<td>{{rush.number}}</td>
 				<td>{{rush.contact}}</td>
+                <td><a href="{% url 'rushtracker:update' rush.id %}" target='_self'>edit</a></td>
 			</tr>
 		{% endfor %}
 			</tbody>
