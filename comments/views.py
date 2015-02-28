@@ -4,6 +4,8 @@ from comments.forms import CreateCommentForm
 from django.shortcuts import get_object_or_404
 from django.views import generic
 from braces.views import LoginRequiredMixin
+from django.http import HttpResponse
+from django.http import JsonResponse
 
 
 class CommentListView(LoginRequiredMixin, generic.ListView):
@@ -17,4 +19,18 @@ class CommentListView(LoginRequiredMixin, generic.ListView):
     def get_context_data(self):
         context = super(CommentListView, self).get_context_data()
         context['CommentForm'] = CreateCommentForm
+        context['rushKey'] = self.kwargs['pk']
         return context
+class CommentCreationView(LoginRequiredMixin, generic.CreateView):
+	model = Comment
+	def form_invalid(self, form):
+		return JsonResponse({
+			'success':False,
+			'errors': dict(form.errors.items()),
+			})
+	def form_valid(self, form):
+		self.object = form.save()
+		return JsonResponse({
+			'username': self.object.user.username,
+			'comment': self.object.comment,
+		})

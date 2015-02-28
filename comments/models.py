@@ -12,7 +12,7 @@ class Comment(models.Model):
     rush = models.ForeignKey(Rush)
     user = models.ForeignKey(User)
     event = models.ForeignKey(Event, blank=True, null=True)
-    created_at = models.DateTimeField(default=timezone.now)
+    created_at = models.DateTimeField(auto_now=True)
     comment = models.TextField()
 
 

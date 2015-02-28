@@ -1,7 +1,7 @@
 <!--This loads in the bootstrap css ands javascript files-->
 <!-- TODO: remove when we have a base template that imports everything -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+{% extends "base.html" %}
+{% block content %}
 
 <table class="table table-striped table-bordered">
     <tbody>
@@ -39,3 +39,40 @@
     {% load crispy_forms_tags %}
     {% crispy CommentForm %}
 </div>
+
+<script>
+$(document).ready(function(){
+  var form = $('form');
+  var submit = $('#submit-id-submit');
+
+  form.on('submit', function(e) {
+    // prevent default action
+    e.preventDefault();
+    // send ajax request
+    $.ajax({
+      url: '/comments/createComments',
+      type: 'POST',
+      cache: false,
+      data: form.serialize(), //form serizlize data
+      beforeSend: function(){
+        // change submit button value text and disabled it
+        submit.val('Submitting...').attr('disabled', 'disabled');
+      },
+      success: function(data){
+        // Append with fadeIn see http://stackoverflow.com/a/978731
+        //var item = $(data).hide().fadeIn(800);
+        var item = $('<tr><td class="span2">' + data.username + '</td><td>' + data.comment + '</td></tr>').hide()
+        $('table > tbody:last').append(item);
+        item.fadeIn("slow");
+        form.trigger('reset');
+        submit.val('Submit Comment').removeAttr('disabled');
+      },
+      error: function(e){
+        alert(e);
+      }
+    });
+  });
+});
+</script>
+
+{% endblock %}

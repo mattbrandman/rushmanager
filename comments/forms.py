@@ -6,16 +6,14 @@ from django.forms import DateInput, ModelForm, Textarea
 from comments.models import Comment
 
 class CreateCommentForm(ModelForm):
-    success_url = '.'
-
     def __init__(self, *args, **kwargs):
             super(CreateCommentForm, self).__init__(*args, **kwargs)
 
             self.helper = FormHelper(self)
-
             self.helper.layout = Layout(
                 Div(
                     Div(
+                        Field('rush'),
                         Field('user'),
                         Field('event'),
                         css_class="col-md-4",
