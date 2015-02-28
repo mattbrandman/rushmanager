@@ -50,7 +50,7 @@ $(document).ready(function(){
     e.preventDefault();
     // send ajax request
     $.ajax({
-      url: '/comments/createComments',
+      url: '/comments/new/',
       type: 'POST',
       cache: false,
       data: form.serialize(), //form serizlize data
