@@ -17,8 +17,8 @@
 			<tr>
 			<!--Could display comment up/down vote and amount here-->
 				<td><a href="{% url 'comments:comments' rush.id %}" target='_self'>{{rush.first_name}}</a></td>
-				<td>{{rush.number}}</td>
-				<td>{{rush.contact}}</td>
+				<td>{{rush.phone_number}}</td>
+				<td>{{rush.primary_contact}}</td>
                 <td><a href="{% url 'rushtracker:update' rush.id %}" target='_self'>edit</a></td>
 			</tr>
 		{% endfor %}
