@@ -7,7 +7,7 @@
 			<thead>
 				<tr>
 					<th>Name</th>
-					<th>FaceBook Profile</th>
+					<th>Comments</th>
 					<th>Phone Number</th>
 					<th>Assigned Contact</th>
 				</tr>
@@ -15,8 +15,9 @@
 			<tbody>
 		{% for rush in all_rushes %}
 			<tr>
-				<td><a href="{% url 'rushtracker:update' rush.id %}" target='_blank'>{{rush.name}}</a></td>
-				<td><a href="{{rush.facebook_link}}" target='_blank'>{{rush.name}}</a></td>
+			<!--Could display comment up/down vote and amount here-->
+				<td><a href="{% url 'rushtracker:update' rush.id %}" target='_self'>{{rush.name}}</a></td>
+				<td><a href="{% url 'comments:comments' rush.id %}" target='_self'>Comments</a></td>
 				<td>{{rush.number}}</td>
 				<td>{{rush.contact}}</td>
 			</tr>
