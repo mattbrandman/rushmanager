@@ -10,3 +10,4 @@ class EventCreateView(LoginRequiredMixin, generic.CreateView):
     model = Event
     def get_success_url(self):
         return reverse('rushtracker:index')
+        

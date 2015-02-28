@@ -29,4 +29,4 @@ class Comment(models.Model):
     '''
 
     def __str__(self):
-        return "" + self.user.username + "'s comment on " + self.rush.name
+        return "" + self.user.username + "'s comment on " + self.rush.first_name
