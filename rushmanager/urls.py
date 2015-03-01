@@ -7,4 +7,5 @@ urlpatterns = patterns('',
     url(r'^comments/', include('comments.urls', namespace="comments")),
 	url(r'^authentication/', include('authentication.urls', namespace="authentication")),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^organization/', include('organization.urls', namespace="organization")),
 )

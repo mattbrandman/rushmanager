@@ -1,5 +1,6 @@
 from django.forms import ModelForm, DateInput, PasswordInput
 from rushtracker.models import Rush
+from organization.models import Organization
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from authentication.models import UserProfile
@@ -34,16 +35,20 @@ class UserForm(UserCreationForm):
         valid = super(UserForm, self).is_valid()
         if not valid:
             return valid
-        if int(self.cleaned_data['organization_token']) == 1:
+        orgTok = self.cleaned_data['organization_token']
+        try:
+            Organization.objects.get(join_token=orgTok)
+            return True
+        except Organization.DoesNotExist:
             self._errors["organization_token"]  = ErrorList([u"There is no matching token here"])
             return False
     def save(self, commit=True):
         if not commit:
             raise NotImplementedError("Can't create User and UserProfile without database save")
         user = super(UserForm, self).save(commit=True)
-       # user_profile = UserProfile(user=user, organization=self.cleaned_data['organization_to'] )
-        # user_profile.save()
-        return user, #user_profile
+        user_profile = UserProfile(user=user, organization=self.cleaned_data['organization_to'] )
+        user_profile.save()
+        return user, user_profile
         
 class UserProfileForm(forms.ModelForm):
 
