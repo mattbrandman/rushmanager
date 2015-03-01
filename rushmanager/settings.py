@@ -49,6 +49,7 @@ INSTALLED_APPS = (
     'events',
     'braces',
     'authentication',
+    'organization',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
