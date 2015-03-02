@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.http import HttpResponseRedirect
+from braces.views import LoginRequiredMixin, PermissionRequiredMixin
 
 class SignUpFormView(generic.CreateView):
 	template_name = 'authentication/register.html'
@@ -12,8 +13,9 @@ class SignUpFormView(generic.CreateView):
 	model = User
 	def get_success_url(self):
 		return reverse('rushtracker:index')
-class AddSingleBrother(generic.CreateView):
+class AddSingleBrother(LoginRequiredMixin, PermissionRequiredMixin, generic.CreateView):
 	model = User
+	permission_required = 'authentication.chapter_admin'
 	form_class = SingleUserCreationForm
 	def get(self, request, *args, **kwargs):
 		#TODO: this but in a better way perhaps in the urlconf

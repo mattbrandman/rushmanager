@@ -11,6 +11,7 @@ from django import forms
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ValidationError
 from django.forms.util import ErrorList
+from organization.forms import CreateOrganizationForm
 
 class UserSignInForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
@@ -32,17 +33,21 @@ class ChapterAdminForm(UserCreationForm):
     helper = FormHelper()
     helper.add_input(Submit('Submit', 'Submit', css_class='btn-primary'))
     def save(self, commit=True):
+        print self
         if not commit:
             raise NotImplementedError("Can't create User and UserProfile without database save")
         user = super(ChapterAdminForm, self).save(commit=True)
         user.user_permissions.add(Permission.objects.get(codename='chapter_admin'),)
-        organization = Organization(owner = user, 
-            national_organization=self.cleaned_data['fraternity'], 
-            chapter_name=self.cleaned_data['chapter'])
-        user_profile = UserProfile(user=user, organization=organization)
+        data = {
+            'owner' : user.id,
+            'national_organization' : self.cleaned_data['fraternity'], 
+            'chapter_name' : self.cleaned_data['chapter']}
+        organization = CreateOrganizationForm(data)
+        my_org = organization.save()
+        print "hello"
+        user_profile = UserProfile(user=user, organization=my_org)
         user_profile.save()
-        return user, user_profile
-        
+        return user
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile

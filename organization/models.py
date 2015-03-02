@@ -8,4 +8,4 @@ class Organization(models.Model):
 	chapter_name = models.CharField(max_length=500)
 	def __str__(self):
 		return self.national_organization + ' ' + self.chapter_name
-
+		

@@ -5,7 +5,7 @@ from django.contrib.auth.models import Permission
 
 class UserProfile(models.Model):
 	user = models.OneToOneField(User, related_name="profile")
-	organization = models.ForeignKey(Organization, blank=True, null=True)
+	organization = models.ForeignKey(Organization)
 	class Meta:
 		permissions = (
 			("chapter_admin", "Can access chapter admin page"),
