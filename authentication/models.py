@@ -1,9 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
 from organization.models import Organization
+from django.contrib.auth.models import Permission
 
 class UserProfile(models.Model):
-	user = models.OneToOneField(User)
-	organization = models.ForeignKey(Organization)
+	user = models.OneToOneField(User, related_name="profile")
+	organization = models.ForeignKey(Organization, blank=True, null=True)
+	class Meta:
+		permissions = (
+			("chapter_admin", "Can access chapter admin page"),
+		)
 	def __str__(self):
 		return self.user.username

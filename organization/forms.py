@@ -15,4 +15,3 @@ class CreateOrganizationForm(forms.ModelForm):
     class Meta:
         model = Organization
         exclude = ('join_token',)
-

@@ -1,12 +1,36 @@
 from django.shortcuts import render
 from django.views import generic
-from authentication.forms import UserForm
+from authentication.forms import ChapterAdminForm, SingleUserCreationForm
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
+from django.http import JsonResponse
+from django.http import HttpResponseRedirect
 
 class SignUpFormView(generic.CreateView):
 	template_name = 'authentication/register.html'
-	form_class = UserForm
+	form_class = ChapterAdminForm
 	model = User
 	def get_success_url(self):
 		return reverse('rushtracker:index')
+class AddSingleBrother(generic.CreateView):
+	model = User
+	form_class = SingleUserCreationForm
+	def get(self, request, *args, **kwargs):
+		#TODO: this but in a better way perhaps in the urlconf
+		return HttpResponseRedirect(reverse('rushtracker:index'))
+	def form_invalid(self, form):
+		return JsonResponse({
+			'success':False,
+			'errors': dict(form.errors.items()),
+			})
+	def form_valid(self, form):
+		self.object = form.save()
+		return JsonResponse({
+			'success':True,
+			'first_name': self.object.first_name,
+			'last_name': self.object.last_name,
+			})
+	def get_form_kwargs(self):
+		kwargs = super(AddSingleBrother, self).get_form_kwargs()
+		kwargs['request'] = self.request
+		return kwargs

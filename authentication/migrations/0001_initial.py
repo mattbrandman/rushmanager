@@ -8,6 +8,7 @@ from django.conf import settings
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('organization', '0003_remove_organization_join_token'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
@@ -16,8 +17,8 @@ class Migration(migrations.Migration):
             name='UserProfile',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('rand_text', models.CharField(max_length=20)),
-                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
+                ('organization', models.ForeignKey(blank=True, to='organization.Organization', null=True)),
+                ('user', models.OneToOneField(related_name='profile', to=settings.AUTH_USER_MODEL)),
             ],
             options={
             },

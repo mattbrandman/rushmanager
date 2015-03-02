@@ -31,6 +31,8 @@ LOGIN_URL = '/authentication/sign_in'
 #Change this once profile views are up and running 
 LOGIN_REDIRECT_URL = '/rushtracker/'
 
+#this is the profile for Users
+
 
 # Application definition
 
