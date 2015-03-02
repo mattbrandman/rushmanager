@@ -9,6 +9,7 @@ from events.models import Event
 class CreateEventForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
         super(CreateEventForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper(self)

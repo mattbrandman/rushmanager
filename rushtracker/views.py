@@ -16,7 +16,7 @@ class IndexView(LoginRequiredMixin, generic.ListView):
 	context_object_name = 'all_rushes'
 
 	def get_queryset(self):
-		return Rush.objects.all()
+		return Rush.objects.filter(organization = self.request.user.profile.organization)
 
 class UpdateView(LoginRequiredMixin, generic.UpdateView):
 	#model is used for indicate what to pass to the detail view
@@ -32,5 +32,9 @@ class RushCreateView(LoginRequiredMixin, generic.CreateView):
 	template_name = 'rushtracker/create_rush.html'
 	form_class = CreateRushForm
 	model = Rush
+	def get_form_kwargs(self):
+		kwargs = super(RushCreateView, self).get_form_kwargs()
+		kwargs['request'] = self.request
+		return kwargs
 	def get_success_url(self):
 		return reverse('rushtracker:index')

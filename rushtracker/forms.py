@@ -21,11 +21,20 @@ class DetailForm(ModelForm):
 class CreateRushForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
         super(CreateRushForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper['contacted_date'].wrap(Field, css_class="datepicker")
         self.helper.add_input(Submit('submit', 'Submit', css_class='btn-primary'))
+    def save(self, commit=True):
+        if not commit:
+            raise NotImplementedError("Can't create User and UserProfile without database save")
+        rush = super(CreateRushForm, self).save(commit=False)
+        rush.organization = self.request.user.profile.organization
+        rush.save()
 
     class Meta:
         model = Rush
+        exclude = ['organization']
+
 
