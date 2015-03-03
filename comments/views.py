@@ -18,6 +18,7 @@ class CommentListView(LoginRequiredMixin, generic.ListView):
 
     def get_context_data(self):
         context = super(CommentListView, self).get_context_data()
+        context['profile_picture'] = self.rush.picture
         context['CommentForm'] = CreateCommentForm(initial={'rush': self.kwargs['pk']})
         return context
 

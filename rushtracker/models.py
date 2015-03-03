@@ -13,6 +13,7 @@ class Rush(models.Model):
 	email_address = models.EmailField('Email Address', max_length=100, blank=True, null=True)
 	rank = models.IntegerField('Rank', default = 5, blank=True, null=True)
 	dorm = models.CharField('Dorm', max_length=200, blank=True, null=True)
+	picture = models.ImageField(upload_to='profile_picture', blank=True, null=True)
 	organization = models.ForeignKey(Organization)
 	
 	def __str__(self):
