@@ -19,9 +19,12 @@ class CommentListView(LoginRequiredMixin, generic.ListView):
     def get_context_data(self):
         context = super(CommentListView, self).get_context_data()
         context['profile_picture'] = self.rush.picture
-        context['CommentForm'] = CreateCommentForm(initial={'rush': self.kwargs['pk']})
+        context['CommentForm'] = CreateCommentForm(initial={'rush': self.kwargs['pk']}, request=self.request)
         return context
-
+	def get_form_kwargs(self):
+		kwargs = super(CommentListView, self).get_form_kwargs()
+		kwargs['request'] = self.request
+		return kwargs
 class CommentCreationView(LoginRequiredMixin, generic.CreateView):
 	model = Comment
 	def form_invalid(self, form):
@@ -30,8 +33,13 @@ class CommentCreationView(LoginRequiredMixin, generic.CreateView):
 			'errors': dict(form.errors.items()),
 			})
 	def form_valid(self, form):
+		if self.request.user.has_perm('chapter_admin') is False:
+			#this should realistically probably be in the form 
+			form.cleaned_data['user'] = self.request.user
+			#maybe call is valid here again?? 
 		self.object = form.save()
 		return JsonResponse({
+			'success':True,
 			'username': self.object.user.username,
 			'comment': self.object.comment,
 		})

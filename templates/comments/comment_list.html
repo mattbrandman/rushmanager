@@ -2,7 +2,9 @@
 <!-- TODO: remove when we have a base template that imports everything -->
 {% extends "base.html" %}
 {% block content %}
+<div class="col-md-2 col-md-offset-5">
 <img src='{{MEDIA_URL}}{{profile_picture}}'>
+</div>
 <table class="table table-striped table-bordered">
     <tbody>
 
@@ -11,7 +13,7 @@
 
             <tr>
                 <td class="span2">
-                    {{ rush_comment.user.get_full_name }}
+                    {{ rush_comment.user.username}}
                 </td>
                 <td class="span10">
                     {{ rush_comment.comment }}
@@ -52,13 +54,18 @@ $(document).ready(function(){
       },
       success: function(data){
         // Append with fadeIn see http://stackoverflow.com/a/978731
-        var item = $('<tr><td class="span2">' + data.username + '</td><td>' + data.comment + '</td></tr>').hide()
-        $('table > tbody:last').append(item);
-        item.fadeIn("slow");
-        form.trigger('reset');
-        submit.val('Submit Comment').removeAttr('disabled');
-        // todo: if there isnt a $noComment then will js bug out?
-        $noComment.hide();
+        if(data.success == true) {
+          var item = $('<tr><td class="span2">' + data.username + '</td><td>' + data.comment + '</td></tr>').hide()
+          $('table > tbody:last').append(item);
+          item.fadeIn("slow");
+          form.trigger('reset');
+          submit.val('Submit Comment').removeAttr('disabled');
+          // todo: if there isnt a $noComment then will js bug out?
+          $noComment.hide();
+        } else if (data.success == false) {
+          alert ("You are missing a field this is not complete");
+          submit.val('Submit Comment').removeAttr('disabled');
+        }
       },
       error: function(e){
         alert(e);
