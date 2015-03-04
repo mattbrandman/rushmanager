@@ -6,7 +6,10 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from crispy_forms.layout import Layout, Field, ButtonHolder, Submit, Hidden
 from django import forms
+from django.db import models
 from django.core.urlresolvers import reverse
+from base64 import b64decode
+from django.core.files.base import ContentFile
 
 
 class DetailForm(ModelForm):
@@ -25,16 +28,21 @@ class CreateRushForm(forms.ModelForm):
         super(CreateRushForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper['contacted_date'].wrap(Field, css_class="datepicker")
+        self.helper.add_input(Hidden('pic64Value', '', id="pictureBase64"))
         self.helper.add_input(Submit('submit', 'Submit', css_class='btn-primary'))
     def save(self, commit=True):
         if not commit:
             raise NotImplementedError("Can't create User and UserProfile without database save")
         rush = super(CreateRushForm, self).save(commit=False)
         rush.organization = self.request.user.profile.organization
+        print self.request.POST['pic64Value'][22:]
+        image_data = b64decode(self.request.POST['pic64Value'][22:])
+        rush.picture = ContentFile(image_data, "yes")
         rush.save()
+
 
     class Meta:
         model = Rush
-        exclude = ['organization']
+        exclude = ['organization',]
 
 

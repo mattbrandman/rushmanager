@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from organization.models import Organization
 class Rush(models.Model):
-	first_name = models.CharField('First Name', max_length=200, )
+	first_name = models.CharField('First Name', max_length=200, blank=False )
 	last_name = models.CharField('Last Name', max_length=200, blank=True, null=True )
 	primary_contact = models.ForeignKey(User, verbose_name='Brotherhood Contact', limit_choices_to={'is_staff': False}, blank=True, null=True, related_name='primary_contact_set')
 	secondary_contact = models.ForeignKey(User, verbose_name='Secondary Brotherhood Contact', limit_choices_to={'is_staff': False}, blank=True, null=True, related_name='secondary_contact_set')

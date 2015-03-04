@@ -1,12 +1,12 @@
 {% load staticfiles %}
-
+{% block top %}{% endblock %}
+<html>
 <!--This loads in all jquery and jquery ui scripts and css files-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 
 <!--This loads in the bootstrap theme for tablesorter-->
-<link rel = "stylesheet" href="{% static 'rushtracker/tablesorter/css/bootstrap.min.css' %}"/>
 <link rel = "stylesheet" href="{% static 'rushtracker/tablesorter/css/theme.bootstrap.css'%}"/>
 
 <!--This loads in the tablesorter widget and app-->
@@ -52,3 +52,4 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 </body>
+</html>
