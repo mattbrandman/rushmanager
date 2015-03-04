@@ -6,6 +6,7 @@ from django.views import generic
 from braces.views import LoginRequiredMixin
 from django.http import HttpResponse
 from django.http import JsonResponse
+import pdb
 
 
 class CommentListView(LoginRequiredMixin, generic.ListView):
@@ -19,7 +20,7 @@ class CommentListView(LoginRequiredMixin, generic.ListView):
     def get_context_data(self):
         context = super(CommentListView, self).get_context_data()
         context['profile_picture'] = self.rush.picture
-        context['CommentForm'] = CreateCommentForm(initial={'rush': self.kwargs['pk']}, request=self.request)
+        context['CommentForm'] = CreateCommentForm(initial={'rush': self.kwargs['pk'], 'user': self.request.user}, request=self.request)
         return context
 	def get_form_kwargs(self):
 		kwargs = super(CommentListView, self).get_form_kwargs()
@@ -27,13 +28,16 @@ class CommentListView(LoginRequiredMixin, generic.ListView):
 		return kwargs
 class CommentCreationView(LoginRequiredMixin, generic.CreateView):
 	model = Comment
+	form_class = CreateCommentForm
 	def form_invalid(self, form):
 		return JsonResponse({
 			'success':False,
 			'errors': dict(form.errors.items()),
 			})
 	def form_valid(self, form):
+		print "hello"
 		if self.request.user.has_perm('chapter_admin') is False:
+			print "false"
 			#this should realistically probably be in the form 
 			form.cleaned_data['user'] = self.request.user
 			#maybe call is valid here again?? 
@@ -43,3 +47,19 @@ class CommentCreationView(LoginRequiredMixin, generic.CreateView):
 			'username': self.object.user.username,
 			'comment': self.object.comment,
 		})
+	def get_form_kwargs(self):
+		kwargs = super(CommentCreationView, self).get_form_kwargs()
+		kwargs['request'] = self.request
+		return kwargs
+	def post(self, request, *args, **kwargs):
+		request.POST = request.POST.copy()
+		if request.user.has_perm('authentication.chapter_admin') is False:
+			request.POST['user'] = request.user.id
+
+		form = CreateCommentForm(request.POST, request=self.request)
+		if form.is_valid():
+			return self.form_valid(form)
+		else:
+			return self.form_invalid(form)
+	#def post(self, request, *args, **kwargs):
+		

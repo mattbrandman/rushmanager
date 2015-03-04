@@ -17,6 +17,7 @@ class DetailForm(ModelForm):
 
     class Meta:
         model = Rush
+        exclude = ['organization',]
         widgets = {
             'contacted_date': DateInput(attrs={'type': 'date'})}
     helper = FormHelper()
@@ -38,13 +39,12 @@ class CreateRushForm(forms.ModelForm):
         rush.organization = self.request.user.profile.organization
         image_data = b64decode(self.request.POST['pic64Value'][22:])
         image_name = str(uuid.uuid1())
-        print image_name
         rush.picture = ContentFile(image_data, image_name)
         rush.save()
 
 
     class Meta:
         model = Rush
-        exclude = ['organization',]
+        exclude = ['organization', 'picture']
 
 

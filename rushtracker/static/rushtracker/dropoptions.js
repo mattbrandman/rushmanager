@@ -20,7 +20,7 @@ function loadImage(src){
 	reader.readAsDataURL(src);
 }
 
-var MAX_HEIGHT = 100;
+var MAX_HEIGHT = 200;
 function render(src){
 	var image = new Image();
 	image.onload = function(){
