@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+    <h1>{{ rush }}</h1>
+    <div class="col-md-6">
+        {% if rush.picture_link %}
+            <!-- TODO: add max width to the picture -->
+            <img class="rush-detail-img" src="{{ rush.picture_link }}" />
+        {% endif %}
+    </div>
+    <div class="col-md-6">
+        <ul>
+            <h3>INFO</h3>
+            {% if rush.dorm %}<li><b>Dorm: </b>{{ rush.dorm }}</li>{% endif %}
+            {% if rush.primary_contact %}<li><b>Primary Contact: </b>{{ rush.primary_contact.get_full_name }}</li>{% endif %}
+            {% if rush.secondary_contact %}<li><b>Secondary Contact: </b>{{ rush.secondary_contact.get_full_name }}</li>{% endif %}
+            {% if rush.rank %}<li><b>Number System: </b>{{ rush.rank }}</li>{% endif %}
+            {% if rush.phone_number %}<li><b>Phone Number: </b>{{ rush.phone_number }}</li>{% endif %}
+        </ul>
+
+        <ul>
+            <h3>ATTENDANCE ({{ rush_attendance.count }})</h3>
+            {% if rush_attendance %}
+                {% for event in rush_attendance %}
+                   <li>{{ event.date }} | {{ event }}</li>
+                {% endfor %}
+            {% else %}
+                <p>{{ rush }} has not been to any events yet</p>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+
+{% endblock %}

@@ -20,7 +20,7 @@ class CreateEventForm(ModelForm):
             # Field('description', widget='description', required=False),
             Field('date', css_class='datepicker'),
             # TODO: should attendance be part of this create form?
-            # Field('attendance', required=False),
+            Field('attendance', required=False),
             Submit('submit', 'Submit', css_class='btn-primary'))
 
     class Meta:

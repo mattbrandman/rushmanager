@@ -38,3 +38,13 @@ class RushCreateView(LoginRequiredMixin, generic.CreateView):
 		return kwargs
 	def get_success_url(self):
 		return reverse('rushtracker:index')
+
+class RushDetailView(LoginRequiredMixin, generic.DetailView):
+
+	model = Rush
+	context_object_name = 'rush'
+
+	def get_context_data(self, **kwargs):
+	 	 context = super(RushDetailView, self).get_context_data(**kwargs)
+	 	 context['rush_attendance'] = context['rush'].event_set.order_by('date')
+	 	 return context
