@@ -26,6 +26,7 @@ class CommentListView(LoginRequiredMixin, generic.ListView):
 		kwargs = super(CommentListView, self).get_form_kwargs()
 		kwargs['request'] = self.request
 		return kwargs
+        
 class CommentCreationView(LoginRequiredMixin, generic.CreateView):
 	model = Comment
 	form_class = CreateCommentForm

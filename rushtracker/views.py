@@ -6,6 +6,7 @@ from django.core.urlresolvers import reverse
 from django.views import generic
 from rushtracker.forms import DetailForm, CreateRushForm
 from rushtracker.models import  Rush
+from comments.models import Comment
 from authentication.models import UserProfile
 from django.contrib.auth.models import User
 from django.contrib.auth import  authenticate, login
@@ -47,4 +48,9 @@ class RushDetailView(LoginRequiredMixin, generic.DetailView):
 	def get_context_data(self, **kwargs):
 	 	 context = super(RushDetailView, self).get_context_data(**kwargs)
 	 	 context['rush_attendance'] = context['rush'].event_set.order_by('date')
-	 	 return context
+	 	 if context['rush'].comment_set.all():
+		 	context['comments'] = reversed(context['rush'].comment_set.order_by('-created_at')[:5])
+		 else:
+		 	context['comments'] = False
+		 	
+ 	 	 return context

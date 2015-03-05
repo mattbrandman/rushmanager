@@ -10,7 +10,7 @@ from django.db import models
 class Comment(models.Model):
 
     rush = models.ForeignKey(Rush)
-    user = models.ForeignKey(User, limit_choices_to={'is_staff': False })
+    user = models.ForeignKey(User)
     event = models.ForeignKey(Event, blank=True, null=True)
     created_at = models.DateTimeField(auto_now=True)
     comment = models.TextField()

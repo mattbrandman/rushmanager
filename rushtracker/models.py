@@ -4,8 +4,8 @@ from organization.models import Organization
 class Rush(models.Model):
 	first_name = models.CharField('First Name', max_length=200, blank=False )
 	last_name = models.CharField('Last Name', max_length=200, blank=True, null=True )
-	primary_contact = models.ForeignKey(User, verbose_name='Brotherhood Contact', limit_choices_to={'is_staff': False}, blank=True, null=True, related_name='primary_contact_set')
-	secondary_contact = models.ForeignKey(User, verbose_name='Secondary Brotherhood Contact', limit_choices_to={'is_staff': False}, blank=True, null=True, related_name='secondary_contact_set')
+	primary_contact = models.ForeignKey(User, verbose_name='Brotherhood Contact', blank=True, null=True, related_name='primary_contact_set')
+	secondary_contact = models.ForeignKey(User, verbose_name='Secondary Brotherhood Contact', blank=True, null=True, related_name='secondary_contact_set')
 	phone_number = models.CharField('Phone Number', max_length=30, blank=True, null=True)
 	facebook_link = models.CharField('FaceBook Link', max_length = 200, blank=True, null=True)
 	picture_link = models.CharField('Picture Link', max_length = 200, blank=True, null=True)

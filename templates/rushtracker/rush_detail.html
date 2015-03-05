@@ -4,9 +4,9 @@
 <div class="container">
     <h1>{{ rush }}</h1>
     <div class="col-md-6">
-        {% if rush.picture_link %}
+        {% if rush.picture %}
             <!-- TODO: add max width to the picture -->
-            <img class="rush-detail-img" src="{{ rush.picture_link }}" />
+            <img class="rush-detail-img" src='{{ MEDIA_URL }}{{ rush.picture }}' />
         {% endif %}
     </div>
     <div class="col-md-6">
@@ -17,6 +17,7 @@
             {% if rush.secondary_contact %}<li><b>Secondary Contact: </b>{{ rush.secondary_contact.get_full_name }}</li>{% endif %}
             {% if rush.rank %}<li><b>Number System: </b>{{ rush.rank }}</li>{% endif %}
             {% if rush.phone_number %}<li><b>Phone Number: </b>{{ rush.phone_number }}</li>{% endif %}
+
         </ul>
 
         <ul>
@@ -27,6 +28,18 @@
                 {% endfor %}
             {% else %}
                 <p>{{ rush }} has not been to any events yet</p>
+            {% endif %}
+        </ul>
+
+        <ul>
+            <h3>COMMENTS</h3>   
+            {% if comments %}
+                {% for comment in comments %}
+                    <li>{{ comment.comment }}</li>
+                {% endfor %}
+                <a href="{% url 'comments:comments' rush.id %}">See All</a>
+            {% else %}
+                <p>no comments about {{ rush }}, to comment click <a href="{% url 'comments:comments' rush.id %}">Here</a></p>
             {% endif %}
         </ul>
     </div>

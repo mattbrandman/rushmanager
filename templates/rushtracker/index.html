@@ -18,8 +18,8 @@
 		{% for rush in all_rushes %}
 			<tr>
 			<!--Could display comment up/down vote and amount here-->
-				<td><a href="{% url 'comments:comments' rush.id %}" target='_self'>{{rush.first_name}}</a></td>
-                <td><a href="{% url 'comments:comments' rush.id %}" target='_self'>{{ rush.last_name }}</a></td>
+				<td><a href="{% url 'rushtracker:rush_detail' rush.id %}" target='_self'>{{rush.first_name}}</a></td>
+                <td><a href="{% url 'rushtracker:rush_detail' rush.id %}" target='_self'>{{ rush.last_name }}</a></td>
 				<td>{{rush.phone_number}}</td>
 				<td>{% if rush.primary_contact %}{{rush.primary_contact}}{% endif %}</td>
                 <td>{% if rush.facebook_link %}

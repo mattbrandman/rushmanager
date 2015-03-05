@@ -32,6 +32,7 @@ class CreateRushForm(forms.ModelForm):
         self.helper['contacted_date'].wrap(Field, css_class="datepicker")
         self.helper.add_input(Hidden('pic64Value', '', id="pictureBase64"))
         self.helper.add_input(Submit('submit', 'Submit', css_class='btn-primary'))
+        
     def save(self, commit=True):
         if not commit:
             raise NotImplementedError("Can't create User and UserProfile without database save")
