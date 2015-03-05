@@ -6,7 +6,6 @@ from comments.models import Comment
 
 class CreateCommentForm(ModelForm):
     def __init__(self, *args, **kwargs):
-        #self.user = kwargs.pop('user', None)
         self.request = kwargs.pop('request', None)
         super(CreateCommentForm, self).__init__(*args, **kwargs)
         #this can and should be better TODO
