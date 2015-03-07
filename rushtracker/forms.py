@@ -24,8 +24,10 @@ class DetailForm(ModelForm):
     helper.add_input(Submit('submit', 'Update', css_class='btn-primary'))
 
 class CreateRushForm(forms.ModelForm):
-
+    test = models.CharField(max_length=100)
+    test = "hello"
     def __init__(self, *args, **kwargs):
+        print self.test
         self.request = kwargs.pop('request', None)
         super(CreateRushForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
