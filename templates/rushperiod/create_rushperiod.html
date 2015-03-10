@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content%}
+<div class="row">
+	<div class="col-md-12">
+		{% load crispy_forms_tags %}
+		{% crispy form %}
+	</div>
+</div>
+
+<script>
+$(".datepicker").datepicker({});
+</script>
+
+{% endblock %}

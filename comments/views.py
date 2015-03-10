@@ -42,8 +42,7 @@ class CommentCreationView(LoginRequiredMixin, generic.CreateView):
 	def form_valid(self, form):
 		print "hello"
 		if self.request.user.has_perm('chapter_admin') is False:
-			print "false"
-			#this should realistically probably be in the form 
+			#TODO: this should realistically probably be in the form 
 			form.cleaned_data['user'] = self.request.user
 			#maybe call is valid here again?? 
 		self.object = form.save()
@@ -56,15 +55,15 @@ class CommentCreationView(LoginRequiredMixin, generic.CreateView):
 		kwargs = super(CommentCreationView, self).get_form_kwargs()
 		kwargs['request'] = self.request
 		return kwargs
+	#TODO: Make this cleaner/This should probably be done via a false commit using the form then
+	#changing the user field to what we would like it to be 
 	def post(self, request, *args, **kwargs):
 		request.POST = request.POST.copy()
 		if request.user.has_perm('authentication.chapter_admin') is False:
 			request.POST['user'] = request.user.id
-
 		form = CreateCommentForm(request.POST, request=self.request)
 		if form.is_valid():
 			return self.form_valid(form)
 		else:
 			return self.form_invalid(form)
-	#def post(self, request, *args, **kwargs):
 		
