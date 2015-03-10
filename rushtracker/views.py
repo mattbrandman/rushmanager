@@ -11,6 +11,7 @@ from authentication.models import UserProfile
 from django.contrib.auth.models import User
 from django.contrib.auth import  authenticate, login
 from braces.views import LoginRequiredMixin
+from authentication.mixins import CorrectOrganizationMixin
 
 class IndexView(LoginRequiredMixin, generic.ListView):
 	template_name = 'rushtracker/index.html'
@@ -19,7 +20,7 @@ class IndexView(LoginRequiredMixin, generic.ListView):
 	def get_queryset(self):
 		return Rush.objects.filter(organization = self.request.user.profile.organization)
 
-class UpdateView(LoginRequiredMixin, generic.UpdateView):
+class UpdateView(LoginRequiredMixin, CorrectOrganizationMixin, generic.UpdateView):
 	#model is used for indicate what to pass to the detail view
 	#that it can use to pull data
 	template_name = 'rushtracker/update.html'
