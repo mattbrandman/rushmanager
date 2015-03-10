@@ -24,11 +24,13 @@ class UpdateView(LoginRequiredMixin, CorrectOrganizationMixin, generic.UpdateVie
 	#model is used for indicate what to pass to the detail view
 	#that it can use to pull data
 	template_name = 'rushtracker/update.html'
-	model = Rush
 	form_class = DetailForm
-
+	model = Rush
 	def get_success_url(self):
 		return reverse('rushtracker:index')
+	def dispatch(self, request, *args, **kwargs):
+		self.organization = get_object_or_404(Rush, pk=kwargs['pk']).organization
+		return super(UpdateView, self).dispatch(request, *args, **kwargs)
 
 class RushCreateView(LoginRequiredMixin, generic.CreateView):
 	template_name = 'rushtracker/create_rush.html'
