@@ -14,7 +14,7 @@ class CommentListView(LoginRequiredMixin, CorrectOrganizationMixin, generic.List
     template_name = 'comments/comment_list.html'
     context_object_name = 'rush_comments'
     def dispatch(self, request, *args, **kwargs):
-		self.organization = get_object_or_404(Rush, kwargs['pk']).organization
+		self.organization = get_object_or_404(Rush, pk=kwargs['pk']).organization
 		return super(CommentListView, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
