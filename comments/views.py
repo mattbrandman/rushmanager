@@ -6,12 +6,16 @@ from django.views import generic
 from braces.views import LoginRequiredMixin
 from django.http import HttpResponse
 from django.http import JsonResponse
+from authentication.mixins import CorrectOrganizationMixin
 import pdb
 
 
-class CommentListView(LoginRequiredMixin, generic.ListView):
+class CommentListView(LoginRequiredMixin, CorrectOrganizationMixin  generic.ListView):
     template_name = 'comments/comment_list.html'
     context_object_name = 'rush_comments'
+	def dispatch(self, request, *args, **kwargs):
+		self.organization = get_object_or_404(Rush, kwargs['pk']).organization
+		return super(CommentListView, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         self.rush = get_object_or_404(Rush, pk=self.kwargs['pk'])
