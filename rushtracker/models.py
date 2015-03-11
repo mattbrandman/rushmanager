@@ -2,6 +2,14 @@ from django.db import models
 from django.contrib.auth.models import User
 from organization.models import Organization
 from rushperiod.models import RushPeriod
+
+class Base(models.Model):
+	rush_period = models.ManyToManyField(RushPeriod)
+	organization = models.ForeignKey(Organization)
+	class Meta:
+		abstract = True
+
+
 class Rush(Base):
 	first_name = models.CharField('First Name', max_length=200, blank=False )
 	last_name = models.CharField('Last Name', max_length=200, blank=True, null=True )
@@ -17,9 +25,3 @@ class Rush(Base):
 	
 	def __str__(self):
 		return self.first_name + " " + self.last_name
-
-class Base(models.Model):
-	rush_period = models.ManyToManyField(RushPeriod)
-	organization = models.ForeignKey(Organization)
-	class Meta:
-		abstract = True

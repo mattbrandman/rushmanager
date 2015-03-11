@@ -1,13 +1,13 @@
 from rushtracker.models import Rush
 from comments.models import Comment
-from comments.forms import CreateCommentForm
+from comments.forms import CreateCommentForm, CreateCommentFormAdmin
 from django.shortcuts import get_object_or_404
 from django.views import generic
 from braces.views import LoginRequiredMixin
 from django.http import HttpResponse
 from django.http import JsonResponse
 from authentication.mixins import CorrectOrganizationMixin
-import pdb
+from django.forms.models import modelform_factory
 
 
 class CommentListView(LoginRequiredMixin, CorrectOrganizationMixin, generic.ListView):
@@ -24,8 +24,12 @@ class CommentListView(LoginRequiredMixin, CorrectOrganizationMixin, generic.List
     def get_context_data(self):
         context = super(CommentListView, self).get_context_data()
         context['profile_picture'] = self.rush.picture
-        context['CommentForm'] = CreateCommentForm(initial={'rush': self.kwargs['pk'], 'user': self.request.user}, request=self.request)
+        if not self.request.user.has_perm('authentication.chapter_admin'):
+        	context['CommentForm'] = CreateCommentForm(initial={'rush': self.kwargs['pk']}, request=self.request)
+        else: 
+        	context['CommentForm'] = CreateCommentFormAdmin(initial={'rush': self.kwargs['pk']}, request=self.request)
         return context
+
 	def get_form_kwargs(self):
 		kwargs = super(CommentListView, self).get_form_kwargs()
 		kwargs['request'] = self.request
@@ -40,7 +44,6 @@ class CommentCreationView(LoginRequiredMixin, generic.CreateView):
 			'errors': dict(form.errors.items()),
 			})
 	def form_valid(self, form):
-		print "hello"
 		if self.request.user.has_perm('chapter_admin') is False:
 			#TODO: this should realistically probably be in the form 
 			form.cleaned_data['user'] = self.request.user
@@ -55,15 +58,3 @@ class CommentCreationView(LoginRequiredMixin, generic.CreateView):
 		kwargs = super(CommentCreationView, self).get_form_kwargs()
 		kwargs['request'] = self.request
 		return kwargs
-	#TODO: Make this cleaner/This should probably be done via a false commit using the form then
-	#changing the user field to what we would like it to be 
-	def post(self, request, *args, **kwargs):
-		request.POST = request.POST.copy()
-		if request.user.has_perm('authentication.chapter_admin') is False:
-			request.POST['user'] = request.user.id
-		form = CreateCommentForm(request.POST, request=self.request)
-		if form.is_valid():
-			return self.form_valid(form)
-		else:
-			return self.form_invalid(form)
-		

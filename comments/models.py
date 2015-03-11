@@ -3,11 +3,11 @@ import datetime
 from django.contrib.auth.models import User
 from django.utils import timezone
 from events.models import Event
-from rushtracker.models import Rush
+from rushtracker.models import Rush, Base
 
 from django.db import models
 
-class Comment(models.Model):
+class Comment(Base):
 
     rush = models.ForeignKey(Rush)
     user = models.ForeignKey(User)
