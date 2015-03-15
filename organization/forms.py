@@ -15,4 +15,4 @@ class CreateOrganizationForm(forms.ModelForm):
 
 	class Meta:
 		model = Organization
-		fields = ('owner', 'national_organization', 'chapter_name')
+		fields = ('owner', 'national_organization', 'chapter_name') 

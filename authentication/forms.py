@@ -48,12 +48,14 @@ class ChapterAdminForm(UserCreationForm):
         user_profile = UserProfile(user=user, organization=my_org)
         user_profile.save()
         return user
+
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         exclude = ('',)
     helper = FormHelper()
     helper.add_input(Submit('submit', 'Submit', css_class='btn-primary'))
+    
 class SingleUserCreationForm(UserCreationForm):
     helper = FormHelper()
     helper.attrs = {'id': 'form1'}
