@@ -118,7 +118,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
 
 
 AWS_STORAGE_BUCKET_NAME = 'rushmanagerbucket'
