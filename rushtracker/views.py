@@ -21,8 +21,6 @@ class IndexView(LoginRequiredMixin, generic.ListView):
 		return Rush.objects.filter(organization = self.request.user.profile.organization)
 
 class UpdateView(LoginRequiredMixin, CorrectOrganizationMixin, generic.UpdateView):
-	#model is used for indicate what to pass to the detail view
-	#that it can use to pull data
 	template_name = 'rushtracker/update.html'
 	form_class = DetailForm
 	model = Rush

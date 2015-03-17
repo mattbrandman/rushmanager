@@ -1,5 +1,32 @@
 {% extends "base.html" %}
 {% block content %}
-	{{organization.chapter_name}}
-	{{organization.owner}}
+<div class = 'container'>
+		<div class = 'row'>
+			<div class = "col-md-4 col-md-offset-4">
+				<H1>Fraternity: {{organization.chapter_name}}</H1>
+			</div>
+		</div>
+		<div class = "row">
+			<div class = "col-md-4 col-md-offset-4">
+				<H1>Chapter: {{organization.national_organization}}</H1>
+			</div>
+		</div>
+		{% load crispy_forms_tags %}
+    	{% crispy RushPeriodForm %}
+</div>
+
+<script>
+$('#submit-id-submit').click(function() {
+        $.ajax({
+            type:'POST',
+            url:'/organization/update/',
+            data: $('form').serialize(),
+            dataType:'json',
+            success: function(data) {
+             
+            }
+        });
+        return false;
+    });
+</script>
 {% endblock %}

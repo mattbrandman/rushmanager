@@ -16,3 +16,12 @@ class CreateOrganizationForm(forms.ModelForm):
 	class Meta:
 		model = Organization
 		fields = ('owner', 'national_organization', 'chapter_name') 
+
+class UpdateActiveRushPeriodForm(forms.ModelForm):
+	def __init__(self, *args, **kwargs):
+		super(UpdateActiveRushPeriodForm, self).__init__(*args, **kwargs)
+		self.helper = FormHelper(self)
+		self.helper.add_input(Submit('submit', 'Update', css_class='btn-primary'))
+	class Meta:
+		model=Organization
+		fields = ('active_rush_period',)
