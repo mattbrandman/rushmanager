@@ -37,6 +37,7 @@ class CommentListView(LoginRequiredMixin, CorrectOrganizationMixin, generic.List
         
 class CommentCreationView(LoginRequiredMixin, generic.CreateView):
 	model = Comment
+	#FOR ERRORS CHECK THIS LINE
 	form_class = CreateCommentForm
 	def form_invalid(self, form):
 		return JsonResponse({
