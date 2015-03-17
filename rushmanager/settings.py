@@ -118,7 +118,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
-STATIC_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
 
 
 AWS_STORAGE_BUCKET_NAME = 'rushmanagerbucket'
@@ -148,3 +147,6 @@ STATICFILES_LOCATION = 'static'
 MEDIAFILES_LOCATION = 'media'
 MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
 DEFAULT_FILE_STORAGE = 'rushmanager.custom_storages.MediaStorage'
+STATIC_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
+
+
