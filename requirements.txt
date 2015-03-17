@@ -3,7 +3,6 @@ Django==1.7.4
 django-braces==1.4.0
 django-crispy-forms==1.4.0
 django-extensions==1.5.0
-django-storages==1.1.8
 django-tables2==0.15.0
 django-tenant-schemas==1.5.2
 Pillow==2.7.0
@@ -12,3 +11,4 @@ six==1.9.0
 Werkzeug==0.10.1
 gunicorn==19.0.0
 dj-database-url==0.3.0
+-e git+git://github.com/jschneier/django-storages#egg=django_storages

@@ -53,6 +53,7 @@ INSTALLED_APPS = (
     'storages',
     'authentication',
     'organization',
+    
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
