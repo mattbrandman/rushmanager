@@ -7,7 +7,6 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('rushtracker', '0005_auto_20150223_1742'),
     ]
 
     operations = [
@@ -16,9 +15,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('title', models.CharField(max_length=200, verbose_name=b'Event Title')),
-                ('description', models.CharField(max_length=2000)),
+                ('description', models.CharField(max_length=2000, null=True, blank=True)),
                 ('date', models.DateField(verbose_name=b'Event Date')),
-                ('attendance', models.ManyToManyField(to='rushtracker.Rush')),
             ],
             options={
             },

@@ -7,15 +7,15 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('rushperiod', '0001_initial'),
-        ('authentication', '0006_auto_20150302_0943'),
+        ('events', '0001_initial'),
+        ('comments', '0001_initial'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='userprofile',
-            name='rush_period',
-            field=models.ManyToManyField(to='rushperiod.RushPeriod'),
+            model_name='comment',
+            name='event',
+            field=models.ForeignKey(blank=True, to='events.Event', null=True),
             preserve_default=True,
         ),
     ]

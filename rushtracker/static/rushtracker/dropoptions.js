@@ -4,7 +4,6 @@ target.addEventListener("drop", function(e){
 	e.preventDefault(); 
 	loadImage(e.dataTransfer.files[0]);
 }, true);
-
 function loadImage(src){
 	//	Prevent any non-image file type from being read.
 	if(!src.type.match(/image.*/)){
@@ -23,6 +22,7 @@ function loadImage(src){
 var MAX_HEIGHT = 200;
 function render(src){
 	var image = new Image();
+	image.src = src;
 	image.onload = function(){
 		var canvas = document.getElementById("myCanvas");
 		if(image.height > MAX_HEIGHT) {
@@ -36,5 +36,4 @@ function render(src){
 		ctx.drawImage(image, 0, 0, image.width, image.height);
 		document.getElementById("pictureBase64").value = document.getElementById("myCanvas").toDataURL("image/jpg")
 	};
-	image.src = src;
 }

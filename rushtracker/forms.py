@@ -1,4 +1,4 @@
-from django.forms import ModelForm, DateInput, PasswordInput
+from django.forms import ModelForm, DateInput, PasswordInput, widgets
 from rushtracker.models import Rush
 from crispy_forms.helper import FormHelper
 from authentication.models import UserProfile
@@ -46,5 +46,6 @@ class CreateRushForm(forms.ModelForm):
     class Meta:
         model = Rush
         exclude = ['organization', 'picture']
+
 
 

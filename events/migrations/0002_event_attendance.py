@@ -7,14 +7,15 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('rushtracker', '0001_initial'),
         ('events', '0001_initial'),
     ]
 
     operations = [
-        migrations.AlterField(
+        migrations.AddField(
             model_name='event',
-            name='description',
-            field=models.CharField(max_length=2000, null=True, blank=True),
+            name='attendance',
+            field=models.ManyToManyField(to='rushtracker.Rush', null=True, blank=True),
             preserve_default=True,
         ),
     ]
