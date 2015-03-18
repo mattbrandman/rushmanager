@@ -37,7 +37,6 @@ class CreateRushForm(forms.ModelForm):
         rush = super(CreateRushForm, self).save(commit=False)
         rush.organization = self.request.user.profile.organization
         image_data = self.request.FILES['file']
-        print image_data.size
         image_name = str(uuid.uuid1())
         rush.picture = File(file=image_data, name=image_name)
         rush.save()
@@ -45,7 +44,7 @@ class CreateRushForm(forms.ModelForm):
 
     class Meta:
         model = Rush
-        exclude = ['organization', 'photo']
+        exclude = ['organization', 'picture']
 
 
 

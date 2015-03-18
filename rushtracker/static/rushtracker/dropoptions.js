@@ -23,7 +23,7 @@ $(document).ready(function(){
 			data: formdata,
 
 			success:function(data) {
-				alert('hi');
+				alert('Uploaded!');
 			},
 		});
 	});
