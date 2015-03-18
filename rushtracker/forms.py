@@ -9,7 +9,7 @@ from django import forms
 from django.db import models
 from django.core.urlresolvers import reverse
 from base64 import b64decode
-from django.core.files.base import ContentFile
+from django.core.files.base import ContentFile, File
 import uuid
 
 
@@ -29,7 +29,6 @@ class CreateRushForm(forms.ModelForm):
         super(CreateRushForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper['contacted_date'].wrap(Field, css_class="datepicker")
-        self.helper.add_input(Hidden('pic64Value', '', id="pictureBase64"))
         self.helper.add_input(Submit('submit', 'Submit', css_class='btn-primary'))
         
     def save(self, commit=True):
@@ -37,15 +36,16 @@ class CreateRushForm(forms.ModelForm):
             raise NotImplementedError("Can't create User and UserProfile without database save")
         rush = super(CreateRushForm, self).save(commit=False)
         rush.organization = self.request.user.profile.organization
-        image_data = b64decode(self.request.POST['pic64Value'][22:])
+        image_data = self.request.FILES['file']
+        print image_data.size
         image_name = str(uuid.uuid1())
-        rush.picture = ContentFile(image_data, image_name)
+        rush.picture = File(file=image_data, name=image_name)
         rush.save()
 
 
     class Meta:
         model = Rush
-        exclude = ['organization', 'picture']
+        exclude = ['organization', 'photo']
 
 
 
