@@ -37,24 +37,30 @@ class CommentListView(LoginRequiredMixin, CorrectOrganizationMixin, generic.List
         
 class CommentCreationView(LoginRequiredMixin, generic.CreateView):
 	model = Comment
-	#FOR ERRORS CHECK THIS LINE
 	form_class = CreateCommentForm
+
+	#gives correct form based on user permission
+	def get_form_class(self):
+		if self.request.user.has_perm('authentication.chapter_admin'):
+			print "here"
+			return CreateCommentFormAdmin
+		else:
+			return CreateCommentForm
+			
 	def form_invalid(self, form):
 		return JsonResponse({
 			'success':False,
 			'errors': dict(form.errors.items()),
 			})
+
 	def form_valid(self, form):
-		if self.request.user.has_perm('chapter_admin') is False:
-			#TODO: this should realistically probably be in the form 
-			form.cleaned_data['user'] = self.request.user
-			#maybe call is valid here again?? 
 		self.object = form.save()
 		return JsonResponse({
 			'success':True,
 			'username': self.object.user.username,
 			'comment': self.object.comment,
 		})
+
 	def get_form_kwargs(self):
 		kwargs = super(CommentCreationView, self).get_form_kwargs()
 		kwargs['request'] = self.request

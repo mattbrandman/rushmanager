@@ -4,16 +4,20 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from events.models import Event
 from rushtracker.models import Rush, Base
+from rushperiod.models import RushPeriod
+from organization.models import Organization
 
 from django.db import models
 
-class Comment(Base):
+class Comment(models.Model):
 
     rush = models.ForeignKey(Rush)
     user = models.ForeignKey(User)
     event = models.ForeignKey(Event, blank=True, null=True)
     created_at = models.DateTimeField(auto_now=True)
     comment = models.TextField()
+    organization = models.ForeignKey(Organization)
+    rush_period = models.ForeignKey(RushPeriod)
 
 
     # TODO: I want to be able to have the option of having a positve or negative comment.
