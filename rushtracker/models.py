@@ -3,14 +3,8 @@ from django.contrib.auth.models import User
 from organization.models import Organization
 from rushperiod.models import RushPeriod
 
-class Base(models.Model):
-	rush_period = models.ManyToManyField(RushPeriod)
-	organization = models.ForeignKey(Organization)
-	class Meta:
-		abstract = True
 
-
-class Rush(Base):
+class Rush(models.Model):
 	first_name = models.CharField('First Name', max_length=200, blank=False )
 	last_name = models.CharField('Last Name', max_length=200, blank=True, null=True )
 	primary_contact = models.ForeignKey(User, verbose_name='Brotherhood Contact', blank=True, null=True, related_name='primary_contact_set')
@@ -22,6 +16,8 @@ class Rush(Base):
 	rank = models.IntegerField('Rank', default = 5, blank=True, null=True)
 	dorm = models.CharField('Dorm', max_length=200, blank=True, null=True)
 	picture = models.ImageField(upload_to='profile_picture', blank=True, null=True)
+	rush_period = models.ManyToManyField(RushPeriod)
+	organization = models.ForeignKey(Organization)
 	
 	def __str__(self):
 		return self.first_name + " " + self.last_name

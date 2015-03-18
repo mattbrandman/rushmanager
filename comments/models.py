@@ -3,7 +3,7 @@ import datetime
 from django.contrib.auth.models import User
 from django.utils import timezone
 from events.models import Event
-from rushtracker.models import Rush, Base
+from rushtracker.models import Rush
 from rushperiod.models import RushPeriod
 from organization.models import Organization
 

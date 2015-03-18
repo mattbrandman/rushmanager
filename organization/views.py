@@ -24,6 +24,7 @@ class OrganizationOverview(generic.DetailView):
 	def get_context_data(self, **kwargs):
 		context = super(OrganizationOverview, self).get_context_data(**kwargs)
 		context['RushPeriodForm'] = UpdateActiveRushPeriodForm(initial={'active_rush_period': self.request.user.profile.organization.active_rush_period})
+		context['RushPeriodForm'].fields['active_rush_period'].queryset = RushPeriod.objects.filter(organization = self.request.user.profile.organization)
 		return context
 class SetActiveRushPeriod(CorrectOrganizationMixin, generic.UpdateView):
 	model = Organization

@@ -41,12 +41,19 @@
       <ul class="nav navbar-nav">
         <li class={% if "rushtracker" in request.path %} "active"{% endif %}><a href="/rushtracker/">Rush View</a></li>
         <li class={% if "events" in request.path %} "active"{% endif %}><a href="/events/new">Events <span class="sr-only">(current)</span></a></li>
+
         {% if perms.authentication.chapter_admin %}
           <li class={% if "chaptermanagement" in request.path %} "active"{% endif %}><a href="/chaptermanagement/">Chapter Management <span class="sr-only">(current)</span></a></li>
         {% endif %}
+
         {% if perms.authentication.chapter_admin %}
           <li class={% if "rushperiod" in request.path %} "active"{% endif %}><a href="/rushperiod/"> Rush Period <span class="sr-only">(current)</span></a></li>
         {% endif %}
+
+        {% if perms.authentication.chapter_admin %}
+          <li class={% if "organization" in request.path %} "active"{% endif %}><a href="/organization/"> Organization <span class="sr-only">(current)</span></a></li>
+        {% endif %}
+
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %} 

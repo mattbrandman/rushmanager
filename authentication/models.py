@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from organization.models import Organization
 from django.contrib.auth.models import Permission
-from rushtracker.models import Base
 
 
 class UserProfile(models.Model):
