@@ -18,4 +18,7 @@ class CreateRushPeriodForm(UserKwargModelFormMixin, forms.ModelForm):
 			raise NotImplementedError("Can't create Rush Period without database save")
 		my_rush_period = super(CreateRushPeriodForm, self).save(commit=False)
 		my_rush_period.organization = self.user.profile.organization
+		organization = my_rush_period.organization
 		my_rush_period.save()
+		organization.active_rush_period = my_rush_period
+		organization.save()
