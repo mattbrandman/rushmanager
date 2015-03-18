@@ -37,7 +37,6 @@ class CommentListView(LoginRequiredMixin, CorrectOrganizationMixin, generic.List
         
 class CommentCreationView(LoginRequiredMixin, generic.CreateView):
 	model = Comment
-	form_class = CreateCommentForm
 
 	#gives correct form based on user permission
 	def get_form_class(self):
@@ -46,7 +45,7 @@ class CommentCreationView(LoginRequiredMixin, generic.CreateView):
 			return CreateCommentFormAdmin
 		else:
 			return CreateCommentForm
-			
+
 	def form_invalid(self, form):
 		return JsonResponse({
 			'success':False,
