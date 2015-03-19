@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+	</div>
+<div class= "container-fluid">
+<div class = "row">
+		<table class = "table">
+			<thead>
+				<tr>
+					<th>Title</th>
+                    <th>Date</th>
+				</tr>
+			</thead>
+			<tbody>
+		{% for event in events %}
+			<tr>
+				<td>{{ event.title }}</td>
+
+                <td>{{ event.date }}</td>
+                
+			</tr>
+		{% endfor %}
+			</tbody>
+		</table>
+</div>
+</div>
+{% endblock %}

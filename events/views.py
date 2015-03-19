@@ -15,4 +15,9 @@ class EventCreateView(LoginRequiredMixin, generic.CreateView):
 		return kwargs
     def get_success_url(self):
         return reverse('rushtracker:index')
-        
+
+class EventIndexView(LoginRequiredMixin, generic.ListView):
+	template_name = 'events/all_events.html'
+	context_object_name = 'events'
+	def get_queryset(self):
+		return Event.objects.filter(organization=self.request.user.profile.organization)

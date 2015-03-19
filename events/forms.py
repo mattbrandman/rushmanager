@@ -22,9 +22,14 @@ class CreateEventForm(ModelForm):
             # TODO: should attendance be part of this create form?
             Field('attendance', required=False),
             Submit('submit', 'Submit', css_class='btn-primary'))
-
+    def save(self):
+        event = super(CreateEventForm, self).save(commit=False)
+        event.organization = self.request.user.profile.organization
+        event.save()
+        return event
     class Meta:
         model = Event
+        exclude = ['organization']
 
         widgets = {
           'description': Textarea(attrs={'rows':4, 'cols':1}),
