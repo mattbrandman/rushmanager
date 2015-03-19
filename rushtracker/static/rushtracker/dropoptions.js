@@ -26,14 +26,15 @@ function render(src){
 	image.onload = function(){
 		var canvas = document.getElementById("myCanvas");
 		if(image.height > MAX_HEIGHT) {
-			image.width  *= MAX_HEIGHT / image.height;
+			//why does this scaling work again (i just want to know the math)
+			image.width *= MAX_HEIGHT/image.height;
 			image.height = MAX_HEIGHT;
 		}
 		var ctx = canvas.getContext("2d");
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
-		canvas.width = image.width;
+		canvas.width  = image.width;
 		canvas.height = image.height;
 		ctx.drawImage(image, 0, 0, image.width, image.height);
-		document.getElementById("pictureBase64").value = document.getElementById("myCanvas").toDataURL("image/jpg")
+		document.getElementById("pictureBase64").value = document.getElementById("myCanvas").toDataURL("image/png")
 	};
 }
