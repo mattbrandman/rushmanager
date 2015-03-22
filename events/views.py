@@ -3,6 +3,7 @@ from braces.views import LoginRequiredMixin
 from django.core.urlresolvers import reverse
 from django.views import generic
 from events.forms import CreateEventForm
+from rushtracker.models import Rush
 
 class EventCreateView(LoginRequiredMixin, generic.CreateView):
     template_name = 'events/create_event.html'
@@ -21,3 +22,9 @@ class EventIndexView(LoginRequiredMixin, generic.ListView):
 	context_object_name = 'events'
 	def get_queryset(self):
 		return Event.objects.filter(organization=self.request.user.profile.organization)
+
+class EventAttendanceView(LoginRequiredMixin, generic.ListView):
+	template_name = 'events/take_attendance.html'
+	context_object_name = 'rushes'
+	def get_queryset(self):
+		return Rush.objects.filter(organization=self.request.user.profile.organization)
