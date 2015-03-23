@@ -5,13 +5,18 @@
 	<div class = "row">
 	{% for rush in rushes %}
 	{% if forloop.counter|divisibleby:"5"%}
-		</div>
-		<div class="row">
-	{% endif %}
-	<div class="col-md-3">
-		<button class = "btn btn-default btn-block">{{rush.first_name}}</button>
 	</div>
+	<div class="row">
+	{% endif %}
+		<div class="col-md-3">
+			<button class = "btn btn-default" value = "{{rush.id}}">{{rush.first_name}}</button>
+		</div>
 	{% endfor %}
 	</div>
 </div>
 {% endblock %}
+<script>
+$('button').click(function() {
+
+})
+</script>
