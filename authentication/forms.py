@@ -58,10 +58,9 @@ class UserProfileForm(forms.ModelForm):
     
 class SingleUserCreationForm(UserCreationForm):
     helper = FormHelper()
-    helper.attrs = {'id': 'form1'}
     helper.form_action = '/authentication/createSingleUser'
     class Meta:
-        model = User
+        model = settings.AUTH_USER_MODEL
         fields = ('first_name', 'last_name', 'username', 
             'email', 'password1', 'password2')
     def __init__(self, *args, **kwargs):
