@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 import uuid
 
 class Organization(models.Model):
-	owner = models.ForeignKey(settings.AUTH_USER_MODEL)
 	national_organization = models.CharField(max_length=500)
 	chapter_name = models.CharField(max_length=500)
 	#lazy import to prevent circular imports

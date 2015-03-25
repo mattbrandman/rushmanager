@@ -1,7 +1,20 @@
 {% extends "base.html" %}
+{%load staticfiles %}
 {% block content%}
-
+<script src ="{% static 'rushtracker/dropoptions.js' %}"></script>
 <div class="container">
+	<div class = "row">
+		<div class="col-md-4 col-md-offset-4">
+			<label>Profile Picture, Drag File Here To Add</label>
+		</div>
+	</div>
+	<div class ="row" id="drop-target">
+		<div class="col-md-4 col-md-offset-4">
+		<!--TODO: stop the little resizing bootstrap does it looks bad also toy with image size and offset and
+		shrink/enlarge and center canvas-->
+			<canvas width = 200 height=200 id="myCanvas" style="border: 1px solid black;"></canvas>
+		</div>
+	</div>
 	<div class="row">
 		<div class="col-md-12">
 		{% load crispy_forms_tags %}
@@ -9,4 +22,12 @@
 		</div>
 	</div>
 </div>
+<input type="hidden" value="{{rush.picture.url}}" id="currentPicture"></input>
+
+<script>
+	$(function() {
+		render($("#currentPicture").val(), true);
+	});
+</script>
+
 {% endblock %}

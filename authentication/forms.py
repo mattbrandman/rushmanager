@@ -54,22 +54,22 @@ class ChapterAdminForm(ModelForm):
     def save(self, commit=True):
             if not commit:
                 raise NotImplementedError("Can't create User and UserProfile without database save")
+            data = {
+                'national_organization' : self.cleaned_data['fraternity'], 
+                'chapter_name' : self.cleaned_data['chapter']
+            }
+            self.organization = CreateOrganizationForm(data)
+            self.organization = self.organization.save()
             user = super(ChapterAdminForm, self).save(commit=False)
             if self.cleaned_data['name']:
                 first_last = self.cleaned_data['name'].split(" ")
                 user.first_name = first_last[0]
                 user.last_name = first_last [1]
             user.set_password(self.cleaned_data["password1"])
+            user.organization = self.organization
             user.save()
             user.user_permissions.add(Permission.objects.get(codename='chapter_admin'),)
-            data = {
-                'owner' : user.id,
-                'national_organization' : self.cleaned_data['fraternity'], 
-                'chapter_name' : self.cleaned_data['chapter']
-            }
-            organization = CreateOrganizationForm(data)
-            my_org = organization.save()
-            user_profile = UserProfile(user=user, organization=my_org)
+            user_profile = UserProfile(user=user)
             user_profile.save()
             return user
 
@@ -99,7 +99,7 @@ class SingleUserCreationForm(UserCreationForm):
         if not commit:
             raise NotImplementedError("Can't create User and UserProfile without database save")
         user = super(SingleUserCreationForm, self).save(commit=True)
-        organization = self.request.user.profile.organization
+        organization = self.request.user.organization
         user_profile = UserProfile(user=user, organization=organization)
         user_profile.save()
         return user

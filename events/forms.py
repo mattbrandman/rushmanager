@@ -24,7 +24,7 @@ class CreateEventForm(ModelForm):
             Submit('submit', 'Submit', css_class='btn-primary'))
     def save(self):
         event = super(CreateEventForm, self).save(commit=False)
-        event.organization = self.request.user.profile.organization
+        event.organization = self.request.user.organization
         event.save()
         return event
     class Meta:

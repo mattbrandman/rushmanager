@@ -11,7 +11,7 @@ class IndexView(LoginRequiredMixin, PermissionRequiredMixin, generic.ListView):
 	permission_required = "authentication.chapter_admin"
 
 	def get_queryset(self):
-		qs = User.objects.filter(Q(profile__organization = self.request.user.profile.organization) | Q(is_staff=False))
+		qs = User.objects.filter(Q(profile__organization = self.request.user.organization) | Q(is_staff=False))
 		return qs
 		
 	def get_context_data(self, **kwargs):

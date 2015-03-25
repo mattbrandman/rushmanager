@@ -34,8 +34,8 @@ class CreateCommentForm(ModelForm):
     def save(self, commit=True):
         comment = super(CreateCommentForm, self).save(commit=False)
         comment.user = self.request.user
-        comment.rush_period = self.request.user.profile.organization.active_rush_period
-        comment.organization = self.request.user.profile.organization
+        comment.rush_period = self.request.user.organization.active_rush_period
+        comment.organization = self.request.user.organization
         comment.save()
         return comment
 
@@ -72,8 +72,8 @@ class CreateCommentFormAdmin(ModelForm):
         exclude = ['rush_period',]
     def save(self, commit=True):
         comment = super(CreateCommentFormAdmin, self).save(commit=False)
-        comment.organization = self.request.user.profile.organization
-        comment.rush_period = self.request.user.profile.organization.active_rush_period
+        comment.organization = self.request.user.organization
+        comment.rush_period = self.request.user.organization.active_rush_period
         #comment is updated with correct key and everything!
         comment.save()
         return comment

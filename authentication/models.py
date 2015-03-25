@@ -35,6 +35,7 @@ class BrotherUser(AbstractBaseUser, PermissionsMixin):
 	last_name = models.CharField(max_length=30)
 	date_created = models.DateTimeField(default=timezone.now, blank=True)
 	is_active = models.BooleanField(default=True)
+	organization = models.ForeignKey('organization.Organization')
 	USERNAME_FIELD = 'email'
 	REQUIRED_FIELDS = []
 	objects = BrotherUserManager()
@@ -46,7 +47,7 @@ class BrotherUser(AbstractBaseUser, PermissionsMixin):
 
 class UserProfile(models.Model):
 	user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name="profile")
-	organization = models.ForeignKey('organization.Organization')
+
 	class Meta:
 		permissions = (
 			("chapter_admin", "Can access chapter admin page"),

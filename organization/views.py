@@ -19,12 +19,12 @@ class OrganizationOverview(generic.DetailView):
 	context_object_name='organization'
 	model = Organization
 	def get_object(self):
-		return self.request.user.profile.organization
+		return self.request.user.organization
 
 	def get_context_data(self, **kwargs):
 		context = super(OrganizationOverview, self).get_context_data(**kwargs)
-		context['RushPeriodForm'] = UpdateActiveRushPeriodForm(initial={'active_rush_period': self.request.user.profile.organization.active_rush_period})
-		context['RushPeriodForm'].fields['active_rush_period'].queryset = RushPeriod.objects.filter(organization = self.request.user.profile.organization)
+		context['RushPeriodForm'] = UpdateActiveRushPeriodForm(initial={'active_rush_period': self.request.user.organization.active_rush_period})
+		context['RushPeriodForm'].fields['active_rush_period'].queryset = RushPeriod.objects.filter(organization = self.request.user.organization)
 		return context
 class SetActiveRushPeriod(CorrectOrganizationMixin, generic.UpdateView):
 	model = Organization
@@ -34,7 +34,7 @@ class SetActiveRushPeriod(CorrectOrganizationMixin, generic.UpdateView):
 		return super(SetActiveRushPeriod, self).dispatch(request, *args, **kwargs)
 
 	def get_object(self):
-		return self.request.user.profile.organization
+		return self.request.user.organization
 
 	def form_valid(self, form):
 		print "yes"

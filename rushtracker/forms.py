@@ -13,15 +13,18 @@ from django.core.files.base import ContentFile
 import uuid
 
 
-class DetailForm(ModelForm):
+class UpdateForm(ModelForm):
 
     class Meta:
         model = Rush
         exclude = ['organization',]
         widgets = {
             'contacted_date': DateInput(attrs={'type': 'date'})}
-    helper = FormHelper()
-    helper.add_input(Submit('submit', 'Update', css_class='btn-primary'))
+    def __init__(self, *args, **kwargs):
+        super(UpdateForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.add_input(Hidden('pic64Value', '', id="pictureBase64"))
+        self.helper.add_input(Submit('submit', 'Update', css_class='btn-primary'))
 
 class CreateRushForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -36,7 +39,7 @@ class CreateRushForm(forms.ModelForm):
         if not commit:
             raise NotImplementedError("Can't create User and UserProfile without database save")
         rush = super(CreateRushForm, self).save(commit=False)
-        rush.organization = self.request.user.profile.organization
+        rush.organization = self.request.user.organization
         image_data = b64decode(self.request.POST['pic64Value'][22:])
         image_name = str(uuid.uuid1())
         rush.picture = ContentFile(image_data, image_name)

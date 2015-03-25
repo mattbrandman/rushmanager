@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.views import generic
-from rushtracker.forms import DetailForm, CreateRushForm
+from rushtracker.forms import UpdateForm, CreateRushForm
 from rushtracker.models import  Rush
 from comments.models import Comment
 from authentication.models import UserProfile
@@ -18,12 +18,13 @@ class IndexView(LoginRequiredMixin, generic.ListView):
 	context_object_name = 'all_rushes'
 
 	def get_queryset(self):
-		return Rush.objects.filter(organization = self.request.user.profile.organization)
+		return Rush.objects.filter(organization = self.request.user.organization)
 
 class UpdateView(LoginRequiredMixin, CorrectOrganizationMixin, generic.UpdateView):
 	template_name = 'rushtracker/update.html'
-	form_class = DetailForm
+	form_class = UpdateForm
 	model = Rush
+	context_object_name='rush'
 	def get_success_url(self):
 		return reverse('rushtracker:index')
 	def dispatch(self, request, *args, **kwargs):

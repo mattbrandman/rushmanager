@@ -1,9 +1,11 @@
-var target = document.getElementById("drop-target");
-target.addEventListener("dragover", function(e){e.preventDefault();}, true);
-target.addEventListener("drop", function(e){
-	e.preventDefault(); 
-	loadImage(e.dataTransfer.files[0]);
-}, true);
+$(function() {
+	var target = document.getElementById("drop-target");
+	target.addEventListener("dragover", function(e){e.preventDefault();}, true);
+	target.addEventListener("drop", function(e){
+		e.preventDefault(); 
+		loadImage(e.dataTransfer.files[0]);
+	}, true);
+})
 function loadImage(src){
 	//	Prevent any non-image file type from being read.
 	if(!src.type.match(/image.*/)){
@@ -14,14 +16,15 @@ function loadImage(src){
 	//	Create our FileReader and run the results through the render function.
 	var reader = new FileReader();
 	reader.onload = function(e){
-		render(e.target.result);
+		render(e.target.result, false);
 	};
 	reader.readAsDataURL(src);
 }
 
 var MAX_HEIGHT = 200;
-function render(src){
+function render(src, isExternal){
 	var image = new Image();
+	image.crossOrigin = 'anonymous';
 	image.src = src;
 	image.onload = function(){
 		var canvas = document.getElementById("myCanvas");
@@ -35,6 +38,8 @@ function render(src){
 		canvas.width  = image.width;
 		canvas.height = image.height;
 		ctx.drawImage(image, 0, 0, image.width, image.height);
-		document.getElementById("pictureBase64").value = document.getElementById("myCanvas").toDataURL("image/png")
+		if(isExternal == false) {
+			document.getElementById("pictureBase64").value = document.getElementById("myCanvas").toDataURL("image/png")
+		}
 	};
 }

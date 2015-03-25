@@ -8,7 +8,7 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from authentication.mixins import CorrectOrganizationMixin
 from django.forms.models import modelform_factory
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 
 class CommentListView(LoginRequiredMixin, CorrectOrganizationMixin, generic.ListView):
@@ -29,7 +29,7 @@ class CommentListView(LoginRequiredMixin, CorrectOrganizationMixin, generic.List
         	context['CommentForm'] = CreateCommentForm(initial={'rush': self.kwargs['pk']}, request=self.request)
         else: 
         	context['CommentForm'] = CreateCommentFormAdmin(initial={'rush': self.kwargs['pk']}, request=self.request)
-        	context['CommentForm'].fields['user'].queryset = User.objects.filter(organization=self.request.user.profile.organization)
+        	context['CommentForm'].fields['user'].queryset = get_user_model().objects.filter(organization=self.request.user.organization)
         return context
 
 	def get_form_kwargs(self):
@@ -58,7 +58,7 @@ class CommentCreationView(LoginRequiredMixin, generic.CreateView):
 		self.object = form.save()
 		return JsonResponse({
 			'success':True,
-			'username': self.object.user.username,
+			'username': self.object.user.first_name,
 			'comment': self.object.comment,
 		})
 

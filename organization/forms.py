@@ -15,7 +15,7 @@ class CreateOrganizationForm(forms.ModelForm):
 
 	class Meta:
 		model = Organization
-		fields = ('owner', 'national_organization', 'chapter_name') 
+		fields = ('national_organization', 'chapter_name') 
 
 class UpdateActiveRushPeriodForm(forms.ModelForm):
 	def __init__(self, *args, **kwargs):
