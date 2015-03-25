@@ -39,7 +39,8 @@ function render(src, isExternal){
 		canvas.height = image.height;
 		ctx.drawImage(image, 0, 0, image.width, image.height);
 		if(isExternal == false) {
-			document.getElementById("pictureBase64").value = document.getElementById("myCanvas").toDataURL("image/png")
+			document.getElementById("id_pic64Value").value = document.getElementById("myCanvas").toDataURL("image/png")
+			
 		}
 	};
 }
