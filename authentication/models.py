@@ -5,6 +5,7 @@ from django.contrib.auth.models import Permission, AbstractBaseUser, BaseUserMan
 from django.utils import timezone
 from django.db import connection
 from django.conf import settings
+from tenancy.models import TenantModel
 
 class BrotherUserManager(BaseUserManager):
 

@@ -36,6 +36,8 @@ LOGIN_REDIRECT_URL = '/rushtracker/'
 
 CRISPY_FAIL_SILENTLY = not DEBUG
 
+TENANT_AUTH_USER_MODEL = True
+
 #this is the profile for Users
 
 
@@ -51,6 +53,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'django_tables2',
     'crispy_forms',
+    'tenancy',
     'rushtracker',
     'comments',
     'events',
@@ -61,6 +64,7 @@ INSTALLED_APPS = (
     'rushperiod',
 )
 
+TENANCY_TENANT_MODEL = 'organization.Organization'
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'django.contrib.auth.context_processors.auth',
@@ -79,6 +83,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'tenant.middleware.TenantHostMiddleWare',
 )
 
 STATICFILES_FINDERS = (
