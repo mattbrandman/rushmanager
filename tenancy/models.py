@@ -6,7 +6,7 @@ class TenantManager(models.Manager):
 		return super(TenantManager, self).get_queryset().filter(organization=get_current_user().organization)
 
 class TenantAware(models.Model):
-	obejcts = models.Manager()
+	objects = models.Manager()
 	tenant_objects = TenantManager()
 	class Meta:
 		abstract = True
