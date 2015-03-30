@@ -4,6 +4,8 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit
 from django.forms import DateInput, ModelForm, Textarea
 from events.models import Event
+from django.contrib.auth import get_user_model
+from rushtracker.models import Rush
 
 
 class CreateEventForm(ModelForm):
@@ -11,7 +13,7 @@ class CreateEventForm(ModelForm):
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
         super(CreateEventForm, self).__init__(*args, **kwargs)
-
+        self.fields['attendance'].queryset = Rush.tenant_objects.all()
         self.helper = FormHelper(self)
 
         self.helper.layout = Layout(
