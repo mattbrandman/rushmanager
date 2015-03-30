@@ -10,5 +10,3 @@ class Organization(models.Model):
 	active_rush_period = models.ForeignKey('rushperiod.RushPeriod', blank=True, null=True, related_name='active_period_organization')
 	def __str__(self):
 		return self.national_organization + ' ' + self.chapter_name
-	def natural_key(self):
-		return (self.national_organization + self.chapter_name, )

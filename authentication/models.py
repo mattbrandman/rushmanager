@@ -5,7 +5,7 @@ from django.contrib.auth.models import Permission, AbstractBaseUser, BaseUserMan
 from django.utils import timezone
 from django.db import connection
 from django.conf import settings
-from tenancy.models import TenantModel
+from tenancy.models import TenantAware
 
 class BrotherUserManager(BaseUserManager):
 
@@ -29,7 +29,7 @@ class BrotherUserManager(BaseUserManager):
 	def create_superuser(self, email, password, **extra_fields):
 		return self._create_user(email, password, True, True, **extra_fields)
 
-class BrotherUser(AbstractBaseUser, PermissionsMixin):
+class BrotherUser(AbstractBaseUser, PermissionsMixin, TenantAware):
 	email = models.CharField(max_length=100, unique=True)
 	is_staff = models.BooleanField(default=False)
 	first_name = models.CharField(max_length=30)

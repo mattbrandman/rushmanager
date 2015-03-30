@@ -1,6 +1,7 @@
 from django.db import models
 from organization.models import Organization
-class RushPeriod(models.Model):
+from tenancy.models import TenantAware
+class RushPeriod(TenantAware):
 	name = models.CharField(max_length=200)
 	start_date = models.DateField()
 	end_date = models.DateField()

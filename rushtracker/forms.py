@@ -4,7 +4,7 @@ from crispy_forms.helper import FormHelper
 from authentication.models import UserProfile
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from crispy_forms.layout import Layout, Field, ButtonHolder, Submit, Hidden
+from crispy_forms.layout import Layout, Field, ButtonHolder, Submit, Hidden, Div
 from django import forms
 from django.db import models
 from django.core.urlresolvers import reverse
@@ -14,12 +14,13 @@ import uuid
 
 
 class UpdateForm(ModelForm):
-    pic64Value = forms.CharField(required=False)
+    pic64Value = forms.CharField(required=False, widget = forms.HiddenInput())
     class Meta:
         model = Rush
         exclude = ['organization', 'picture']
         widgets = {
-            'contacted_date': DateInput(attrs={'type': 'date'})}
+            'contacted_date': DateInput(attrs={'type': 'date'}),
+            }
 
     def __init__(self, *args, **kwargs):
         super(UpdateForm, self).__init__(*args, **kwargs)
@@ -36,11 +37,12 @@ class UpdateForm(ModelForm):
             image_data = b64decode(self.cleaned_data['pic64Value'][22:])
             image_name = str(uuid.uuid1())
             rush.picture = ContentFile(image_data, image_name)
+        self.save_m2m()
         rush.save()
 
 
 class CreateRushForm(forms.ModelForm):
-    pic64Value = forms.CharField(required=False)
+    pic64Value = forms.CharField(required=False, widget = forms.HiddenInput())
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
         super(CreateRushForm, self).__init__(*args, **kwargs)
@@ -59,6 +61,7 @@ class CreateRushForm(forms.ModelForm):
         image_name = str(uuid.uuid1())
         rush.picture = ContentFile(image_data, image_name)
         rush.save()
+        self.save_m2m()
 
     class Meta:
         model = Rush

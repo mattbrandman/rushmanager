@@ -16,9 +16,8 @@ from authentication.mixins import CorrectOrganizationMixin
 class IndexView(LoginRequiredMixin, generic.ListView):
 	template_name = 'rushtracker/index.html'
 	context_object_name = 'all_rushes'
-
 	def get_queryset(self):
-		return Rush.objects.filter(organization = self.request.user.organization)
+		return Rush.tenant_objects.all()
 
 class UpdateView(LoginRequiredMixin, CorrectOrganizationMixin, generic.UpdateView):
 	template_name = 'rushtracker/update.html'
