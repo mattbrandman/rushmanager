@@ -36,7 +36,6 @@ class ChapterAdminForm(ModelForm):
     password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
     password2 = forms.CharField(
         label="Password confirmation", widget=forms.PasswordInput)
-
     def __init__(self, *args, **kwargs):
         super(ChapterAdminForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
@@ -51,12 +50,14 @@ class ChapterAdminForm(ModelForm):
                 msg = "Passwords don't match"
                 raise forms.ValidationError("Password mismatch")
             return password2
+
     def save(self, commit=True):
             if not commit:
-                raise NotImplementedError("Can't create User and UserProfile without database save")
+                raise NotImplementedError(
+                    "Can't create User and UserProfile without database save")
             data = {
-                'national_organization' : self.cleaned_data['fraternity'], 
-                'chapter_name' : self.cleaned_data['chapter']
+                'national_organization': self.cleaned_data['fraternity'],
+                'chapter_name': self.cleaned_data['chapter']
             }
             self.organization = CreateOrganizationForm(data)
             self.organization = self.organization.save()
@@ -64,11 +65,12 @@ class ChapterAdminForm(ModelForm):
             if self.cleaned_data['name']:
                 first_last = self.cleaned_data['name'].split(" ")
                 user.first_name = first_last[0]
-                user.last_name = first_last [1]
+                user.last_name = first_last[1]
             user.set_password(self.cleaned_data["password1"])
             user.organization = self.organization
             user.save()
-            user.user_permissions.add(Permission.objects.get(codename='chapter_admin'),)
+            user.user_permissions.add(
+                Permission.objects.get(codename='chapter_admin'),)
             user_profile = UserProfile(user=user)
             user_profile.save()
             return user
@@ -79,30 +81,47 @@ class ChapterAdminForm(ModelForm):
 
 
 class UserProfileForm(ModelForm):
+
     class Meta:
         model = UserProfile
         exclude = ('',)
     helper = FormHelper()
     helper.add_input(Submit('submit', 'Submit', css_class='btn-primary'))
-    
-class SingleUserCreationForm(UserCreationForm):
-    helper = FormHelper()
-    helper.form_action = '/authentication/createSingleUser'
-    class Meta:
-        model = get_user_model()
-        fields = ('first_name', 'last_name',
-            'email', 'password1', 'password2')
+
+
+class SingleUserCreationForm(ModelForm):
+    password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
+    password2 = forms.CharField(
+        label="Password confirmation", widget=forms.PasswordInput)
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
         super(SingleUserCreationForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_action = '/authentication/createSingleUser'
+        self.helper.form_id = 'form1'
+
+    def clean_password2(self):
+            # Check that the two password entries match
+            password1 = self.cleaned_data.get("password1")
+            password2 = self.cleaned_data.get("password2")
+            if password1 and password2 and password1 != password2:
+                msg = "Passwords don't match"
+                raise forms.ValidationError("Password mismatch")
+            return password2
+
     def save(self, commit=True):
         if not commit:
-            raise NotImplementedError("Can't create User and UserProfile without database save")
-        user = super(SingleUserCreationForm, self).save(commit=True)
-        organization = self.request.user.organization
-        user_profile = UserProfile(user=user, organization=organization)
+            raise NotImplementedError("Must Commit as user profile needs a user to save")
+        user = super(SingleUserCreationForm, self).save(commit=False)
+        user.organization = self.request.user.organization
+        user.save()
+        user_profile = UserProfile(user=user)
         user_profile.save()
         return user
+
+    class Meta:
+        model = get_user_model()
+        fields = ('email', 'password1', 'password2')
 
 
 

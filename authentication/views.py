@@ -29,8 +29,7 @@ class AddSingleBrother(LoginRequiredMixin, PermissionRequiredMixin, generic.Crea
 		self.object = form.save()
 		return JsonResponse({
 			'success':True,
-			'first_name': self.object.first_name,
-			'last_name': self.object.last_name,
+			'email': self.object.email
 			})
 	def get_form_kwargs(self):
 		kwargs = super(AddSingleBrother, self).get_form_kwargs()

@@ -10,6 +10,7 @@ from django.db import models
 from django.core.urlresolvers import reverse
 from base64 import b64decode
 from django.core.files.base import ContentFile
+from django.contrib.auth import get_user_model
 import uuid
 
 
@@ -46,6 +47,8 @@ class CreateRushForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
         super(CreateRushForm, self).__init__(*args, **kwargs)
+        self.fields['primary_contact'].queryset = get_user_model().tenant_objects.all()
+        self.fields['secondary_contact'].queryset = get_user_model().tenant_objects.all()
         self.helper = FormHelper(self)
         self.helper['contacted_date'].wrap(Field, css_class="datepicker")
         self.helper.add_input(
