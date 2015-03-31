@@ -15,17 +15,19 @@ import uuid
 
 
 class UpdateForm(ModelForm):
-    pic64Value = forms.CharField(required=False, widget = forms.HiddenInput())
+    pic64Value = forms.CharField(required=False, widget=forms.HiddenInput())
+
     class Meta:
         model = Rush
         exclude = ['organization', 'picture']
         widgets = {
             'contacted_date': DateInput(attrs={'type': 'date'}),
-            }
+        }
 
     def __init__(self, *args, **kwargs):
         super(UpdateForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
+        self.helper['rush_period'].wrap(Field, css_class="chosen-select")
         self.helper.add_input(
             Submit('submit', 'Update', css_class='btn-primary'))
 
@@ -43,14 +45,18 @@ class UpdateForm(ModelForm):
 
 
 class CreateRushForm(forms.ModelForm):
-    pic64Value = forms.CharField(required=False, widget = forms.HiddenInput())
+    pic64Value = forms.CharField(required=False, widget=forms.HiddenInput())
+
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
         super(CreateRushForm, self).__init__(*args, **kwargs)
-        self.fields['primary_contact'].queryset = get_user_model().tenant_objects.all()
-        self.fields['secondary_contact'].queryset = get_user_model().tenant_objects.all()
+        self.fields[
+            'primary_contact'].queryset = get_user_model().tenant_objects.all()
+        self.fields[
+            'secondary_contact'].queryset = get_user_model().tenant_objects.all()
         self.helper = FormHelper(self)
         self.helper['contacted_date'].wrap(Field, css_class="datepicker")
+        self.helper['rush_period'].wrap(Field, css_class="chosen-select")
         self.helper.add_input(
             Submit('submit', 'Submit', css_class='btn-primary'))
 
