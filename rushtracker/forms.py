@@ -54,6 +54,8 @@ class CreateRushForm(forms.ModelForm):
             'primary_contact'].queryset = get_user_model().tenant_objects.all()
         self.fields[
             'secondary_contact'].queryset = get_user_model().tenant_objects.all()
+        if self.request.user.organization.active_rush_period:
+            self.fields['rush_period'].initial = ([self.request.user.organization.active_rush_period, ])
         self.helper = FormHelper(self)
         self.helper['contacted_date'].wrap(Field, css_class="datepicker")
         self.helper['rush_period'].wrap(Field, css_class="chosen-select")
