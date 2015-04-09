@@ -43,7 +43,7 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li class={% if "rushtracker" in request.path %} "active"{% endif %}><a href="/rushtracker/">Rush View</a></li>
-        <li class={% if "events" in request.path %} "active"{% endif %}><a href="/events/new">Events <span class="sr-only">(current)</span></a></li>
+        <li class={% if "events" in request.path %} "active"{% endif %}><a href="/events/all_events">Events <span class="sr-only">(current)</span></a></li>
 
         {% if perms.authentication.chapter_admin %}
           <li class={% if "chaptermanagement" in request.path %} "active"{% endif %}><a href="/chaptermanagement/">Chapter Management <span class="sr-only">(current)</span></a></li>

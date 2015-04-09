@@ -1,12 +1,15 @@
 boto==2.36.0
 dj-database-url==0.3.0
-Django==1.7.4
+Django==1.8
 django-braces==1.4.0
 django-crispy-forms==1.4.0
 django-extensions==1.5.0
+django-simple-multitenant==0.1.0
 django-storages-redux==1.2.3
 django-tables2==0.15.0
+django-tenant-schemas==1.5.2
 gunicorn==19.0.0
+jsonfield==1.0.3
 Pillow==2.7.0
 psycopg2==2.6
 six==1.9.0

@@ -1,3 +1,5 @@
 from django.shortcuts import render
-
-# Create your views here.
+from django.views import generic
+from django_extensions import db.fields.json
+class rank(generic.TemplateView):
+	template_name = "create_rank.html"

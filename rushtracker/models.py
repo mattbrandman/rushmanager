@@ -4,6 +4,7 @@ from organization.models import Organization
 from rushperiod.models import RushPeriod
 from django.conf import settings
 from tenancy.models import TenantAware
+from ranking.models import Ranking
 
 class Rush(TenantAware):
 	first_name = models.CharField('First Name', max_length=200, blank=False )
@@ -19,6 +20,7 @@ class Rush(TenantAware):
 	picture = models.ImageField(upload_to='profile_picture', blank=True, null=True)
 	rush_period = models.ManyToManyField(RushPeriod)
 	organization = models.ForeignKey(Organization)
+	ranking = models.ForeignKey(Ranking, blank = True, null=True)
 	
 	def __str__(self):
 		return self.first_name + " " + self.last_name

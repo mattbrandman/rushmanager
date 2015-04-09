@@ -6,6 +6,7 @@ from django.utils import timezone
 from django.db import connection
 from django.conf import settings
 from tenancy.models import TenantAware
+from django.contrib.
 
 class BrotherUserManager(BaseUserManager):
 
@@ -48,7 +49,7 @@ class BrotherUser(AbstractBaseUser, PermissionsMixin, TenantAware):
 
 class UserProfile(models.Model):
 	user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name="profile")
-
+	ranking = HStoreField(blank =  True, null=True)
 	class Meta:
 		permissions = (
 			("chapter_admin", "Can access chapter admin page"),

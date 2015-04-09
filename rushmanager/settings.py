@@ -61,6 +61,7 @@ INSTALLED_APPS = (
     'organization',
     'rushperiod',
     'tenancy',
+    'ranking',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (

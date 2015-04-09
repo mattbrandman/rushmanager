@@ -1,3 +1,6 @@
 from django.db import models
+from jsonfield import JSONField
 
-# Create your models here.
+class Ranking(models.Model):
+	ranking = JSONField()
+
