@@ -62,6 +62,7 @@ INSTALLED_APPS = (
     'rushperiod',
     'tenancy',
     'ranking',
+    'rest_framework',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -90,6 +91,15 @@ STATICFILES_FINDERS = (
 'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 #'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissions',
+        'authentication.permissions.SameOrganizationPermission',
+    ]
+}
 
 ROOT_URLCONF = 'rushmanager.urls'
 
