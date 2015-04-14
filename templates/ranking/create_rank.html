@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+{%load staticfiles %}
+<script src={% static 'angular.min.js' %}></script>
+<script>
+	var promise = $.get("/api/rush/");
+	var list_of_rushes = promise.done(function() { alert("success")});
+</script>
+
+
+{% endblock %}
