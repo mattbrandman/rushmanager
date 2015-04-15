@@ -1,11 +1,15 @@
-{% extends "base.html" %}
-{% block content %}
+
 {%load staticfiles %}
 <script src={% static 'angular.min.js' %}></script>
-<script>
-	var promise = $.get("/api/rush/");
-	var list_of_rushes = promise.done(function() { alert("success")});
-</script>
+<script src={% static 'app.js' %}></script>
+	<div ng-app="rankingCreation">
+		<form name="rankingForm" ng-controller="RankingController as rankingCtrl">
+			<fieldset class = "form-group">
+				<select class = "form-control" ng-model="rankingCtrl.rank" ng-options="rush.first_name for rush in listOfRushes" style ="width:100%">
+				</select>
+				</fieldset>
+			
+		</form>
 
+	</div>
 
-{% endblock %}

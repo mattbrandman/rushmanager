@@ -58,7 +58,7 @@ class CommentCreationView(LoginRequiredMixin, generic.CreateView):
 		self.object = form.save()
 		return JsonResponse({
 			'success':True,
-			'username': self.object.user.first_name,
+			'email': self.object.user.email,
 			'comment': self.object.comment,
 		})
 

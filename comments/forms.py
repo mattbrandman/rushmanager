@@ -24,13 +24,15 @@ class CreateCommentForm(ModelForm):
             css_class="row",
         ),
         #TODO: check that rush being submitted to is in same organization
-        Field('rush', type="hidden"),
         Submit('submit', 'Submit', css_class='btn-primary'))
     class Meta:
         #if user has chapter admin privileges exclude nothing
         #if they don't exclude the user field
         model = Comment
         exclude = ['user', 'organization', 'rush_period']
+        widgets = {
+            'rush': forms.HiddenInput()
+        }
     def save(self, commit=True):
         comment = super(CreateCommentForm, self).save(commit=False)
         comment.user = self.request.user
@@ -62,7 +64,6 @@ class CreateCommentFormAdmin(ModelForm):
                 ),
             css_class="row",
         ),
-        Field('rush', type="hidden"),
         Submit('submit', 'Submit', css_class='btn-primary'))
     class Meta:
         #if user has chapter admin privileges exclude nothing
@@ -70,6 +71,9 @@ class CreateCommentFormAdmin(ModelForm):
         model = Comment
         fields = ['user', 'event', 'comment', 'rush']
         exclude = ['rush_period',]
+        widgets = {
+            'rush': forms.HiddenInput()
+        }
     def save(self, commit=True):
         comment = super(CreateCommentFormAdmin, self).save(commit=False)
         comment.organization = self.request.user.organization
