@@ -1,15 +1,36 @@
-
+{% extends 'base.html' %}
 {%load staticfiles %}
+{% block content %}
 <script src={% static 'angular.min.js' %}></script>
 <script src={% static 'app.js' %}></script>
+{% verbatim %}
+<div class = "container-fluid">
 	<div ng-app="rankingCreation">
-		<form name="rankingForm" ng-controller="RankingController as rankingCtrl">
-			<fieldset class = "form-group">
-				<select class = "form-control" ng-model="rankingCtrl.rank" ng-options="rush.first_name for rush in listOfRushes" style ="width:100%">
-				</select>
-				</fieldset>
-			
-		</form>
+		<form name="rankingForm" class="form-horizontal" ng-controller="RankingController as rankingCtrl" ng-submit = "rankingCtrl.addRanking()" ng-cloak>
+			<div class="form-group">
+				<div class="col-xs-5">
+					<select class="form-control " ng-model="rankingCtrl.ranking.rush" ng-options="rush.first_name for rush in rankingCtrl.listOfRushes">
+					</select>
+				</div>
 
+				<div class="col-xs-5">
+					<select class="form-control" ng-model="rankingCtrl.ranking.rank" ng-options ="rank for rank in rankingCtrl.rankList"></select>
+				</div>
+				<div class = "col-xs-2">
+					<input type = "submit" class="btn btn-block btn-primary" value="Rank!"/>
+				</div>
+			</div>
+			<div class = "row" ng-repeat="rank in rankingCtrl.rankingList">
+				<div class = "col-xs-6">
+					<h3>{{rank.rush.first_name}}</h3>
+				</div>
+				<div class = "col-xs-6">
+					<h3>{{rank.rank}}</h3>
+				</div>
+			</div>
+		</form>
 	</div>
+</div>
+{% endverbatim %}
+{% endblock %}
 

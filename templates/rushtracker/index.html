@@ -3,7 +3,7 @@
 	</div>
 <div class= "container-fluid">
 <div class = "row">
-		<table class = "tablesorter">
+		<table class="display">
 			<thead>
 				<tr>
 					<th>First Name</th>
@@ -36,16 +36,8 @@
 </div>
 
 <script> 
-  $(function() {
-  	$("table").tablesorter({
-  		theme: "bootstrap",
-
-  		widthFixed: true,
-
-  		headerTemplate : '{content} {icon}',
-
-  		widgets: ["uitheme"]
-  	})
-  });
+  $(document).ready( function () {
+    $('table').DataTable();
+} );
 </script>
 {% endblock %}
