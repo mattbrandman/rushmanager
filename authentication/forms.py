@@ -91,8 +91,7 @@ class UserProfileForm(ModelForm):
 
 class SingleUserCreationForm(ModelForm):
     password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
-    password2 = forms.CharField(
-        label="Password confirmation", widget=forms.PasswordInput)
+    password2 = forms.CharField(label="Password confirmation", widget=forms.PasswordInput)
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
         super(SingleUserCreationForm, self).__init__(*args, **kwargs)
@@ -114,6 +113,7 @@ class SingleUserCreationForm(ModelForm):
             raise NotImplementedError("Must Commit as user profile needs a user to save")
         user = super(SingleUserCreationForm, self).save(commit=False)
         user.organization = self.request.user.organization
+        user.set_password(self.cleaned_data["password1"])
         user.save()
         user_profile = UserProfile(user=user)
         user_profile.save()
