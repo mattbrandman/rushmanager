@@ -156,6 +156,7 @@ AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 
 # Tell the staticfiles app to use S3Boto storage when writing the collected static files (when
 # you run `collectstatic`).
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_LOCATION = 'static'
 #STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, STATICFILES_LOCATION)
 #STATICFILES_STORAGE = 'rushmanager.custom_storages.StaticStorage'
