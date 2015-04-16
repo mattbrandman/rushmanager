@@ -1,6 +1,6 @@
 from django.db import models
-from jsonfield import JSONField
-
+from rushtracker.models import Rush
 class Ranking(models.Model):
-	ranking = JSONField()
+	rush = models.ForeignKey(Rush)
+	rank = models.IntegerField()
 

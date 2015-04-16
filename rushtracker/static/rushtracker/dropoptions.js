@@ -18,6 +18,9 @@ function loadImage(src){
 	reader.onload = function(e){
 		render(e.target.result, false);
 	};
+	reader.onloadend = function() {
+		document.getElementById('id_pic64Value').value = reader.result;
+	}
 	reader.readAsDataURL(src);
 }
 //maybe I should scale down until I hit a certain height?
@@ -39,9 +42,5 @@ function render(src, isExternal){
 		canvas.width  = image.width/2;
 		canvas.height = image.height/2;
 		ctx.drawImage(image, 0, 0, image.width/2, image.height/2);
-		if(isExternal == false) {
-			document.getElementById("id_pic64Value").value = document.getElementById("myCanvas").toDataURL("image/png")
-			
-		}
 	};
 }

@@ -1,5 +1,9 @@
 (function(){
 	var app = angular.module('rankingCreation', []);
+	app.config(['$httpProvider', function($httpProvider) {
+    $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+    $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+}]);
 	app.controller('RankingController', ['$scope', '$http', '$q', 'httpRushService', function( $scope, $http, $q, httpRushService){
 		this.ranking = {};
 		this.rankList = this.range;
@@ -10,25 +14,31 @@
 		x.then(function(payload) {
 			_this.listOfRushes = payload.data;
 			_this.rankList = _this.range();
+			_this.ranking.rush = _this.listOfRushes[0];
 		});
 
 		this.range = function() {
 			var result = [];
 			var i;
-			for(i = 1; i <= this.listOfRushes.length; i++) {
+			for(i = 1; i <= 10; i++) {
 				result.push(i);
 			}
 			return result;
 		};
 
 		this.addRanking = function() {
+
 			this.rankingList.push(this.ranking);
 			this.listOfRushes.splice(this.listOfRushes.indexOf(this.ranking.rush), 1);
-			this.rankList.splice(this.rankList.indexOf(this.ranking.rank), 1);
+			var toSend = {
+				'rush': this.ranking.rush.id,
+				'rank': this.ranking.rank,
+			}
+			$http.post('/ranking/submit/', toSend);
 			this.ranking = {};
+			this.ranking.rush = this.listOfRushes[0];
 			
 		};
-
 		
 	}]);
 

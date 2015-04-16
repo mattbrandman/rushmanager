@@ -68,9 +68,11 @@ class CreateRushForm(forms.ModelForm):
                 "Can't create User and UserProfile without database save")
         rush = super(CreateRushForm, self).save(commit=False)
         rush.organization = self.request.user.organization
-        image_data = b64decode(self.request.POST['pic64Value'][22:])
-        image_name = str(uuid.uuid1())
-        rush.picture = ContentFile(image_data, image_name)
+        if self.cleaned_data['pic64Value'] != '':
+            image_data = b64decode(self.request.POST['pic64Value'][22:])
+            image_name = str(uuid.uuid1())
+            rush.picture = ContentFile(image_data, image_name)
+            print("here");
         rush.save()
         self.save_m2m()
 
