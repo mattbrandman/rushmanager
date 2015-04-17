@@ -16,6 +16,10 @@
 			_this.rankList = _this.range();
 			_this.ranking.rush = _this.listOfRushes[0];
 		});
+		var y = httpRushService.getRanks();
+		y.success(function(data) {
+			_this.rankingList = data;
+		});
 
 		this.range = function() {
 			var result = [];
@@ -28,7 +32,7 @@
 
 		this.addRanking = function() {
 
-			this.rankingList.push(this.ranking);
+			this.rankingList.unshift(this.ranking);
 			this.listOfRushes.splice(this.listOfRushes.indexOf(this.ranking.rush), 1);
 			var toSend = {
 				'rush': this.ranking.rush.id,
@@ -46,6 +50,12 @@
 	app.service('httpRushService', ['$http', function($http) {
 		this.getRushes = function() {
 			return $http.get('/api/rushRanking/').
+			success(function(data, status, headers, config){
+			//something funk with scopes and how data is formatted when returned
+		});
+		}
+		this.getRanks = function() {
+			return $http.get('/api/ranked/').
 			success(function(data, status, headers, config){
 			//something funk with scopes and how data is formatted when returned
 		});
