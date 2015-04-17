@@ -45,7 +45,7 @@
 
 	app.service('httpRushService', ['$http', function($http) {
 		this.getRushes = function() {
-			return $http.get('/api/rush/').
+			return $http.get('/api/rushRanking/').
 			success(function(data, status, headers, config){
 			//something funk with scopes and how data is formatted when returned
 		});

@@ -13,6 +13,7 @@ class RankSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ranking
+        fields = ('id', 'rush', 'rank')
 
 
 class createRank(generic.TemplateView):
@@ -24,13 +25,18 @@ class submitRank(generic.UpdateView):
     def post(self, request, *args, **kwargs):
         stream = BytesIO(request.body)
         data = JSONParser().parse(stream)
-        ms = RankSerializer(data=data)
-        ms.is_valid()
-        profile = self.request.user.profile
-        if profile.ranking.filter(rush__id=ms.data['rush']).exists():
-            ms.save()
-            print ms.data
-            profile.ranking.add(ms.data['id'])
+        rank_object = RankSerializer(data=data)
+        rank_object.is_valid(raise_exception=True)
+        user = self.request.user
+        qs = user.profile.ranking.all()
+        rank_object.save()
+        if not user.profile.ranking.filter(rush__id=rank_object.validated_data['rush'].id).exists():
+        #querying data using [] and just calling it return two different things
+        #second returns id associated with instance
+        #accessing validated_data prevents any problems
+            rank_data = rank_object.data
+            print rank_data
+            user.profile.ranking.add(rank_data['id'])
             return JsonResponse({
                 'success': True,
             })

@@ -42,6 +42,7 @@ class UpdateForm(ModelForm):
             rush.picture = ContentFile(image_data, image_name)
         self.save_m2m()
         rush.save()
+        print rush.picture
 
 
 class CreateRushForm(forms.ModelForm):
@@ -73,6 +74,10 @@ class CreateRushForm(forms.ModelForm):
             image_name = str(uuid.uuid1())
             rush.picture = ContentFile(image_data, image_name)
             print("here");
+        
+        else: 
+            rush.picture = 'profile_picture/default_picture.png'
+            print ('Heres')
         rush.save()
         self.save_m2m()
 

@@ -22,7 +22,6 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = get_user_model().objects.all()
     serializer_class = UserSerializer
 
-
 class RushSerializer(serializers.ModelSerializer):
 
 	class Meta:
@@ -33,10 +32,19 @@ class RushSerializer(serializers.ModelSerializer):
 class RushViewSet(viewsets.ModelViewSet):
 	queryset = Rush.tenant_objects.all()
 	serializer_class = RushSerializer
+
+class RushViewSetForRankings(viewsets.ModelViewSet):
+    model = Rush
+    serializer_class = RushSerializer
+    def get_queryset(self):
+        not_ranked = self.request.user.profile.ranking.values('rush')
+        already_ranked = Rush.tenant_objects.exclude(pk__in=not_ranked)
+        return already_ranked
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'rush', RushViewSet)
+router.register(r'rushRanking', RushViewSetForRankings, 'RushRanking')
 
 urlpatterns = patterns('',
 	url(r'^api/', include(router.urls)),

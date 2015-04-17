@@ -2,12 +2,12 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-import django.contrib.postgres.fields.hstore
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('ranking', '0003_ranking_rush'),
         ('authentication', '0003_auto_20150409_1629'),
     ]
 
@@ -15,6 +15,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='userprofile',
             name='ranking',
-            field=django.contrib.postgres.fields.hstore.HStoreField(null=True, blank=True),
+            field=models.ManyToManyField(to='ranking.Ranking'),
         ),
     ]
