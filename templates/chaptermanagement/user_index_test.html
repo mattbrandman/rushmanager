@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{%block content %}
+{% load staticfiles %}
+<script src={% static 'angular.min.js' %}></script>
+<script src={% static 'chaptermanagement/app.js' %}></script>
+{% verbatim %}
+<div class = "container-fluid" ng-app="chapterManagement" ng-controller="PageController as PageCtrl">
+	<table class = "table table-striped table-bordered" >
+		<thead>
+			<tr>
+      <th>Email</th>
+      <th>Rush Committee</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="brother in PageCtrl.brothers">
+				<td>{{brother.email}}</td>
+				<td ng-switch on="brother.is_rush_committee">
+					<input type="button" ng-model="brother.is_rush_committee" ng-switch-when="false"value="ADD" ng-click="PageCtrl.ChangeCommitteeStatus(brother)"/>
+					<input type="button" ng-model="brother.is_rush_committee" ng-switch-when="true" value="REMOVE" ng-click="PageCtrl.ChangeCommitteeStatus(brother)"/>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+{% endverbatim %}
+{% endblock %}

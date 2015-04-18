@@ -5,16 +5,21 @@ from braces.views import LoginRequiredMixin, PermissionRequiredMixin
 from authentication.forms import SingleUserCreationForm
 from django.db.models import Q
 from django.contrib.auth import get_user_model
+import json
+from django.http import JsonResponse
+
 
 class IndexView(LoginRequiredMixin, PermissionRequiredMixin, generic.ListView):
-	template_name="chaptermanagement/user_index.html"
-	context_object_name = 'all_users'
-	permission_required = "authentication.chapter_admin"
+    template_name = "chaptermanagement/user_index_test.html"
+    context_object_name = 'all_users'
+    permission_required = "authentication.chapter_admin"
 
-	def get_queryset(self):
-		return get_user_model().tenant_objects.all()
-		
-	def get_context_data(self, **kwargs):
-		context = super(IndexView, self).get_context_data(**kwargs)
-		context['SingleUserCreationForm'] = SingleUserCreationForm
-		return context
+    def get_queryset(self):
+        return get_user_model().tenant_objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super(IndexView, self).get_context_data(**kwargs)
+        context['SingleUserCreationForm'] = SingleUserCreationForm
+        context['RushCommittee'] = get_user_model().tenant_objects.filter(
+            is_rush_committee=True)
+        return context

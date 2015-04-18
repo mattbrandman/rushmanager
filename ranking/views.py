@@ -21,7 +21,7 @@ class createRank(generic.TemplateView):
 
 
 class submitRank(generic.UpdateView):
-
+    #ensure that rushID belongs to users organization
     def post(self, request, *args, **kwargs):
         stream = BytesIO(request.body)
         data = JSONParser().parse(stream)
@@ -35,7 +35,6 @@ class submitRank(generic.UpdateView):
         #second returns id associated with instance
         #accessing validated_data prevents any problems
             rank_data = rank_object.data
-            print rank_data
             user.profile.ranking.add(rank_data['id'])
             return JsonResponse({
                 'success': True,

@@ -40,6 +40,7 @@ class BrotherUser(AbstractBaseUser, PermissionsMixin, TenantAware):
     date_created = models.DateTimeField(default=timezone.now, blank=True)
     is_active = models.BooleanField(default=True)
     organization = models.ForeignKey('organization.Organization')
+    is_rush_committee = models.BooleanField(default=False)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
     objects = BrotherUserManager()

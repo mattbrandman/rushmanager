@@ -108,9 +108,12 @@ WSGI_APPLICATION = 'rushmanager.wsgi.application'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
-AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',)
+AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',
+                            )
 
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
+
+ANONYMOUS_USER_ID = None
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases

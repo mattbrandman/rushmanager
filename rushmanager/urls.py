@@ -14,14 +14,19 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ('email', 'is_staff')
+        fields = ('email', 'is_staff', 'is_rush_committee', 'id')
+
 
 # ViewSets define the view behavior.
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = get_user_model().objects.all()
     serializer_class = UserSerializer
+    model = get_user_model()
+    def get_queryset(self):
+        return get_user_model().tenant_objects.all()
+    # cache is causing the old list to be returned.  override
+    # get query set to fix
 
 
 class RushSerializer(serializers.ModelSerializer):
@@ -32,9 +37,10 @@ class RushSerializer(serializers.ModelSerializer):
 
 
 class RushViewSet(viewsets.ModelViewSet):
-	queryset = Rush.tenant_objects.all()
-	serializer_class = RushSerializer
-
+    serializer_class = RushSerializer
+    model = Rush
+    def get_queryset(self):
+        return Rush.tenant_objects.all()
 
 class RushViewSetRanked(viewsets.ModelViewSet):
     model = Rush
@@ -56,12 +62,14 @@ class RankedViewSet(viewsets.ModelViewSet):
     serializer_class = RankingSerializer
     def get_queryset(self):
         return self.request.user.profile.ranking.all()
+
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
-router.register(r'users', UserViewSet)
-router.register(r'rush', RushViewSet)
+router.register(r'users', UserViewSet, 'Users')
+router.register(r'rush', RushViewSet, 'Rush')
 router.register(r'rushRanking', RushViewSetRanked, 'RushUnranked')
 router.register(r'ranked', RankedViewSet, 'RushRanked')
+
 
 urlpatterns = patterns('',
 	url(r'^api/', include(router.urls)),
