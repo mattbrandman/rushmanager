@@ -34,6 +34,7 @@ class submitRank(generic.UpdateView):
         #second returns id associated with instance
         #accessing validated_data prevents any problems
             rank_object.save()
+            rank_data = rank_object.data
             user.profile.ranking.add(rank_data['id'])
             return JsonResponse({
                 'success': True,

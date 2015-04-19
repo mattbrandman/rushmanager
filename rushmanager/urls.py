@@ -2,10 +2,12 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from rushtracker.views import IndexView
 from django.contrib.auth.views import get_user_model
-from rest_framework import routers, serializers, viewsets, permissions
+from rest_framework import routers, serializers, viewsets, permissions, views
 from django.conf import settings
 from rushtracker.models import Rush
 from ranking.models import Ranking
+from authentication.models import UserProfile
+from django.db.models import Sum
 from rest_framework.response import Response
 
 # Serializers define the API representation.
@@ -25,6 +27,8 @@ class UserSerializer(serializers.ModelSerializer):
             password=validated_data['password'],
             organization=user.organization
             )
+        user_profile = UserProfile(user=new_user)
+        user_profile.save()
         return new_user
 
 # ViewSets define the view behavior.
@@ -75,20 +79,48 @@ class RankingSerializer(serializers.ModelSerializer):
 class RankedViewSet(viewsets.ModelViewSet):
     model = Ranking
     serializer_class = RankingSerializer
-    def get_queryset(self):
+    def get_queryset(self): 
         return self.request.user.profile.ranking.all()
+
+
+class RankListViewSet(viewsets.ViewSet):
+    """
+    Returns the rankings of the kids 
+
+    """
+    permission_classes=[]
+
+    def list(self, request, *args, **kwargs):
+        all_rankings = Ranking.objects.filter(rush__organization = request.user.organization)
+        all_rushes = Rush.tenant_objects.all()
+        rankList = []
+        rank = {}
+        for rush in all_rushes:
+            specific_rank_value = all_rankings.filter(rush__id=rush.id).aggregate(Sum('rank'))
+            specific_rank_value = specific_rank_value['rank__sum']
+            number_of_rankings = all_rankings.filter(rush__id=rush.id).count()
+            average_rank = specific_rank_value/number_of_rankings
+
+            rankList.append({
+                'rush': RushSerializer(rush).data,
+                'rank': average_rank
+                })
+
+
+        return Response(rankList)
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet, 'Users')
 router.register(r'rush', RushViewSet, 'Rush')
-router.register(r'rushRanking', RushViewSetRanked, 'RushUnranked')
+router.register(r'rushRanking', RushViewSetRanked, 'unranked')
 router.register(r'ranked', RankedViewSet, 'RushRanked')
+router.register(r'generate-rank-list', RankListViewSet, 'RankingGeneration')
 
 
 urlpatterns = patterns('',
+    url(r'^$', IndexView.as_view()),
 	url(r'^api/', include(router.urls)),
-	url(r'^$', IndexView.as_view()),
 	url(r'^rushtracker/', include('rushtracker.urls', namespace="rushtracker")),
     url(r'^events/', include('events.urls', namespace="events")),
     url(r'^comments/', include('comments.urls', namespace="comments")),

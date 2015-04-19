@@ -43,9 +43,20 @@
 			this.ranking.rush = this.listOfRushes[0];
 			
 		};
+
 		
 	}]);
-
+	app.controller('RankGeneratorController', ['$http', '$q', function($http, $q){
+		this.generateReport = function() {
+			this.generatedList = [];
+			var report = this;
+			promise = $http.get('/api/generate-rank-list/');
+			promise.success(function(data)
+			{
+				report.generatedList = data;
+			});
+		};
+	}]);
 
 	app.service('httpRushService', ['$http', function($http) {
 		this.getRushes = function() {
