@@ -6,7 +6,8 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.http import HttpResponseRedirect
 from braces.views import LoginRequiredMixin, PermissionRequiredMixin
-
+from django.contrib.auth import get_user_model
+import json
 class SignUpFormView(generic.CreateView):
 	template_name = 'authentication/register.html'
 	form_class = ChapterAdminForm

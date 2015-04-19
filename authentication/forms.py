@@ -15,7 +15,6 @@ from organization.forms import CreateOrganizationForm
 from django.contrib.auth import get_user_model
 from django.conf import settings
 from django.forms.models import ModelForm
-from guardian.shortcuts import assign_perm
 import pdb
 
 
@@ -72,7 +71,8 @@ class ChapterAdminForm(ModelForm):
             user.save()
             perm = Permission.objects.get(codename='change_brotheruser')
             user.user_permissions.add(perm)
-            assign_perm('rushtracker.change_rush', user)
+            perm2 = Permission.objects.get(codename='add_brotheruser')
+            user.user_permissions.add(perm2)
             user.user_permissions.add(
                 Permission.objects.get(codename='chapter_admin'),)
             user_profile = UserProfile(user=user)

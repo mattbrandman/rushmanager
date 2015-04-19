@@ -23,3 +23,5 @@ class IndexView(LoginRequiredMixin, PermissionRequiredMixin, generic.ListView):
         context['RushCommittee'] = get_user_model().tenant_objects.filter(
             is_rush_committee=True)
         return context
+class BrotherModal(LoginRequiredMixin, generic.TemplateView):
+    template_name = "chaptermanagement/add_brother_modal.html"

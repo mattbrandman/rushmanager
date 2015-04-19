@@ -29,12 +29,11 @@ class submitRank(generic.UpdateView):
         rank_object.is_valid(raise_exception=True)
         user = self.request.user
         qs = user.profile.ranking.all()
-        rank_object.save()
         if not user.profile.ranking.filter(rush__id=rank_object.validated_data['rush'].id).exists():
         #querying data using [] and just calling it return two different things
         #second returns id associated with instance
         #accessing validated_data prevents any problems
-            rank_data = rank_object.data
+            rank_object.save()
             user.profile.ranking.add(rank_data['id'])
             return JsonResponse({
                 'success': True,

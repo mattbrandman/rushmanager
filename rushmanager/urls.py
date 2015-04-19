@@ -6,16 +6,26 @@ from rest_framework import routers, serializers, viewsets, permissions
 from django.conf import settings
 from rushtracker.models import Rush
 from ranking.models import Ranking
+from rest_framework.response import Response
 
 # Serializers define the API representation.
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ('email', 'is_staff', 'is_rush_committee', 'id')
-
+        fields = ('email', 'is_staff', 'is_rush_committee', 'id', 'password')
+        write_only_fields = ('password',)
+    def create(self, validated_data):
+        user = self.context['user']
+        print validated_data
+        new_user = get_user_model().objects.create_user(
+            email=validated_data['email'],
+            password=validated_data['password'],
+            organization=user.organization
+            )
+        return new_user
 
 # ViewSets define the view behavior.
 
@@ -25,6 +35,11 @@ class UserViewSet(viewsets.ModelViewSet):
     model = get_user_model()
     def get_queryset(self):
         return get_user_model().tenant_objects.all()
+    def create(self, request):
+        serializer = UserSerializer(data=request.data, context={'user':request.user,})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
     # cache is causing the old list to be returned.  override
     # get query set to fix
 
