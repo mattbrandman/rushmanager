@@ -22,6 +22,8 @@ class createRank(generic.TemplateView):
 
 class submitRank(generic.UpdateView):
     #ensure that rushID belongs to users organization
+    #TODO: perhaps this should be done in DRF using the same
+    #request pass through used for user
     def post(self, request, *args, **kwargs):
         stream = BytesIO(request.body)
         data = JSONParser().parse(stream)
@@ -29,6 +31,11 @@ class submitRank(generic.UpdateView):
         rank_object.is_valid(raise_exception=True)
         user = self.request.user
         qs = user.profile.ranking.all()
+        if not Rush.tenant_objects.filter(id=rank_object.validated_data['rush'].id).exists():
+            return JsonResponse({
+                'error': 'You are trying to rank a non-existant rush'
+                })
+
         if not user.profile.ranking.filter(rush__id=rank_object.validated_data['rush'].id).exists():
         #querying data using [] and just calling it return two different things
         #second returns id associated with instance
