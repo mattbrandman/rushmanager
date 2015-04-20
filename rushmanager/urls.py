@@ -9,6 +9,7 @@ from ranking.models import Ranking
 from authentication.models import UserProfile
 from django.db.models import Sum
 from rest_framework.response import Response
+from django.db.models import Q
 
 # Serializers define the API representation.
 
@@ -91,7 +92,10 @@ class RankListViewSet(viewsets.ViewSet):
     permission_classes=[]
 
     def list(self, request, *args, **kwargs):
-        all_rankings = Ranking.objects.filter(rush__organization = request.user.organization)
+        correct_org = Q(rush__organization = request.user.organization)
+        is_rush_comm = Q(userprofile__user__is_rush_committee = True)
+        print Ranking.objects.filter(is_rush_comm)
+        all_rankings = Ranking.objects.filter(correct_org & is_rush_comm)
         all_rushes = Rush.tenant_objects.all()
         rankList = []
         rank = {}
