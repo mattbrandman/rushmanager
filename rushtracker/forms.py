@@ -55,6 +55,7 @@ class CreateRushForm(forms.ModelForm):
     pic64Value = forms.CharField(required=False, widget=forms.HiddenInput())
 
     def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
         super(CreateRushForm, self).__init__(*args, **kwargs)
         self.fields[
             'primary_contact'].queryset = get_user_model().tenant_objects.all()
