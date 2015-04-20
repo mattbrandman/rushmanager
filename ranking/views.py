@@ -25,7 +25,12 @@ class submitRank(generic.UpdateView):
     #TODO: perhaps this should be done in DRF using the same
     #request pass through used for user
     def post(self, request, *args, **kwargs):
+        #be able to turn it into string
+        #handles request.body or string (mainly for ensuring either works)
         stream = BytesIO(request.body)
+        #turns it into a string and converts it to json 
+        #Python 3 would error if we just stried to go straight to Json
+        #from request,body which is a byte string
         data = JSONParser().parse(stream)
         rank_object = RankSerializer(data=data)
         rank_object.is_valid(raise_exception=True)

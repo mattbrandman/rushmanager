@@ -17,8 +17,8 @@ var app = angular.module('chapterManagement', ['ui.bootstrap']);
 		this.ChangeCommitteeStatus = function(brother) {
 			var id = brother.id;
 			var url = '/api/users/' + id + '/';
-			$http.patch(url, brother);
 			brother.is_rush_committee = !brother.is_rush_committee;
+			$http.patch(url, brother);
 		};
 
 
