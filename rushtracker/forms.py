@@ -55,6 +55,7 @@ class CreateRushForm(forms.ModelForm):
             'primary_contact'].queryset = get_user_model().tenant_objects.all()
         self.fields[
             'secondary_contact'].queryset = get_user_model().tenant_objects.all()
+        self.fields['rush_period'].queryset = self.request.user.organization.rushperiod_set.all()
         if self.request.user.organization.active_rush_period:
             self.fields['rush_period'].initial = ([self.request.user.organization.active_rush_period, ])
         self.helper = FormHelper(self)
