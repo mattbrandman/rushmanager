@@ -26,6 +26,10 @@ class UpdateView(LoginRequiredMixin, CorrectOrganizationMixin, generic.UpdateVie
 	context_object_name='rush'
 	def get_success_url(self):
 		return reverse('rushtracker:index')
+	def get_form_kwargs(self):
+		kwargs = super(RushCreateView, self).get_form_kwargs()
+		kwargs['request'] = self.request
+		return kwargs
 	def dispatch(self, request, *args, **kwargs):
 		self.organization = get_object_or_404(Rush, pk=kwargs['pk']).organization
 		return super(UpdateView, self).dispatch(request, *args, **kwargs)

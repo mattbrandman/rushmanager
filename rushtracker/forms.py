@@ -25,7 +25,13 @@ class UpdateForm(ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
         super(UpdateForm, self).__init__(*args, **kwargs)
+        self.fields[
+            'primary_contact'].queryset = get_user_model().tenant_objects.all()
+        self.fields[
+            'secondary_contact'].queryset = get_user_model().tenant_objects.all()
+        self.fields['rush_period'].queryset = self.request.user.organization.rushperiod_set.all()
         self.helper = FormHelper(self)
         self.helper['rush_period'].wrap(Field, css_class="chosen-select")
         self.helper.add_input(
@@ -49,7 +55,6 @@ class CreateRushForm(forms.ModelForm):
     pic64Value = forms.CharField(required=False, widget=forms.HiddenInput())
 
     def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop('request', None)
         super(CreateRushForm, self).__init__(*args, **kwargs)
         self.fields[
             'primary_contact'].queryset = get_user_model().tenant_objects.all()
