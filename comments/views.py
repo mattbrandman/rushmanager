@@ -43,7 +43,6 @@ class CommentCreationView(LoginRequiredMixin, generic.CreateView):
 	#gives correct form based on user permission
 	def get_form_class(self):
 		if self.request.user.has_perm('authentication.chapter_admin'):
-			print "here"
 			return CreateCommentFormAdmin
 		else:
 			return CreateCommentForm

@@ -3,6 +3,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Div, HTML, Hidden
 from django.forms import DateInput, ModelForm, Textarea
 from comments.models import Comment
+from rushtracker.models import Rush
 
 class CreateCommentForm(ModelForm):
     def __init__(self, *args, **kwargs):
@@ -29,7 +30,7 @@ class CreateCommentForm(ModelForm):
         #if user has chapter admin privileges exclude nothing
         #if they don't exclude the user field
         model = Comment
-        exclude = ['user', 'organization', 'rush_period']
+        exclude = ['user', 'organization', 'rush_period', 'rush']
         widgets = {
             'rush': forms.HiddenInput()
         }
@@ -74,6 +75,11 @@ class CreateCommentFormAdmin(ModelForm):
         widgets = {
             'rush': forms.HiddenInput()
         }
+    def clean_rush(self):
+        data = self.cleaned_data['rush']
+        if not Rush.tenant_objects.filter(id=data.id).exists():
+            raise forms.ValidationError("You are trying to commend on a non-existant rush!")
+        return data
     def save(self, commit=True):
         comment = super(CreateCommentFormAdmin, self).save(commit=False)
         comment.organization = self.request.user.organization
