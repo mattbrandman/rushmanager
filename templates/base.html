@@ -57,7 +57,10 @@
         <ul class="nav navbar-nav">
           <li class={% if "rushtracker" in request.path %} "active"{% endif %}><a href="/rushtracker/">Rush View</a></li>
           <li class={% if "events" in request.path %} "active"{% endif %}><a href="/events/all_events">Events <span class="sr-only">(current)</span></a></li>
+          
+          {% if request.user.is_rush_committee %}
           <li class={% if "ranking" in request.path %} "active"{% endif %}><a href="/ranking/create">Ranking <span class="sr-only">(current)</span></a></li>
+          {% endif %}
 
           {% if perms.authentication.chapter_admin %}
             <li class={% if "chaptermanagement" in request.path %} "active"{% endif %}><a href="/chaptermanagement/">Chapter Management <span class="sr-only">(current)</span></a></li>
