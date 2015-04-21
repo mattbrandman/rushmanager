@@ -20,6 +20,8 @@
 <!--This loads in the bootstrap theme for tablesorter-->
 <link rel = "stylesheet" href="{% static 'rushtracker/tablesorter/css/theme.bootstrap.css'%}"/>
 
+<link rel = "stylesheet" href="{% static 'sticky-footer-navbar.css' %}"/>
+
 <!-- should contain navbar and footer and have a block for content in it -->
 
 <!-- This is our shamefull css page -->
@@ -36,52 +38,51 @@
 <!-- DataTables -->
 <!-- this is an example bootstrap navbar, we should just work off of that -->
 <body>
-<nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="/rushtracker/">Rush Manager</a>
-    </div>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/rushtracker/">Rush Manager</a>
+      </div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li class={% if "rushtracker" in request.path %} "active"{% endif %}><a href="/rushtracker/">Rush View</a></li>
-        <li class={% if "events" in request.path %} "active"{% endif %}><a href="/events/all_events">Events <span class="sr-only">(current)</span></a></li>
-        <li class={% if "ranking" in request.path %} "active"{% endif %}><a href="/ranking/create">Ranking <span class="sr-only">(current)</span></a></li>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class={% if "rushtracker" in request.path %} "active"{% endif %}><a href="/rushtracker/">Rush View</a></li>
+          <li class={% if "events" in request.path %} "active"{% endif %}><a href="/events/all_events">Events <span class="sr-only">(current)</span></a></li>
+          <li class={% if "ranking" in request.path %} "active"{% endif %}><a href="/ranking/create">Ranking <span class="sr-only">(current)</span></a></li>
 
-        {% if perms.authentication.chapter_admin %}
-          <li class={% if "chaptermanagement" in request.path %} "active"{% endif %}><a href="/chaptermanagement/">Chapter Management <span class="sr-only">(current)</span></a></li>
-        {% endif %}
+          {% if perms.authentication.chapter_admin %}
+            <li class={% if "chaptermanagement" in request.path %} "active"{% endif %}><a href="/chaptermanagement/">Chapter Management <span class="sr-only">(current)</span></a></li>
+          {% endif %}
 
-        {% if perms.authentication.chapter_admin %}
-          <li class={% if "rushperiod" in request.path %} "active"{% endif %}><a href="/rushperiod/"> Rush Period <span class="sr-only">(current)</span></a></li>
-        {% endif %}
+          {% if perms.authentication.chapter_admin %}
+            <li class={% if "rushperiod" in request.path %} "active"{% endif %}><a href="/rushperiod/"> Rush Period <span class="sr-only">(current)</span></a></li>
+          {% endif %}
 
-        {% if perms.authentication.chapter_admin %}
-          <li class={% if "organization" in request.path %} "active"{% endif %}><a href="/organization/"> Organization <span class="sr-only">(current)</span></a></li>
-        {% endif %}
+          {% if perms.authentication.chapter_admin %}
+            <li class={% if "organization" in request.path %} "active"{% endif %}><a href="/organization/"> Organization <span class="sr-only">(current)</span></a></li>
+          {% endif %}
+            <li><a href="http://ourdisclaimer.com/?i=rushhound.com">Disclaimer</a></li>
 
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        {% if user.is_authenticated %} 
-          <li><a href ="{%url 'authentication:sign_out' %}">Sign Out</a></li>
-        {% else %}
-          <li><a href ="{%url 'authentication:sign_in' %}">Sign In</a></li>
-        {% endif %}
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          {% if user.is_authenticated %} 
+            <li><a href ="{%url 'authentication:sign_out' %}">Sign Out</a></li>
+          {% else %}
+            <li><a href ="{%url 'authentication:sign_in' %}">Sign In</a></li>
+          {% endif %}
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
 {% block content %}{% endblock %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/js/bootstrap.min.js"></script>
-
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </body>
 </html>

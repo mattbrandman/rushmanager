@@ -37,7 +37,9 @@
 
 <script> 
   $(document).ready( function () {
-    $('#yes').DataTable();
+    $('#yes').DataTable({
+    	"lengthMenu": [ [100, 150, 200, -1], [100, 150, 200, "All"] ]
+    });
     $('#yes').css("visibility", "visible");
 
 } );
