@@ -30,7 +30,7 @@ class CreateCommentForm(ModelForm):
         #if user has chapter admin privileges exclude nothing
         #if they don't exclude the user field
         model = Comment
-        exclude = ['user', 'organization', 'rush_period', 'rush']
+        fields = ['event', 'comment', 'rush']
         widgets = {
             'rush': forms.HiddenInput()
         }
