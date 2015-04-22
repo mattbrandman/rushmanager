@@ -8,7 +8,6 @@ django-extensions==1.5.0
 django-filter==0.9.2
 django-simple-multitenant==0.1.0
 django-storages-redux==1.2.3
-django-tables2==0.15.0
 django-tenant-schemas==1.5.2
 djangorestframework==3.1.1
 gunicorn==19.0.0

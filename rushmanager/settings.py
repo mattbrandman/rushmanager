@@ -51,7 +51,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.postgres',
     'django_extensions',
-    'django_tables2',
     'crispy_forms',
     'rushtracker',
     'comments',
