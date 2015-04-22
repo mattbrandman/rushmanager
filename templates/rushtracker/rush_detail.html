@@ -3,6 +3,7 @@
 
 <div class="container">
     <h1>{{ rush }}</h1>
+    <div class="row">
     <div class="col-md-6">
         {% if rush.picture %}
             <!-- TODO: add max width to the picture -->
@@ -10,8 +11,8 @@
         {% endif %}
     </div>
     <div class="col-md-6">
+    <h3>INFO</h3>
         <ul>
-            <h3>INFO</h3>
             {% if rush.dorm %}<li><b>Dorm: </b>{{ rush.dorm }}</li>{% endif %}
             {% if rush.primary_contact %}<li><b>Primary Contact: </b>{{ rush.primary_contact.get_full_name }}</li>{% endif %}
             {% if rush.secondary_contact %}<li><b>Secondary Contact: </b>{{ rush.secondary_contact.get_full_name }}</li>{% endif %}
@@ -19,9 +20,8 @@
             {% if rush.phone_number %}<li><b>Phone Number: </b>{{ rush.phone_number }}</li>{% endif %}
 
         </ul>
-
+    <h3>ATTENDANCE ({{ rush_attendance.count }})</h3>
         <ul>
-            <h3>ATTENDANCE ({{ rush_attendance.count }})</h3>
             {% if rush_attendance %}
                 {% for event in rush_attendance %}
                    <li>{{ event.date }} | {{ event }}</li>
@@ -31,8 +31,8 @@
             {% endif %}
         </ul>
 
+    <h3>COMMENTS</h3>   
         <ul>
-            <h3>COMMENTS</h3>   
             {% if comments %}
                 {% for comment in comments %}
                     <li>{{ comment.comment }}</li>
@@ -41,7 +41,11 @@
             {% else %}
                 <p>no comments about {{ rush }}, to comment click <a href="{% url 'comments:comments' rush.id %}">Here</a></p>
             {% endif %}
+
         </ul>
+                            {% if perms.authentication.chapter_admin %}
+                    <a class="btn btn-danger" href="{% url 'rushtracker:rush_delete' rush.id %}">Delete</a>
+                    {% endif %}
     </div>
 </div>
 

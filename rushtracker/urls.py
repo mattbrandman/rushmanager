@@ -8,4 +8,5 @@ urlpatterns = patterns('',
 	url(r'^update/(?P<pk>\d+)/$', views.UpdateView.as_view(), name='update'),
 	url(r'^create_rush$', views.RushCreateView.as_view(), name='create_rush'),	
     url(r'^rush/detail/(?P<pk>\d+)/$', views.RushDetailView.as_view(), name='rush_detail'),
+    url(r'^rush/delete/(?P<pk>\d+)/$', views.RushDeleteView.as_view(), name='rush_delete'),
 )

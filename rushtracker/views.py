@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponseRedirect
-from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.views import generic
 from rushtracker.forms import UpdateForm, CreateRushForm
 from rushtracker.models import  Rush
@@ -59,3 +59,20 @@ class RushDetailView(LoginRequiredMixin, generic.DetailView):
 		 	context['comments'] = False
 		 	
  	 	 return context
+class RushDeleteView(LoginRequiredMixin, generic.DeleteView, CorrectOrganizationMixin):
+	model = Rush
+	success_url = reverse_lazy('rushtracker:index')
+	def delete(self, request, *args, **kwargs):
+		if request.user.has_perm('authentication.chapter_admin'):
+			return super(RushDeleteView, self).delete(request, *args, **kwargs)
+		else:
+			return HttpResponseForbidden()
+	def dispatch(self, request, *args, **kwargs):
+		self.organization = get_object_or_404(Rush, pk=kwargs['pk']).organization
+		return super(RushDeleteView, self).dispatch(request, *args, **kwargs)
+
+
+
+
+
+
