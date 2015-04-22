@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from rushtracker.views import IndexView
 from django.contrib.auth.views import get_user_model
-from rest_framework import routers, serializers, viewsets, permissions, views
+from rest_framework import routers, serializers, viewsets, permissions, views, generics
 from django.conf import settings
 from rushtracker.models import Rush
 from ranking.models import Ranking
@@ -10,7 +10,7 @@ from authentication.models import UserProfile
 from django.db.models import Sum
 from rest_framework.response import Response
 from django.db.models import Q
-
+from comments.models import Comment
 # Serializers define the API representation.
 
 
@@ -102,16 +102,28 @@ class RankListViewSet(viewsets.ViewSet):
         for rush in all_rushes:
             specific_rank_value = all_rankings.filter(rush__id=rush.id).aggregate(Sum('rank'))
             specific_rank_value = specific_rank_value['rank__sum']
-            number_of_rankings = all_rankings.filter(rush__id=rush.id).count()
-            average_rank = specific_rank_value/number_of_rankings
+            if specific_rank_value != None:
+                number_of_rankings = all_rankings.filter(rush__id=rush.id).count()
+                average_rank = specific_rank_value/number_of_rankings
 
-            rankList.append({
-                'rush': RushSerializer(rush).data,
-                'rank': average_rank
-                })
+                rankList.append({
+                    'rush': RushSerializer(rush).data,
+                    'rank': average_rank
+                    })
 
 
         return Response(rankList)
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+
+class CommentViewSet(viewsets.ModelViewSet):
+    serializer_class = CommentSerializer
+    model = Comment
+    def get_queryset(self):
+        return Comment.objects.filter(user__id = self.request.user.id)
+
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
@@ -120,6 +132,7 @@ router.register(r'rush', RushViewSet, 'Rush')
 router.register(r'rushRanking', RushViewSetRanked, 'unranked')
 router.register(r'ranked', RankedViewSet, 'RushRanked')
 router.register(r'generate-rank-list', RankListViewSet, 'RankingGeneration')
+router.register(r'comments', CommentViewSet, 'comment')
 
 
 urlpatterns = patterns('',

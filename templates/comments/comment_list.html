@@ -2,21 +2,22 @@
 <!-- TODO: remove when we have a base template that imports everything -->
 {% extends "base.html" %}
 {% block content %}
-<div class="col-md-2 col-md-offset-5">
-<img src='{{MEDIA_URL}}{{profile_picture}}'>
-</div>
-<table class="table table-striped table-bordered">
+<div class = "container">
+    <div class="col-sm-offset-4 col-xs-offset-1">
+    <img src='{{MEDIA_URL}}{{profile_picture}}'>
+    </div>
+<table class="table table-striped table-bordered" style="word-wrap: break-word; table-layout:fixed;">
     <tbody>
 
         {% if rush_comments %}
             {% for rush_comment in rush_comments %}
 
             <tr>
-                <td class="span2">
-                    {{ rush_comment.user.email}}
+                <td class="col-md-6">
+                    <p>{{ rush_comment.user.email}}</p>
                 </td>
-                <td class="span10">
-                    {{ rush_comment.comment }}
+                <td class="col-md-6" style="word-wrap: break-word;">
+                    <p>{{ rush_comment.comment }}</p>
                 </td>
             </tr>
 
@@ -31,6 +32,7 @@
 <div style="width:70%; margin:0 auto;">
     {% load crispy_forms_tags %}
     {% crispy CommentForm %}
+</div>
 </div>
 
 <script>

@@ -46,7 +46,6 @@ class CreateCommentForm(ModelForm):
 class CreateCommentFormAdmin(ModelForm):
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
-        print self.request
         super(CreateCommentFormAdmin, self).__init__(*args, **kwargs)
         #this can and should be better TODO
         #Exclude will override the layout even if it's explicit

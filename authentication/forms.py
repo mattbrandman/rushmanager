@@ -119,6 +119,8 @@ class SingleUserCreationForm(ModelForm):
         user.organization = self.request.user.organization
         user.set_password(self.cleaned_data["password1"])
         user.save()
+        perm = Permission.objects.get(codename='delete_comment')
+        user.user_permissions.add(perm)
         user_profile = UserProfile(user=user)
         user_profile.save()
         return user
