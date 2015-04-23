@@ -1,6 +1,6 @@
 $(function() {
 	var target = document.getElementById("drop-target");
-	target.addEventListener("dragover", function(e){e.preventDefault();}, true);
+	target.addEventListener("dragover", function(e){e.preventDefault();});
 	target.addEventListener("drop", function(e){
 		e.preventDefault(); 
 		loadImage(e.dataTransfer.files[0]);
@@ -17,7 +17,7 @@ function loadImage(src){
 	//	Create our FileReader and run the results through the render function.
 	var reader = new FileReader();
 	reader.onload = function(e){
-		render(e.target.result, false);
+		render(e.target.result);
 	};
 	reader.onloadend = function() {
 		document.getElementById('id_pic64Value').value = reader.result;
@@ -26,7 +26,7 @@ function loadImage(src){
 }
 //maybe I should scale down until I hit a certain height?
 var MAX_HEIGHT = 300;
-function render(src, isExternal){
+function render(src){
 	var image = new Image();
 	image.crossOrigin = 'anonymous';
 	image.src = src;
@@ -35,7 +35,7 @@ function render(src, isExternal){
 		var ctx = canvas.getContext("2d");
 		canvas.width  = 300;
 		canvas.height = 300;
-		if (image.width-image.height > 50) {
+		if (image.width  / image.height < 1.5) {
 			ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
 		} else {
 			ctx.drawImage(image, 0, 0, canvas.width, image.height);

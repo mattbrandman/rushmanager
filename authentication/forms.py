@@ -12,10 +12,10 @@ from django.core.urlresolvers import reverse
 from django.core.exceptions import ValidationError
 from django.forms.util import ErrorList
 from organization.forms import CreateOrganizationForm
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, update_session_auth_hash
 from django.conf import settings
 from django.forms.models import ModelForm
-import pdb
+from braces.forms import UserKwargModelFormMixin
 
 
 class UserSignInForm(AuthenticationForm):
@@ -36,6 +36,7 @@ class ChapterAdminForm(ModelForm):
     password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
     password2 = forms.CharField(
         label="Password confirmation", widget=forms.PasswordInput)
+
     def __init__(self, *args, **kwargs):
         super(ChapterAdminForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
@@ -43,41 +44,41 @@ class ChapterAdminForm(ModelForm):
             Submit('Submit', 'Submit', css_class='btn-primary'))
 
     def clean_password2(self):
-            # Check that the two password entries match
-            password1 = self.cleaned_data.get("password1")
-            password2 = self.cleaned_data.get("password2")
-            if password1 and password2 and password1 != password2:
-                msg = "Passwords don't match"
-                raise forms.ValidationError("Password mismatch")
-            return password2
+        # Check that the two password entries match
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+        if password1 and password2 and password1 != password2:
+            msg = "Passwords don't match"
+            raise forms.ValidationError("Password mismatch")
+        return password2
 
     def save(self, commit=True):
-            if not commit:
-                raise NotImplementedError(
-                    "Can't create User and UserProfile without database save")
-            data = {
-                'national_organization': self.cleaned_data['fraternity'],
-                'chapter_name': self.cleaned_data['chapter']
-            }
-            self.organization = CreateOrganizationForm(data)
-            self.organization = self.organization.save()
-            user = super(ChapterAdminForm, self).save(commit=False)
-            if self.cleaned_data['name']:
-                first_last = self.cleaned_data['name'].split(" ")
-                user.first_name = first_last[0]
-                user.last_name = first_last[1]
-            user.set_password(self.cleaned_data["password1"])
-            user.organization = self.organization
-            user.save()
-            perm = Permission.objects.get(codename='change_brotheruser')
-            user.user_permissions.add(perm)
-            perm2 = Permission.objects.get(codename='add_brotheruser')
-            user.user_permissions.add(perm2)
-            user.user_permissions.add(
-                Permission.objects.get(codename='chapter_admin'),)
-            user_profile = UserProfile(user=user)
-            user_profile.save()
-            return user
+        if not commit:
+            raise NotImplementedError(
+                "Can't create User and UserProfile without database save")
+        data = {
+            'national_organization': self.cleaned_data['fraternity'],
+            'chapter_name': self.cleaned_data['chapter']
+        }
+        self.organization = CreateOrganizationForm(data)
+        self.organization = self.organization.save()
+        user = super(ChapterAdminForm, self).save(commit=False)
+        if self.cleaned_data['name']:
+            first_last = self.cleaned_data['name'].split(" ")
+            user.first_name = first_last[0]
+            user.last_name = first_last[1]
+        user.set_password(self.cleaned_data["password1"])
+        user.organization = self.organization
+        user.save()
+        perm = Permission.objects.get(codename='change_brotheruser')
+        user.user_permissions.add(perm)
+        perm2 = Permission.objects.get(codename='add_brotheruser')
+        user.user_permissions.add(perm2)
+        user.user_permissions.add(
+            Permission.objects.get(codename='chapter_admin'),)
+        user_profile = UserProfile(user=user)
+        user_profile.save()
+        return user
 
     class Meta:
         model = get_user_model()
@@ -95,7 +96,9 @@ class UserProfileForm(ModelForm):
 
 class SingleUserCreationForm(ModelForm):
     password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
-    password2 = forms.CharField(label="Password confirmation", widget=forms.PasswordInput)
+    password2 = forms.CharField(
+        label="Password confirmation", widget=forms.PasswordInput)
+
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
         super(SingleUserCreationForm, self).__init__(*args, **kwargs)
@@ -104,17 +107,18 @@ class SingleUserCreationForm(ModelForm):
         self.helper.form_id = 'form1'
 
     def clean_password2(self):
-            # Check that the two password entries match
-            password1 = self.cleaned_data.get("password1")
-            password2 = self.cleaned_data.get("password2")
-            if password1 and password2 and password1 != password2:
-                msg = "Passwords don't match"
-                raise forms.ValidationError("Password mismatch")
-            return password2
+        # Check that the two password entries match
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+        if password1 and password2 and password1 != password2:
+            msg = "Passwords don't match"
+            raise forms.ValidationError("Password mismatch")
+        return password2
 
     def save(self, commit=True):
         if not commit:
-            raise NotImplementedError("Must Commit as user profile needs a user to save")
+            raise NotImplementedError(
+                "Must Commit as user profile needs a user to save")
         user = super(SingleUserCreationForm, self).save(commit=False)
         user.organization = self.request.user.organization
         user.set_password(self.cleaned_data["password1"])
@@ -130,8 +134,31 @@ class SingleUserCreationForm(ModelForm):
         fields = ('email', 'password1', 'password2')
 
 
+class ChangePasswordForm(UserKwargModelFormMixin, ModelForm):
+    old_password = forms.CharField(
+        label="Old Password", widget=forms.PasswordInput)
+    new_password = forms.CharField(
+        label="New Password", widget=forms.PasswordInput)
+    new_password_confirm = forms.CharField(
+        label="Confirm New Password", widget=forms.PasswordInput)
 
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        super(ChangePasswordForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.add_input(
+            Submit('Submit', 'Submit', css_class='btn-primary'))
 
+    def save(self, commit=True):
+        if not commit:
+            raise NotImplementedError("MUST COMMIT!")
+        data = self.cleaned_data
+        if self.user.check_password(data['old_password']) and data['new_password'] == data['new_password_confirm']:
+            self.user.set_password(self.cleaned_data['new_password'])
+            self.user.save()
+            update_session_auth_hash(self.request, self.user)
+            return self.user
 
-
-
+    class Meta:
+        model = get_user_model()
+        fields = ['old_password', 'new_password', 'new_password_confirm']

@@ -11,18 +11,21 @@ from django.db.models import Sum
 from rest_framework.response import Response
 from django.db.models import Q
 from comments.models import Comment
+from rest_framework import serializers
 # Serializers define the API representation.
 
 
 class UserSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = get_user_model()
-        fields = ('email', 'is_staff', 'is_rush_committee', 'id', 'password')
+        fields = ('email', 'is_staff', 'is_rush_committee', 'id', 'password',)
         write_only_fields = ('password',)
     def create(self, validated_data):
         user = self.context['user']
+        request = self.context['request']
         print validated_data
+        if validated_data['password'] != request.data['confirm']:
+            raise serializers.ValidationError("Passwords Do Not Match")
         new_user = get_user_model().objects.create_user(
             email=validated_data['email'],
             password=validated_data['password'],
@@ -41,7 +44,7 @@ class UserViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return get_user_model().tenant_objects.all()
     def create(self, request):
-        serializer = UserSerializer(data=request.data, context={'user':request.user,})
+        serializer = UserSerializer(data=request.data, context={'user':request.user, 'request':request})
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)

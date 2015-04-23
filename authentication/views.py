@@ -1,12 +1,13 @@
 from django.shortcuts import render
 from django.views import generic
-from authentication.forms import ChapterAdminForm, SingleUserCreationForm
+from authentication.forms import ChapterAdminForm, SingleUserCreationForm, ChangePasswordForm
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.http import HttpResponseRedirect
 from braces.views import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth import get_user_model
+from braces.views import UserFormKwargsMixin
 import json
 class SignUpFormView(generic.CreateView):
 	template_name = 'authentication/register.html'
@@ -36,3 +37,15 @@ class AddSingleBrother(LoginRequiredMixin, PermissionRequiredMixin, generic.Crea
 		kwargs = super(AddSingleBrother, self).get_form_kwargs()
 		kwargs['request'] = self.request
 		return kwargs
+class ChangePassword(LoginRequiredMixin, UserFormKwargsMixin, generic.UpdateView):
+	model = User
+	form_class = ChangePasswordForm
+	template_name = 'authentication/change_password.html'
+	def get_form_kwargs(self):
+		kwargs = super(ChangePassword, self).get_form_kwargs()
+		kwargs['request'] = self.request
+		return kwargs
+	def get_success_url(self):
+		return reverse('rushtracker:index')
+	def get_object(self, queryset=None):
+		return self.request.user
