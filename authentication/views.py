@@ -49,3 +49,9 @@ class ChangePassword(LoginRequiredMixin, UserFormKwargsMixin, generic.UpdateView
 		return reverse('rushtracker:index')
 	def get_object(self, queryset=None):
 		return self.request.user
+class UserProfile(LoginRequiredMixin, generic.DetailView):
+	model = User
+	context_object_name = 'user'
+	template_name = 'authentication/user_profile.html'
+	def get_object(self):
+		return self.request.user

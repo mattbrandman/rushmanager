@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<h1>Hello {{user.email}}</h1>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<a href="{% url 'authentication:change_password' %}" class="btn btn-primary">Change Password</a>
+		</div>
+	</div>
+</div>
+{% endblock %}

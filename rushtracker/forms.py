@@ -28,9 +28,9 @@ class UpdateForm(ModelForm):
         self.request = kwargs.pop('request', None)
         super(UpdateForm, self).__init__(*args, **kwargs)
         self.fields[
-            'primary_contact'].queryset = get_user_model().tenant_objects.all()
+            'primary_contact'].queryset = get_user_model().tenant_objects.all().order_by('email')
         self.fields[
-            'secondary_contact'].queryset = get_user_model().tenant_objects.all()
+            'secondary_contact'].queryset = get_user_model().tenant_objects.all().order_by('email')
         self.fields['rush_period'].queryset = self.request.user.organization.rushperiod_set.all()
         self.helper = FormHelper(self)
         self.helper['rush_period'].wrap(Field, css_class="chosen-select")

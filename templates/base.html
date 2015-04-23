@@ -74,6 +74,7 @@
           {% if perms.authentication.chapter_admin %}
             <li class={% if "organization" in request.path %} "active"{% endif %}><a href="/organization/"> Organization <span class="sr-only">(current)</span></a></li>
           {% endif %}
+            <li><a href="{%url 'authentication:user_profile' %}">My Profile<span class="sr-only">(current)</span></a>
             <li><a href="http://ourdisclaimer.com/?i=rushhound.com">Disclaimer</a></li>
 
         </ul>

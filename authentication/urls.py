@@ -10,6 +10,7 @@ urlpatterns = patterns('',
 		'authentication_form' : UserSignInForm}, name='sign_in'),
 	url(r'^sign_out$', 'django.contrib.auth.views.logout_then_login', name='sign_out'),
 	url(r'^createSingleUser$', views.AddSingleBrother.as_view(), name='single_user'),
-	url(r'^changePassword$', views.ChangePassword.as_view(), name='change_password')
+	url(r'^changePassword$', views.ChangePassword.as_view(), name='change_password'),
+	url(r'^user-profile$', views.UserProfile.as_view(), name="user_profile"),
 	
 )
