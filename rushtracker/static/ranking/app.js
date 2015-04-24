@@ -44,6 +44,13 @@
 			
 		};
 
+		this.remove = function(data) {
+			var index  = this.rankingList.indexOf(data);
+			this.rankingList.splice(index, 1);
+			var url = '/api/ranked/' + data.id + '/delete-rank/'
+			$http.post(url);
+		}
+
 		
 	}]);
 	app.controller('RankGeneratorController', ['$http', '$q', function($http, $q){

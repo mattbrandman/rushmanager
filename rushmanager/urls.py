@@ -11,7 +11,9 @@ from django.db.models import Sum
 from rest_framework.response import Response
 from django.db.models import Q
 from comments.models import Comment
-from rest_framework import serializers
+from rest_framework import serializers, permissions
+from rest_framework.decorators import detail_route
+from authentication.permissions import SameOrganizationPermission
 # Serializers define the API representation.
 
 
@@ -76,23 +78,37 @@ class RushViewSetRanked(viewsets.ModelViewSet):
 
 
 class RankingSerializer(serializers.ModelSerializer):
-    rush  = RushSerializer()
+    rush  = RushSerializer(read_only=True)
     class Meta:
         model = Ranking
+        read_only_fields=('rush',)
 
 class RankedViewSet(viewsets.ModelViewSet):
     model = Ranking
     serializer_class = RankingSerializer
+    permission_classes = [permissions.IsAuthenticated, SameOrganizationPermission]
     def get_queryset(self): 
         return self.request.user.profile.ranking.all()
-
+    @detail_route(methods=['post'], permission_classes=[], url_path='delete-rank')
+    def delete_rank(self, request,  pk=None):
+        rank = self.get_object()
+        print rank
+        if rank.userprofile_set.all()[:1].get().user.id == self.request.user.id:
+            rank.delete()
+            return Response({
+                'message': 'successful deletion'
+                })
+        return Response ({
+            'message': 'failed to delete'
+            })
+    
 
 class RankListViewSet(viewsets.ViewSet):
     """
     Returns the rankings of the kids 
 
     """
-    permission_classes=[]
+    permission_classes=[permissions.IsAuthenticated]
 
     def list(self, request, *args, **kwargs):
         correct_org = Q(rush__organization = request.user.organization)
@@ -113,7 +129,6 @@ class RankListViewSet(viewsets.ViewSet):
                     'rush': RushSerializer(rush).data,
                     'rank': average_rank
                     })
-
 
         return Response(rankList)
 

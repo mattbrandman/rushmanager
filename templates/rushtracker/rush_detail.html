@@ -37,9 +37,9 @@
                 {% for comment in comments %}
                     <li>{{ comment.comment }}</li>
                 {% endfor %}
-                <a href="{% url 'comments:comments' rush.id %}">See All</a>
+                <a href="{% url 'comments:new_comment' rush.id %}">See All</a>
             {% else %}
-                <p>no comments about {{ rush }}, to comment click <a href="{% url 'comments:comments' rush.id %}">Here</a></p>
+                <p>no comments about {{ rush }}, to comment click <a href="{% url 'comments:new_comment' rush.id %}">Here</a></p>
             {% endif %}
 
         </ul>

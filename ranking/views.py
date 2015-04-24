@@ -36,6 +36,10 @@ class submitRank(generic.UpdateView):
         rank_object.is_valid(raise_exception=True)
         user = self.request.user
         qs = user.profile.ranking.all()
+        if not request.user.is_rush_committee:
+            return JsonResponse ({
+                'message': 'You are not a rush comm member!'
+            })
         if not Rush.tenant_objects.filter(id=rank_object.validated_data['rush'].id).exists():
             return JsonResponse({
                 'error': 'You are trying to rank a non-existant rush'
