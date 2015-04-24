@@ -3,40 +3,49 @@
 {% extends "base.html" %}
 {% block content %}
 <div class = "container">
-    <div class="comment-pic col-sm-offset-4 col-xs-offset-1">
-    <img src='{{MEDIA_URL}}{{profile_picture}}'>
+<div class="row">
+    <div class="comment-pic">
+      <img src='{{MEDIA_URL}}{{profile_picture}}' style="margin: 0 auto; display: block"/>
+    <h3>
+      {{name}}
+    </h3>
     </div>
-<table class="table table-striped table-bordered" style="word-wrap: break-word; table-layout:fixed;">
-    <tbody>
-
-        {% if rush_comments %}
-            {% for rush_comment in rush_comments %}
-
-            <tr>
-                <td class="col-md-2">
-                  <p>{{ rush_comment.created_at.date }}</p>
-                  {% if rush_comment.event %}<p><b>Event: </b>{{ rush_comment.event }}</p>{% endif %}
-                </td>
-                <td class="col-md-2">
-                    <p>{{ rush_comment.user.email}}</p>
-                </td>
-                <td class="col-md-8" style="word-wrap: break-word;">
-                    <p>{{ rush_comment.comment }}</p>
-                </td>
-            </tr>
-
-            {% endfor %}
-        {% else %}
-            <h4 class="js-no-comment">no comments about this rush</h4>
-        {% endif %}
-    </tbody>
-
-</table>
-
-<div style="width:70%; margin:0 auto;">
-    {% load crispy_forms_tags %}
-    {% crispy CommentForm %}
 </div>
+  <div class="row">
+    <table class="table table-striped table-bordered" style="word-wrap: break-word; table-layout:fixed;">
+        <tbody>
+
+            {% if rush_comments %}
+                {% for rush_comment in rush_comments %}
+
+                <tr>
+                    <td class="col-md-2">
+                      <p>{{ rush_comment.created_at.date }}</p>
+                      {% if rush_comment.event %}<p><b>Event: </b>{{ rush_comment.event }}</p>{% endif %}
+                    </td>
+                    <td class="col-md-2">
+                        <p>{{ rush_comment.user.email}}</p>
+                    </td>
+                    <td class="col-md-8" style="word-wrap: break-word;">
+                        <p>{{ rush_comment.comment }}</p>
+                    </td>
+                </tr>
+
+                {% endfor %}
+            {% else %}
+                <h4 class="js-no-comment">no comments about this rush</h4>
+            {% endif %}
+        </tbody>
+    </table>
+  </div>
+
+  <div class="row" >
+    <div class="col-md-6 col-md-offset-3">
+      {% load crispy_forms_tags %}
+      {% crispy CommentForm %}
+      </div>
+      </div>
+  </div>
 </div>
 
 <script>

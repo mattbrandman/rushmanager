@@ -20,16 +20,15 @@
 					<input type = "button" class="btn btn-primary btn-block" value="Rank!" ng-click="rankingCtrl.addRanking()"/>
 				</div>
 			</div>
-				<div class = "row" ng-repeat="rank in rankingCtrl.rankingList" ng-cloak>
-					<div class = "col-xs-5">
-						<h3>{{rank.rush.first_name}}</h3>
-					</div>
-					<div class = "col-xs-5">
-						<select class="form-control" ng-model="rank.rank" ng-options ="rank for rank in rankingCtrl.range()" ng-cloak></select>
-					</div>
-					<div class="col-xs-2">
-						<button class="form-control btn btn-primary " ng-click="rankingCtrl.remove(rank)">Remove</a>
-					</div>
+			<div class = "row" ng-repeat="rank in rankingCtrl.rankingList" ng-cloak>
+				<div class = "col-xs-5">
+					<h3>{{rank.rush.first_name}}</h3>
+				</div>
+				<div class = "col-xs-5">
+					<select class="form-control" ng-model="rank.rank" ng-options ="rank for rank in rankingCtrl.range()" ng-cloak></select>
+				</div>
+				<div class="col-xs-2">
+					<button class="form-control btn btn-primary " ng-click="rankingCtrl.remove(rank)">Remove</button>
 				</div>
 			</div>
 		</form>

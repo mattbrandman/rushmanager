@@ -25,6 +25,7 @@ class CommentListView(LoginRequiredMixin, CorrectOrganizationMixin, generic.List
     def get_context_data(self):
         context = super(CommentListView, self).get_context_data()
         context['profile_picture'] = self.rush.picture
+        context['name'] = self.rush.first_name + ' ' + self.rush.last_name
         if not self.request.user.has_perm('authentication.chapter_admin'):
         	context['CommentForm'] = CreateCommentForm(initial={'rush': self.kwargs['pk']}, request=self.request)
         else: 

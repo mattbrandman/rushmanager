@@ -54,14 +54,13 @@ class CreateCommentFormAdmin(ModelForm):
             Div(
                 Div(
                     Field('user'),
-                    css_class="col-md-4"),
+                    css_class="col-md-6"),
                 Div(
                     Field('event'),
-                    css_class="col-md-4"),
+                    css_class="col-md-6"),
                 Div(
                     Field('comment'),
-                    css_class="col-md-8",
-                ),
+                    css_class="col-md-12"),
             css_class="row",
         ),
         Submit('submit', 'Submit', css_class='btn-primary'))
