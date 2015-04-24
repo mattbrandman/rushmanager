@@ -133,6 +133,8 @@ class RankListViewSet(viewsets.ViewSet):
                     'rank': average_rank
                     })
 
+                rankList = sorted(rankList, key=lambda rank_dict: -rank_dict['rank'])
+
         return Response(rankList)
 
 class CommentSerializer(serializers.ModelSerializer):

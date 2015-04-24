@@ -7,7 +7,7 @@
     <div class="comment-pic">
       <img src='{{MEDIA_URL}}{{profile_picture}}' style="margin: 0 auto; display: block"/>
     <h3>
-      {{name}}
+      <a href="{% url 'rushtracker:rush_detail' rush.id %}">{{name}}</a>
     </h3>
     </div>
 </div>
