@@ -17,7 +17,9 @@
 			<tr ng-repeat="brother in PageCtrl.brothers">
 				<td>{{brother.email}}</td>
 				<td ng-switch on="brother.is_rush_committee">
+				
 					<input type="button" ng-model="brother.is_rush_committee" ng-switch-when="false"value="ADD" ng-click="PageCtrl.ChangeCommitteeStatus(brother)"/>
+
 					<input type="button" ng-model="brother.is_rush_committee" ng-switch-when="true" value="REMOVE" ng-click="PageCtrl.ChangeCommitteeStatus(brother)"/>
 				</td>
 			</tr>
