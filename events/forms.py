@@ -6,6 +6,7 @@ from django.forms import DateInput, ModelForm, Textarea
 from events.models import Event
 from django.contrib.auth import get_user_model
 from rushtracker.models import Rush
+from django.http import HttpResponseForbidden
 
 
 class CreateEventForm(ModelForm):
@@ -25,10 +26,13 @@ class CreateEventForm(ModelForm):
             Field('attendance', required=False),
             Submit('submit', 'Submit', css_class='btn-primary'))
     def save(self):
-        event = super(CreateEventForm, self).save(commit=False)
-        event.organization = self.request.user.organization
-        event.save()
-        return event
+        if not self.request.user.has_perm('authentication.chapter_admin'):
+            return HttpResponseForbidden
+        else:
+            event = super(CreateEventForm, self).save(commit=False)
+            event.organization = self.request.user.organization
+            event.save()
+            return event
     class Meta:
         model = Event
         exclude = ['organization']
