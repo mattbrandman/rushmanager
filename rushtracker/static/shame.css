@@ -2,6 +2,14 @@
     width:100%;
 }
 
+.comment-pic {
+    margin-bottom:20px;
+}
+
 #yes {
 	visibility:hidden;
+}
+
+.events-margin {
+    margin:5px;
 }

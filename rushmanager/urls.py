@@ -22,6 +22,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = get_user_model()
         fields = ('email', 'is_staff', 'is_rush_committee', 'id', 'password',)
         write_only_fields = ('password',)
+
     def create(self, validated_data):
         user = self.context['user']
         request = self.context['request']
@@ -44,7 +45,8 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     model = get_user_model()
     def get_queryset(self):
-        return get_user_model().tenant_objects.all()
+        return get_user_model().tenant_objects.all().order_by('-is_rush_committee', 'email')
+
     def create(self, request):
         serializer = UserSerializer(data=request.data, context={'user':request.user, 'request':request})
         serializer.is_valid(raise_exception=True)
@@ -89,6 +91,7 @@ class RankedViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated, SameOrganizationPermission]
     def get_queryset(self): 
         return self.request.user.profile.ranking.all()
+
     @detail_route(methods=['post'], permission_classes=[], url_path='delete-rank')
     def delete_rank(self, request,  pk=None):
         rank = self.get_object()

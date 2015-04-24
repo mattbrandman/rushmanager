@@ -15,7 +15,7 @@ class IndexView(LoginRequiredMixin, PermissionRequiredMixin, generic.ListView):
     permission_required = "authentication.chapter_admin"
 
     def get_queryset(self):
-        return get_user_model().tenant_objects.all()
+        return get_user_model().tenant_objects.all().order_by('-is_rush_committee', 'email')
 
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)

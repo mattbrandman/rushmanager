@@ -14,11 +14,11 @@
     <h3>INFO</h3>
         <ul>
             {% if rush.dorm %}<li><b>Dorm: </b>{{ rush.dorm }}</li>{% endif %}
-            {% if rush.primary_contact %}<li><b>Primary Contact: </b>{{ rush.primary_contact.get_full_name }}</li>{% endif %}
-            {% if rush.secondary_contact %}<li><b>Secondary Contact: </b>{{ rush.secondary_contact.get_full_name }}</li>{% endif %}
+            {% if rush.primary_contact %}<li><b>Primary Contact: </b>{{ rush.primary_contact }}</li>{% endif %}
+            {% if rush.secondary_contact %}<li><b>Secondary Contact: </b>{{ rush.secondary_contact }}</li>{% endif %}
             {% if rush.rank %}<li><b>Number System: </b>{{ rush.rank }}</li>{% endif %}
             {% if rush.phone_number %}<li><b>Phone Number: </b>{{ rush.phone_number }}</li>{% endif %}
-
+            <a href="{% url 'rushtracker:update' rush.id %}" target='_self'>Edit</a>
         </ul>
     <h3>ATTENDANCE ({{ rush_attendance.count }})</h3>
         <ul>
