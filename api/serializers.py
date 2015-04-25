@@ -54,7 +54,7 @@ class UserViewSet(viewsets.ModelViewSet):
         serializer.save()
         return Response(serializer.data)
 
-    @detail_route(methods=['patch'], permission_classes=[], url_path='change-rush-comm-status')
+    @detail_route(methods=['patch'], url_path='change-rush-comm-status')
     def change_rush_comm(self, request, pk=None):
         user = self.get_object()
         user.is_rush_committee = not user.is_rush_committee
@@ -145,7 +145,6 @@ class RankListViewSet(viewsets.ViewSet):
     Returns the rankings of the kids 
 
     """
-    permission_classes = [permissions.IsAuthenticated]
 
     def list(self, request, *args, **kwargs):
         all_rankings = Ranking.tenant_objects.filter(user__is_rush_committee=True)
