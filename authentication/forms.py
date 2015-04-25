@@ -162,3 +162,20 @@ class ChangePasswordForm(UserKwargModelFormMixin, ModelForm):
     class Meta:
         model = get_user_model()
         fields = ['old_password', 'new_password', 'new_password_confirm']
+
+class UserUpdateNameForm(ModelForm):
+
+    class Meta:
+        model = get_user_model()
+        fields = ['first_name', 'last_name']
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+
+        super(UserUpdateNameForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.add_input(Submit('submit', 'Submit'))
+        self.helper.form_method = 'post'
+        self.helper.form_action = reverse('authentication:update_name', args=[self.request.user.pk])
+
+

@@ -24,7 +24,7 @@
                       {% if rush_comment.event %}<p><b>Event: </b>{{ rush_comment.event }}</p>{% endif %}
                     </td>
                     <td class="col-md-2">
-                        <p>{{ rush_comment.user.email}}</p>
+                        <p>{{ rush_comment.user }}</p>
                     </td>
                     <td class="col-md-8" style="word-wrap: break-word;">
                         <p>{{ rush_comment.comment }}</p>
@@ -70,8 +70,8 @@ $(document).ready(function(){
       success: function(data){
         // Append with fadeIn see http://stackoverflow.com/a/978731
         if(data.success == true) {
-          console.log(data);
-          var item = $('<tr><td class="col-md-2">Just now</td><td class="col-md-2">' + data.email + '</td><td class="col-md-8">' + data.comment + '</td></tr>').hide()
+          commenterName = (data.name != " ") ? data.name : data.email
+          var item = $('<tr><td class="col-md-2">Just now</td><td class="col-md-2">' + commenterName + '</td><td class="col-md-8">' + data.comment + '</td></tr>').hide()
           $('table > tbody:last').append(item);
           item.fadeIn("slow");
           form.trigger('reset');

@@ -12,12 +12,19 @@ from django.contrib.auth.models import User
 from django.contrib.auth import  authenticate, login
 from braces.views import LoginRequiredMixin
 from authentication.mixins import CorrectOrganizationMixin
+from authentication.forms import UserUpdateNameForm
 
 class IndexView(LoginRequiredMixin, generic.ListView):
 	template_name = 'rushtracker/index.html'
 	context_object_name = 'all_rushes'
 	def get_queryset(self):
 		return Rush.tenant_objects.all()
+
+	def get_context_data(self):
+		context = super(IndexView, self).get_context_data()
+		context['UserUpdateNameForm'] = UserUpdateNameForm(request=self.request)
+		return context
+
 
 class UpdateView(LoginRequiredMixin, CorrectOrganizationMixin, generic.UpdateView):
 	template_name = 'rushtracker/update.html'

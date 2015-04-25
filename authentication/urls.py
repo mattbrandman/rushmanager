@@ -12,5 +12,6 @@ urlpatterns = patterns('',
 	url(r'^createSingleUser$', views.AddSingleBrother.as_view(), name='single_user'),
 	url(r'^changePassword$', views.ChangePassword.as_view(), name='change_password'),
 	url(r'^user-profile$', views.UserProfile.as_view(), name="user_profile"),
+	url(r'^update_name/(?P<pk>\d+)/$', views.UserUpdateNameView.as_view(), name='update_name'),
 	
 )

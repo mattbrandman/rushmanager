@@ -60,6 +60,7 @@ class CommentCreationView(LoginRequiredMixin, generic.CreateView):
 		return JsonResponse({
 			'success':True,
 			'email': self.object.user.email,
+            'name': self.object.user.get_full_name(),
 			'comment': self.object.comment,
 		})
 

@@ -1,6 +1,29 @@
 {% extends "base.html" %}
 {% block content %}
-	</div>
+
+
+<!-- Button trigger modal -->
+<button type="button" id="nameModalButton" class="btn btn-primary btn-lg hidden" data-toggle="modal" data-target="#nameModal">
+  Launch modal
+</button>
+
+<!-- First + Last name Modal -->
+<div class="modal fade" id="nameModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Please Enter Your Name Before Continuing</h4>
+      </div>
+      <div class="modal-body">
+            {% load crispy_forms_tags %}
+            {% crispy UserUpdateNameForm %}
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <div class= "container">
 	<div class = "row">
 	</div>
@@ -89,6 +112,14 @@
     });
     $('#yes').css("visibility", "visible");
     $("div.toolbar").html('<a class=" btn btn-default btn-block" href="/rushtracker/create_rush" role="button">Create New Rush</a>');
+} );
+</script>
+
+<script type="text/javascript">
+$(document).ready( function () {
+    if ("{{ request.user.get_full_name }}" == " ") {
+     $('button#nameModalButton').click()
+    }
 } );
 </script>
 {% endblock %}
