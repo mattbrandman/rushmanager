@@ -58,7 +58,6 @@ class BrotherUser(AbstractBaseUser, PermissionsMixin, TenantAware):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name="profile")
-    ranking = models.ManyToManyField('ranking.Ranking')
     class Meta:
         permissions = (
             ("chapter_admin", "Can access chapter admin page"),

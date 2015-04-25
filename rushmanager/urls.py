@@ -14,9 +14,11 @@ from comments.models import Comment
 from rest_framework import serializers, permissions
 from rest_framework.decorators import detail_route
 from authentication.permissions import SameOrganizationPermission
+from api import serializers
 # Serializers define the API representation.
 
 
+<<<<<<< HEAD
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
@@ -147,16 +149,17 @@ class CommentViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Comment.objects.filter(user__id = self.request.user.id)
 
+=======
+>>>>>>> rest framework improvements
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
-router.register(r'users', UserViewSet, 'Users')
-router.register(r'rush', RushViewSet, 'Rush')
-router.register(r'rushRanking', RushViewSetRanked, 'unranked')
-router.register(r'ranked', RankedViewSet, 'RushRanked')
-router.register(r'generate-rank-list', RankListViewSet, 'RankingGeneration')
-router.register(r'comments', CommentViewSet, 'comment')
-
+router.register(r'users', serializers.UserViewSet, 'Users')
+router.register(r'rush', serializers.RushViewSet, 'Rush')
+router.register(r'rushRanking', serializers.RushViewSetRanked, 'unranked')
+router.register(r'ranked', serializers.RankViewSet, 'RushRanked')
+router.register(r'generate-rank-list', serializers.RankListViewSet, 'RankingGeneration')
+router.register(r'comments', serializers.CommentViewSet, 'comment')
 
 urlpatterns = patterns('',
     url(r'^$', IndexView.as_view()),

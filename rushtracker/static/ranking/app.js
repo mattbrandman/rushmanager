@@ -31,14 +31,15 @@
 		};
 
 		this.addRanking = function() {
-
-			this.rankingList.unshift(this.ranking);
+			var _this = this
 			this.listOfRushes.splice(this.listOfRushes.indexOf(this.ranking.rush), 1);
 			var toSend = {
-				'rush': this.ranking.rush.id,
+				'rush': this.ranking.rush,
 				'rank': this.ranking.rank,
 			}
-			$http.post('/ranking/submit/', toSend);
+			$http.post('/api/ranked/', toSend).success(function(data) {
+				_this.rankingList.unshift(data);
+			});
 			this.ranking = {};
 			this.ranking.rush = this.listOfRushes[0];
 			
@@ -47,8 +48,8 @@
 		this.remove = function(data) {
 			var index  = this.rankingList.indexOf(data);
 			this.rankingList.splice(index, 1);
-			var url = '/api/ranked/' + data.id + '/delete-rank/'
-			$http.post(url);
+			var url = '/api/ranked/' + data.id + '/'
+			$http.delete(url);
 		}
 
 		
@@ -67,7 +68,7 @@
 
 	app.service('httpRushService', ['$http', function($http) {
 		this.getRushes = function() {
-			return $http.get('/api/rushRanking/').
+			return $http.get('/api/ranked/get-unranked').
 			success(function(data, status, headers, config){
 			//something funk with scopes and how data is formatted when returned
 		});
