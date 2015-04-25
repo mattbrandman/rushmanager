@@ -36,6 +36,8 @@ class UpdateForm(ModelForm):
         self.helper['rush_period'].wrap(Field, css_class="chosen-select")
         self.helper.add_input(
             Submit('submit', 'Update', css_class='btn-primary'))
+        self.helper['primary_contact'].wrap(Field, css_class="update-select2")
+        self.helper['secondary_contact'].wrap(Field, css_class="update-select2")
 
     def save(self, commit=True):
         if not commit:
@@ -69,6 +71,8 @@ class CreateRushForm(forms.ModelForm):
         self.helper['rush_period'].wrap(Field, css_class="chosen-select")
         self.helper.add_input(
             Submit('submit', 'Submit', css_class='btn-primary'))
+        self.helper['primary_contact'].wrap(Field, css_class="create-select2")
+        self.helper['secondary_contact'].wrap(Field, css_class="create-select2")
 
     def save(self, commit=True):
         if not commit:
