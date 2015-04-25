@@ -4,6 +4,7 @@ from crispy_forms.layout import Layout, Field, Submit, Div, HTML, Hidden
 from django.forms import DateInput, ModelForm, Textarea
 from comments.models import Comment
 from rushtracker.models import Rush
+from authentication.models import BrotherUser
 
 class CreateCommentForm(ModelForm):
     def __init__(self, *args, **kwargs):
@@ -47,16 +48,19 @@ class CreateCommentFormAdmin(ModelForm):
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
         super(CreateCommentFormAdmin, self).__init__(*args, **kwargs)
+
         #this can and should be better TODO
         #Exclude will override the layout even if it's explicit
         self.helper = FormHelper(self)
         self.helper.layout = Layout(
             Div(
                 Div(
-                    Field('user'),
+                    Field('user',
+                        css_class="comment-select2"),
                     css_class="col-md-6"),
                 Div(
-                    Field('event'),
+                    Field('event',
+                        css_class="comment-select2"),
                     css_class="col-md-6"),
                 Div(
                     Field('comment'),
@@ -64,6 +68,7 @@ class CreateCommentFormAdmin(ModelForm):
             css_class="row",
         ),
         Submit('submit', 'Submit', css_class='btn-primary'))
+
     class Meta:
         #if user has chapter admin privileges exclude nothing
         #if they don't exclude the user field
