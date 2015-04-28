@@ -11,30 +11,32 @@ from authentication.permissions import SameOrganizationPermission
 from django.contrib.auth.models import Permission
 from django.shortcuts import get_object_or_404
 from django.db.models import Sum
+from authentication.models import UserProfile
+import pdb
 
 
 
 class UserSerializer(serializers.ModelSerializer):
-
+    confirm = serializers.CharField(max_length=50, write_only=True)
     class Meta:
         model = get_user_model()
-        fields = ('email', 'is_staff', 'is_rush_committee', 'id', 'password',)
-        write_only_fields = ('password',)
-
+        fields =  ('email', 'is_staff', 'is_rush_committee', 'id', 'password', 'confirm',)
+        extra_kwargs = {
+            'password': {'write_only': True},
+        }
     def create(self, validated_data):
         user = self.context['user']
         request = self.context['request']
-        print validated_data
-        if validated_data['password'] != request.data['confirm']:
-            raise serializers.ValidationError("Passwords Do Not Match")
-        new_user = get_user_model().objects.create_user(
-            email=validated_data['email'],
-            password=validated_data['password'],
-            organization=user.organization
-        )
-        user_profile = UserProfile(user=new_user)
-        user_profile.save()
-        return new_user
+        if validated_data['password']  == validated_data['confirm']:
+            new_user = get_user_model().objects.create_user(
+                email=validated_data['email'],
+                password=validated_data['password'],
+                organization=user.organization
+            )
+            user_profile = UserProfile(user=new_user)
+            user_profile.save()
+            print new_user
+            return new_user
 
 
 # ViewSets define the view behavior.
@@ -48,8 +50,12 @@ class UserViewSet(viewsets.ModelViewSet):
         return get_user_model().tenant_objects.all().order_by('-is_rush_committee', 'email')
 
     def create(self, request):
+        if not isinstance(request.data, list):
+            is_many = False
+        else:
+            is_many = True
         serializer = UserSerializer(
-            data=request.data, context={'user': request.user, 'request': request})
+            data=request.data, context={'user': request.user, 'request': request}, many=is_many)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
@@ -68,6 +74,8 @@ class UserViewSet(viewsets.ModelViewSet):
             user.user_permissions.add(perm_delete)
         user.save()
         return Response(UserSerializer(user).data)
+    def list(self, request):
+        return  super(UserViewSet,self).list(request)
     # cache is causing the old list to be returned.  override
     # get query set to fix
 
