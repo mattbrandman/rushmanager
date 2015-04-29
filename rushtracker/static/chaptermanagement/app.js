@@ -60,7 +60,6 @@ var app = angular.module('chapterManagement', ['ui.bootstrap']);
 	  	Papa.parse(x.files[0], {
 			complete: function(results) {
 					file = results.data;
-					alert(file);
 			},
 			header:true,
 		});

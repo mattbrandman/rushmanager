@@ -12,7 +12,6 @@ from django.contrib.auth.models import Permission
 from django.shortcuts import get_object_or_404
 from django.db.models import Sum
 from authentication.models import UserProfile
-import pdb
 
 
 
@@ -148,12 +147,12 @@ class RankViewSet(viewsets.ModelViewSet):
         return Response(data)
 
 class RankListViewSet(viewsets.ViewSet):
+    model = Ranking
 
     """
     Returns the rankings of the kids 
 
     """
-
     def list(self, request, *args, **kwargs):
         all_rankings = Ranking.tenant_objects.filter(user__is_rush_committee=True)
         all_rushes = Rush.tenant_objects.all()
