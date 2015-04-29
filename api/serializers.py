@@ -12,6 +12,7 @@ from django.contrib.auth.models import Permission
 from django.shortcuts import get_object_or_404
 from django.db.models import Sum
 from authentication.models import UserProfile
+from events.models import Event
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -210,4 +211,17 @@ class CommentViewSet(viewsets.ModelViewSet):
     model = Comment
 
     def get_queryset(self):
-        return Comment.objects.filter(user__id=self.request.user.id)
+        return Comment.objects.filter(user__id=self.request.user.id)\
+
+class EventSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Event
+
+
+class EventViewSet(viewsets.ModelViewSet):
+    serializer_class = EventSerializer
+    model = Event
+
+    def get_queryset(self):
+        return Event.tenant_objects.all()

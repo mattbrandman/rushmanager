@@ -25,6 +25,7 @@ router.register(r'rushRanking', serializers.RushViewSetRanked, 'unranked')
 router.register(r'ranked', serializers.RankViewSet, 'RushRanked')
 router.register(r'generate-rank-list', serializers.RankListViewSet, 'RankingGeneration')
 router.register(r'comments', serializers.CommentViewSet, 'comment')
+router.register(r'events', serializers.EventViewSet, 'event')
 
 urlpatterns = patterns('',
     url(r'^$', IndexView.as_view()),
