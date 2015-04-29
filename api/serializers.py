@@ -84,7 +84,7 @@ class UserViewSet(viewsets.ModelViewSet):
             user.set_password(request.user.organization.default_password)
             user.save()
             return Response({
-                'message': 'success'
+                'message': 'Successful Reset!'
                 })
         return Response({
             'message': 'Failure, no default password set'
@@ -152,7 +152,7 @@ class RankViewSet(viewsets.ModelViewSet):
         permissions.IsAuthenticated, SameOrganizationPermission]
 
     def get_queryset(self):
-        return Ranking.tenant_objects.filter(user__id=self.request.user.id)
+        return Ranking.tenant_objects.filter(user__id=self.request.user.id).order_by('rush__first_name')
 
     def create(self, request):
         serializer = RankSerializer(
@@ -165,7 +165,7 @@ class RankViewSet(viewsets.ModelViewSet):
     def get_unranked(self, request):
         already_ranked = Ranking.tenant_objects.filter(
             user__id=request.user.id).values('rush')
-        unranked = Rush.tenant_objects.exclude(pk__in=already_ranked)
+        unranked = Rush.tenant_objects.exclude(pk__in=already_ranked).order_by('first_name')
         data = RushSerializer(unranked, many=True).data
         return Response(data)
 
