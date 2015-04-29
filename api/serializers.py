@@ -14,19 +14,21 @@ from django.db.models import Sum
 from authentication.models import UserProfile
 
 
-
 class UserSerializer(serializers.ModelSerializer):
     confirm = serializers.CharField(max_length=50, write_only=True)
+
     class Meta:
         model = get_user_model()
-        fields =  ('email', 'is_staff', 'is_rush_committee', 'id', 'password', 'confirm',)
+        fields = ('email', 'is_staff', 'is_rush_committee',
+                  'id', 'password', 'confirm',)
         extra_kwargs = {
             'password': {'write_only': True},
         }
+
     def create(self, validated_data):
         user = self.context['user']
         request = self.context['request']
-        if validated_data['password']  == validated_data['confirm']:
+        if validated_data['password'] == validated_data['confirm']:
             new_user = get_user_model().objects.create_user(
                 email=validated_data['email'],
                 password=validated_data['password'],
@@ -73,8 +75,23 @@ class UserViewSet(viewsets.ModelViewSet):
             user.user_permissions.add(perm_delete)
         user.save()
         return Response(UserSerializer(user).data)
+
+
+    @detail_route(methods=['get'], url_path = 'reset-to-default-password')
+    def reset_to_default_password(self, request, pk=None):
+        user = self.get_object()
+        if request.user.organization.default_password:
+            user.set_password(request.user.organization.default_password)
+            user.save()
+            return Response({
+                'message': 'success'
+                })
+        return Response({
+            'message': 'Failure, no default password set'
+            })
+
     def list(self, request):
-        return  super(UserViewSet,self).list(request)
+        return super(UserViewSet, self).list(request)
     # cache is causing the old list to be returned.  override
     # get query set to fix
 
@@ -95,7 +112,7 @@ class RushViewSet(viewsets.ModelViewSet):
 
 
 class RushViewSetRanked(viewsets.ModelViewSet):
-    #returns unranked kids
+    # returns unranked kids
     model = Rush
     serializer_class = RushSerializer
 
@@ -107,23 +124,28 @@ class RushViewSetRanked(viewsets.ModelViewSet):
 
 class RankSerializer(serializers.ModelSerializer):
     rush = RushSerializer()
+
     class Meta:
         model = Ranking
         depth = 1
         fields = ('rush', 'rank', 'id')
+
     def create(self, validated_data):
         user = self.context['user']
         request = self.context['request']
         print request.data
         rush = get_object_or_404(Rush, pk=request.data['rush']['id'])
         if rush.organization == user.organization:
-            rank = Ranking(user=user, rush=rush, rank=validated_data['rank'], organization = user.organization)
+            rank = Ranking(user=user, rush=rush, rank=validated_data[
+                           'rank'], organization=user.organization)
             rank.save()
             return rank
-        raise serializers.ValidationError("you are not in the same organization")
+        raise serializers.ValidationError(
+            "you are not in the same organization")
+
 
 class RankViewSet(viewsets.ModelViewSet):
-    #returns ranked kids
+    # returns ranked kids
     model = Ranking
     serializer_class = RankSerializer
     permission_classes = [
@@ -131,7 +153,6 @@ class RankViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return Ranking.tenant_objects.filter(user__id=self.request.user.id)
-   
 
     def create(self, request):
         serializer = RankSerializer(
@@ -139,12 +160,15 @@ class RankViewSet(viewsets.ModelViewSet):
         serializer.is_valid()
         serializer.save()
         return Response(serializer.data)
+
     @list_route(methods=['get'], url_path="get-unranked")
     def get_unranked(self, request):
-        already_ranked = Ranking.tenant_objects.filter(user__id=request.user.id).values('rush')
+        already_ranked = Ranking.tenant_objects.filter(
+            user__id=request.user.id).values('rush')
         unranked = Rush.tenant_objects.exclude(pk__in=already_ranked)
         data = RushSerializer(unranked, many=True).data
         return Response(data)
+
 
 class RankListViewSet(viewsets.ViewSet):
     model = Ranking
@@ -153,8 +177,10 @@ class RankListViewSet(viewsets.ViewSet):
     Returns the rankings of the kids 
 
     """
+
     def list(self, request, *args, **kwargs):
-        all_rankings = Ranking.tenant_objects.filter(user__is_rush_committee=True)
+        all_rankings = Ranking.tenant_objects.filter(
+            user__is_rush_committee=True)
         all_rushes = Rush.tenant_objects.all()
         rankList = []
         rank = {}

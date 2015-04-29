@@ -8,5 +8,6 @@ class Organization(models.Model):
 	chapter_name = models.CharField(max_length=500)
 	#lazy import to prevent circular imports
 	active_rush_period = models.ForeignKey('rushperiod.RushPeriod', blank=True, null=True, related_name='active_period_organization')
+	default_password = models.CharField(max_length=500, blank=True, null=True)
 	def __str__(self):
 		return self.national_organization + ' ' + self.chapter_name

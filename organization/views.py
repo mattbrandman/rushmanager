@@ -23,9 +23,13 @@ class OrganizationOverview(generic.DetailView):
 
 	def get_context_data(self, **kwargs):
 		context = super(OrganizationOverview, self).get_context_data(**kwargs)
-		context['RushPeriodForm'] = UpdateActiveRushPeriodForm(initial={'active_rush_period': self.request.user.organization.active_rush_period})
+		context['RushPeriodForm'] = UpdateActiveRushPeriodForm(initial={
+			'active_rush_period': self.request.user.organization.active_rush_period,
+			'default_password': self.request.user.organization.default_password,
+			})
 		context['RushPeriodForm'].fields['active_rush_period'].queryset = RushPeriod.tenant_objects.all()
 		return context
+
 class SetActiveRushPeriod(CorrectOrganizationMixin, generic.UpdateView):
 	model = Organization
 	form_class = UpdateActiveRushPeriodForm
@@ -37,14 +41,12 @@ class SetActiveRushPeriod(CorrectOrganizationMixin, generic.UpdateView):
 		return self.request.user.organization
 
 	def form_valid(self, form):
-		print "yes"
 		response = super(SetActiveRushPeriod, self).form_valid(form)
 		data = {
 			'success':'True'
 		}
 		return JsonResponse(data)
 	def form_invalid(self, form): 
-		print "no"
 		super(SetActiveRushPeriod, self).form_valid(form)
 		return JsonResponse(form.errors, status=400)
 	def get_success_url(self):

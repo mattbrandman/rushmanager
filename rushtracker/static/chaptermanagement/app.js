@@ -22,6 +22,15 @@ var app = angular.module('chapterManagement', ['ui.bootstrap']);
 			$http.patch(url, brother);
 		};
 
+		this.ResetPassword = function(brother) {
+			var id = brother.id;
+			var promise = $http.get('/api/users/' + id + '/reset-to-default-password/');
+			promise.success(function(data) {
+				brother.reset = true;
+				alert(data.message);
+			});
+		}
+
 
   		$scope.open = function (size) {
 

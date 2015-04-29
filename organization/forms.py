@@ -24,4 +24,4 @@ class UpdateActiveRushPeriodForm(forms.ModelForm):
 		self.helper.add_input(Submit('submit', 'Update', css_class='btn-primary'))
 	class Meta:
 		model=Organization
-		fields = ('active_rush_period',)
+		fields = ('active_rush_period', 'default_password')

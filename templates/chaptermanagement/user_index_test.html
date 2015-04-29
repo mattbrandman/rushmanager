@@ -11,6 +11,7 @@
 			<tr>
       <th>Email</th>
       <th>Rush Committee</th>
+      <th class="hidden-xs">Reset</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -21,6 +22,9 @@
 					<input type="button" ng-model="brother.is_rush_committee" ng-switch-when="false"value="ADD" ng-click="PageCtrl.ChangeCommitteeStatus(brother)"/>
 
 					<input type="button" ng-model="brother.is_rush_committee" ng-switch-when="true" value="REMOVE" ng-click="PageCtrl.ChangeCommitteeStatus(brother)"/>
+				</td>
+				<td class = "hidden-xs">
+					<input class="btn btn-danger" type="button" ng-click="PageCtrl.ResetPassword(brother)" ng-disabled="brother.reset" value="Reset Password"/>
 				</td>
 			</tr>
 		</tbody>
