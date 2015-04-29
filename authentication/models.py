@@ -49,7 +49,7 @@ class BrotherUser(AbstractBaseUser, PermissionsMixin, TenantAware):
         return self.first_name + " " + self.last_name
 
     def get_short_name(self):
-        return first_name
+        return self.first_name
 
     def __unicode__(self):
         return self.get_full_name() if self.first_name and self.last_name else self.email
