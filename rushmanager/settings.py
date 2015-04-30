@@ -148,6 +148,7 @@ AWS_STORAGE_BUCKET_NAME = 'rushmanagerbucket'
 AWS_ACCESS_KEY_ID = 'AKIAIA3LGLE6OGN3ELOQ'
 AWS_SECRET_ACCESS_KEY = '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'
 AWS_S3_HOST = 's3-us-west-2.amazonaws.com'
+AWS_QUERYSTRING_AUTH=True
 REDUCED_REDUNDANCY = True
 # Tell django-storages that when coming up with the URL for an item in S3 storage, keep
 # it simple - just use this domain plus the path. (If this isn't set, things get complicated).

@@ -213,10 +213,12 @@ class CommentViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Comment.objects.filter(user__id=self.request.user.id)\
 
+
 class EventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
+        exclude = ['organization',]
 
 
 class EventViewSet(viewsets.ModelViewSet):
@@ -225,3 +227,17 @@ class EventViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return Event.tenant_objects.all()
+
+    @detail_route(methods=['post'], url_path = 'add-rush')
+    def add_to_attendance(self, request, pk=None):
+        event = self.get_object()
+        rush = request.data['rush']
+        rush = get_object_or_404(Rush, rush)
+        if rush.organization == request.user.organization:
+            event.attendance.add(rush)
+            return Response(Rush)
+        else:
+            return Response({
+                'failure'
+                })
+

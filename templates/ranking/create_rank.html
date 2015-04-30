@@ -6,7 +6,7 @@
 {% verbatim %}
 <div class = "container-fluid">
 	<div ng-app="rankingCreation">
-		<form name="rankingForm" class="form-horizontal" ng-controller="RankingController as rankingCtrl" ng-cloak ng-submit = "rankingCtrl.addRanking()">
+		<form novalidate name="rankingForm" class="form-horizontal" ng-controller="RankingController as rankingCtrl" ng-cloak ng-submit = "rankingForm.$valid && rankingCtrl.addRanking()">
 			<div class="form-group">
 				<div class="col-sm-5">
 					<select class="form-control " ng-model="rankingCtrl.ranking.rush" ng-options="rush.first_name + ' ' + rush.last_name for rush in rankingCtrl.listOfRushes">
@@ -14,10 +14,10 @@
 				</div>
 
 				<div class="col-sm-5">
-					<select class="form-control" ng-model="rankingCtrl.ranking.rank" ng-options ="rank for rank in rankingCtrl.rankList"></select>
+					<select class="form-control" ng-model="rankingCtrl.ranking.rank" ng-options ="rank for rank in rankingCtrl.rankList" required></select>
 				</div>
 				<div class = "col-md-2">
-					<input type = "button" class="btn btn-primary btn-block" value="Rank!" ng-click="rankingCtrl.addRanking()"/>
+					<input type = "submit" class="btn btn-primary btn-block" value="Rank!" ng-click="rankingForm.$valid && rankingCtrl.addRanking()"/>
 				</div>
 			</div>
 			<div class = "row" ng-repeat="rank in rankingCtrl.rankingList" ng-cloak>
