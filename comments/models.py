@@ -7,10 +7,10 @@ from rushtracker.models import Rush
 from rushperiod.models import RushPeriod
 from organization.models import Organization
 from django.conf import settings
-
+from tenancy.models import TenantAware
 from django.db import models
 
-class Comment(models.Model):
+class Comment(TenantAware):
 
     rush = models.ForeignKey(Rush)
     user = models.ForeignKey(settings.AUTH_USER_MODEL)

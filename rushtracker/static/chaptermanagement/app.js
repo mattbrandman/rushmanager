@@ -1,3 +1,4 @@
+(function() {
 var app = angular.module('chapterManagement', ['ui.bootstrap']);
 	app.config(['$httpProvider', function($httpProvider) {
     $httpProvider.defaults.xsrfCookieName = 'csrftoken';
@@ -103,3 +104,6 @@ var app = angular.module('chapterManagement', ['ui.bootstrap']);
     		}
   		};
 	});
+})();
+
+

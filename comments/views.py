@@ -32,6 +32,7 @@ class CommentListView(LoginRequiredMixin, CorrectOrganizationMixin, generic.List
         else: 
         	context['CommentForm'] = CreateCommentFormAdmin(initial={'rush': self.kwargs['pk']}, request=self.request)
         	context['CommentForm'].fields['user'].queryset = get_user_model().objects.filter(organization=self.request.user.organization)
+        	context['CommentForm'].helper.form_id = "commentForm"
         return context
 
 	def get_form_kwargs(self):

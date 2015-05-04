@@ -201,18 +201,46 @@ class RankListViewSet(viewsets.ViewSet):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-
+    user = UserSerializer(read_only=True)
     class Meta:
         model = Comment
-
-
+        fields = ('id', 'created_at', 'comment', 'user', 'rush')
+        read_only_fields = ('id', 'created_at', 'user')
 class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
     model = Comment
-
+    permission_classes = []
     def get_queryset(self):
-        return Comment.objects.filter(user__id=self.request.user.id)\
+        return Comment.tenant_objects.all()
 
+    #returns a list of comments, and a list of the user comments
+    @detail_route(methods=['get'], url_path="get-comments")
+    def get_comments_for_rush(self, request, pk = None):
+        rush = get_object_or_404(Rush, pk=pk)
+        serializer = CommentSerializer(rush.comment_set.all(), many=True)
+        my_comments = Comment.tenant_objects.filter(rush = rush).filter(user = request.user)
+        my_comments_serializer = CommentSerializer(my_comments, many=True)
+
+        return Response({
+            'all_comments': serializer.data,
+            'my_comments': my_comments_serializer.data
+            })
+    def partial_update(self, request, pk=None):
+        comment = self.get_object()
+        if (comment.user.id == request.user.id):
+            return super(CommentViewSet, self).partial_update(request, pk)
+        else: 
+            raise serializers.ValidationError(
+            "This is not your comment")
+    def create(self, request):
+        rush = get_object_or_404(Rush, pk=request.data['rush'])
+        if rush.organization != request.user.organization:
+            raise serializers.ValidationError(
+            "This is not a rush of yours")
+        serializer = CommentSerializer(data = request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(user=request.user, organization=request.user.organization, rush_period = request.user.organization.active_rush_period)
+            return Response(serializer.data)
 
 class EventSerializer(serializers.ModelSerializer):
 

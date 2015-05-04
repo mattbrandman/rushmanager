@@ -1,0 +1,130 @@
+<!--This loads in the bootstrap css ands javascript files-->
+<!-- TODO: remove when we have a base template that imports everything -->
+{% extends "base.html" %}
+{% block content %}
+<div class = "container">
+<div class="row">
+    <div class="comment-pic">
+      <img src='{{MEDIA_URL}}{{profile_picture}}' style="margin: 0 auto; display: block"/>
+    <h3>
+      <a href="{% url 'rushtracker:rush_detail' rush.id %}">{{name}}</a>
+    </h3>
+    </div>
+</div>
+  <div class="row">
+    <table class="table table-striped table-bordered" style="word-wrap: break-word; table-layout:fixed;">
+        <tbody>
+
+            {% if rush_comments %}
+                {% for rush_comment in rush_comments %}
+
+                <tr>
+                    <td class="col-md-2">
+                      <p>{{ rush_comment.created_at.date }}</p>
+                      {% if rush_comment.event %}<p><b>Event: </b>{{ rush_comment.event }}</p>{% endif %}
+                    </td>
+                    <td class="col-md-2">
+                        <p>{{ rush_comment.user }}</p>
+                    </td>
+                    <td class="col-md-8 hoverover" style="word-wrap: break-word;">
+                      
+                      <p class="col-md-10">{{ rush_comment.comment }}</p>
+                      {% if rush_comment.user ==  request.user or request.user.is_superuser %}
+                      <form id="edit" class="col-md-1 hoverobject edit" style="display:none">
+                        <input type="hidden" value="{{rush_comment.id}}"/>
+                        <input type="text" style = "display:none" value="{{rush_comment.comment}}"/>
+                        <a type="submit"><span class="glyphicon glyphicon-edit"></span></a>
+                      </form>
+
+                      <form id="delete" class="col-md-1 hoverobject delete" style="display:none">
+                        <input name="hiddenValue" type="hidden" value="{{rush_comment.id}}"/>
+                        <input style="display:none" type="text" value="{{rush_comment.comment}}"/>
+                        <button type="submit"><span class="glyphicon glyphicon-trash"></span></button>
+                      </form>
+                      {% endif %}
+                    </td>
+                </tr>
+
+                {% endfor %}
+            {% else %}
+                <h4 class="js-no-comment">no comments about this rush</h4>
+            {% endif %}
+        </tbody>
+    </table>
+  </div>
+
+  <div class="row" >
+    <div class="col-md-6 col-md-offset-3">
+      {% load crispy_forms_tags %}
+      {% crispy CommentForm %}
+      </div>
+      </div>
+  </div>
+</div>
+
+<script>
+$(document).ready(function(){
+  var form = $('#commentForm');
+  var edit = $('.edit');
+  var destroy = $('.delete');
+  var submit = $('#submit-id-submit');
+  var $noComment = $('.js-no-comment');
+
+
+  destroy.on('submit', function(e) {
+    e.preventDefault();
+    var commentId = this.elements['hiddenValue'].value;
+    
+  });
+
+  $(".hoverover", this).hover(
+    function() {
+      $(".hoverobject", this).show();
+    },
+    function() {
+      $(".hoverobject", this).hide();
+    }
+  );
+
+  form.on('submit', function(e) {
+    // prevent default action
+    e.preventDefault();
+    // send ajax request
+    $.ajax({
+      url: '/comments/new/',
+      type: 'POST',
+      cache: false,
+      data: form.serialize(), //form serizlize data
+      beforeSend: function(){
+        // change submit button value text and disabled it
+        submit.val('Submitting...').attr('disabled', 'disabled');
+      },
+      success: function(data){
+        // Append with fadeIn see http://stackoverflow.com/a/978731
+        if(data.success == true) {
+          commenterName = (data.name != " ") ? data.name : data.email
+          var item = $('<tr><td class="col-md-2">Just now</td><td class="col-md-2">' + commenterName + '</td><td class="col-md-8">' + data.comment + '</td></tr>').hide()
+          $('table > tbody:last').append(item);
+          item.fadeIn("slow");
+          form.trigger('reset');
+          submit.val('Submit Comment').removeAttr('disabled');
+          // todo: if there isnt a $noComment then will js bug out?
+          $noComment.hide();
+        } else if (data.success == false) {
+          alert ("You are missing a field this is not complete");
+          submit.val('Submit Comment').removeAttr('disabled');
+        }
+      },
+      error: function(e){
+        alert(e);
+      }
+    });
+  });
+});
+</script>
+
+<script>
+  $(".comment-select2").select2();
+</script>
+
+{% endblock %}
