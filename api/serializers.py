@@ -240,20 +240,26 @@ class RankListViewSet(viewsets.ViewSet):
         return Response(rankList)
 
 
+
 class CommentSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
-    class Meta:
-        model = Comment
-        fields = ('id', 'created_at', 'comment', 'user', 'rush')
-        read_only_fields = ('id', 'created_at', 'user' )
-
-
-class CommentSerializerFlat(serializers.ModelSerializer):
+    #we could load all users onto comment serializer when it starts then sort
+    #them by their pk TODO
+    def __init__(self, *args, **kwargs):
+        super(CommentSerializer, self).__init__(*args, **kwargs)
+        #trying to enable caching maybe? I need to find a way to record DB hits
+        self.users = get_user_model().tenant_objects.all()
     class Meta:
         model = Comment 
         fields = ('id', 'created_at', 'comment', 'user', 'rush', 'event')
         read_only_fields = ('id', 'created_at', )
-
+    def to_representation(self, instance):
+        ret = super(CommentSerializer, self).to_representation(instance)
+        user = self.users.get(pk=ret['user'])
+        ret['user'] = {
+            'email': user.email,
+            'id': user.id
+        }
+        return ret
 
 class CommentViewSet(viewsets.ModelViewSet):
     model = Comment
@@ -296,12 +302,13 @@ class CommentViewSet(viewsets.ModelViewSet):
         if rush.organization != request.user.organization:
             raise serializers.ValidationError(
                 "This is not a rush of yours")
-        serializer = CommentSerializerFlat(data=request.data)
+        serializer = CommentSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save(user=request.user, organization=request.user.organization,
                             rush_period=request.user.organization.active_rush_period)
-            return Response(serializer.data)
+            print serializer.fields
 
+            return Response(serializer.data)
 
 class EventSerializer(serializers.ModelSerializer):
 
