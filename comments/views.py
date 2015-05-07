@@ -12,7 +12,7 @@ from django.contrib.auth import get_user_model
 
 
 class CommentListView(LoginRequiredMixin, CorrectOrganizationMixin, generic.ListView):
-    template_name = 'comments/comment_list.html'
+    template_name = 'comments/comment_list_blah.html'
     context_object_name = 'rush_comments'
     def dispatch(self, request, *args, **kwargs):
 		self.organization = get_object_or_404(Rush, pk=kwargs['pk']).organization

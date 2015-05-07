@@ -2,6 +2,8 @@
 <!-- TODO: remove when we have a base template that imports everything -->
 {% extends "base.html" %}
 {% block content %}
+<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
 <div class = "container">
 <div class="row">
     <div class="comment-pic">
@@ -30,7 +32,6 @@
                       
                       <p class="col-md-10">{{ rush_comment.comment }}</p>
                       {% if rush_comment.user ==  request.user or request.user.is_superuser %}
-                      <form id="edit" class="col-md-1 hoverobject edit" style="display:none">
                         <input type="hidden" value="{{rush_comment.id}}"/>
                         <input type="text" style = "display:none" value="{{rush_comment.comment}}"/>
                         <a type="submit"><span class="glyphicon glyphicon-edit"></span></a>

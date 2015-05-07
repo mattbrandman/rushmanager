@@ -20,12 +20,14 @@ from api import serializers
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register(r'users', serializers.UserViewSet, 'Users')
-router.register(r'rush', serializers.RushViewSet, 'Rush')
+router.register(r'rush', serializers.RushViewSet, 'rush')
 router.register(r'rushRanking', serializers.RushViewSetRanked, 'unranked')
 router.register(r'ranked', serializers.RankViewSet, 'RushRanked')
 router.register(r'generate-rank-list', serializers.RankListViewSet, 'RankingGeneration')
 router.register(r'comments', serializers.CommentViewSet, 'comment')
 router.register(r'events', serializers.EventViewSet, 'event')
+router.register(r'organization', serializers.OrganizationViews, 'organization')
+router.register(r'rushperiod', serializers.RushPeriodViews, 'rushperiod')
 
 urlpatterns = patterns('',
     url(r'^$', IndexView.as_view()),

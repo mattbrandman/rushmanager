@@ -15,6 +15,46 @@ from authentication.models import UserProfile
 from events.models import Event
 
 
+class ReadNestedWriteFlatMixin(object):
+    """
+    Mixin that sets the depth of the serializer to 0 (flat) for writing operations.
+    For all other operations it keeps the depth specified in the serializer_class
+    """
+    def get_serializer_class(self, *args, **kwargs):
+        serializer_class = super(ReadNestedWriteFlatMixin, self).get_serializer_class(*args, **kwargs)
+        if self.request.method in ['PATCH', 'POST', 'PUT']:
+            serializer_class.Meta.depth = 0
+        return serializer_class
+
+class OrganizationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Organization
+
+
+class OrganizationViews(viewsets.ModelViewSet):
+    serializer_class = OrganizationSerializer
+    model = Organization
+    permission_classes = []
+
+    def get_queryset(self):
+        return Organization.tenant_objects.all()
+
+
+class RushPeriodSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = RushPeriod
+
+
+class RushPeriodViews(viewsets.ModelViewSet):
+    serializer_class = RushPeriodSerializer
+    model = RushPeriod
+
+    def get_queryset(self):
+        return RushPeriod.tenant_objects.all()
+
+
 class UserSerializer(serializers.ModelSerializer):
     confirm = serializers.CharField(max_length=50, write_only=True)
 
@@ -77,8 +117,7 @@ class UserViewSet(viewsets.ModelViewSet):
         user.save()
         return Response(UserSerializer(user).data)
 
-
-    @detail_route(methods=['get'], url_path = 'reset-to-default-password')
+    @detail_route(methods=['get'], url_path='reset-to-default-password')
     def reset_to_default_password(self, request, pk=None):
         user = self.get_object()
         if request.user.organization.default_password:
@@ -86,10 +125,10 @@ class UserViewSet(viewsets.ModelViewSet):
             user.save()
             return Response({
                 'message': 'Successful Reset!'
-                })
+            })
         return Response({
             'message': 'Failure, no default password set'
-            })
+        })
 
     def list(self, request):
         return super(UserViewSet, self).list(request)
@@ -166,7 +205,8 @@ class RankViewSet(viewsets.ModelViewSet):
     def get_unranked(self, request):
         already_ranked = Ranking.tenant_objects.filter(
             user__id=request.user.id).values('rush')
-        unranked = Rush.tenant_objects.exclude(pk__in=already_ranked).order_by('first_name')
+        unranked = Rush.tenant_objects.exclude(
+            pk__in=already_ranked).order_by('first_name')
         data = RushSerializer(unranked, many=True).data
         return Response(data)
 
@@ -201,52 +241,73 @@ class RankListViewSet(viewsets.ViewSet):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
+    user = UserSerializer()
     class Meta:
         model = Comment
         fields = ('id', 'created_at', 'comment', 'user', 'rush')
-        read_only_fields = ('id', 'created_at', 'user')
+        read_only_fields = ('id', 'created_at', 'user' )
+
+
+class CommentSerializerFlat(serializers.ModelSerializer):
+    class Meta:
+        model = Comment 
+        fields = ('id', 'created_at', 'comment', 'user', 'rush', 'event')
+        read_only_fields = ('id', 'created_at', )
+
+
 class CommentViewSet(viewsets.ModelViewSet):
-    serializer_class = CommentSerializer
     model = Comment
     permission_classes = []
+
     def get_queryset(self):
         return Comment.tenant_objects.all()
 
-    #returns a list of comments, and a list of the user comments
+    def get_serializer_class(self):
+        print self.request.method
+        if self.request.method == 'GET':
+            return CommentSerializer
+        else:
+            return CommentSerializer
+    # returns a list of comments, and a list of the user comments
+
     @detail_route(methods=['get'], url_path="get-comments")
-    def get_comments_for_rush(self, request, pk = None):
+    def get_comments_for_rush(self, request, pk=None):
         rush = get_object_or_404(Rush, pk=pk)
         serializer = CommentSerializer(rush.comment_set.all(), many=True)
-        my_comments = Comment.tenant_objects.filter(rush = rush).filter(user = request.user)
+        my_comments = Comment.tenant_objects.filter(
+            rush=rush).filter(user=request.user)
         my_comments_serializer = CommentSerializer(my_comments, many=True)
 
         return Response({
             'all_comments': serializer.data,
             'my_comments': my_comments_serializer.data
-            })
+        })
+
     def partial_update(self, request, pk=None):
         comment = self.get_object()
         if (comment.user.id == request.user.id):
             return super(CommentViewSet, self).partial_update(request, pk)
-        else: 
+        else:
             raise serializers.ValidationError(
-            "This is not your comment")
+                "This is not your comment")
+
     def create(self, request):
         rush = get_object_or_404(Rush, pk=request.data['rush'])
         if rush.organization != request.user.organization:
             raise serializers.ValidationError(
-            "This is not a rush of yours")
-        serializer = CommentSerializer(data = request.data)
+                "This is not a rush of yours")
+        serializer = CommentSerializerFlat(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.save(user=request.user, organization=request.user.organization, rush_period = request.user.organization.active_rush_period)
+            serializer.save(user=request.user, organization=request.user.organization,
+                            rush_period=request.user.organization.active_rush_period)
             return Response(serializer.data)
+
 
 class EventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        exclude = ['organization',]
+        exclude = ['organization', ]
 
 
 class EventViewSet(viewsets.ModelViewSet):
@@ -256,7 +317,7 @@ class EventViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Event.tenant_objects.all()
 
-    @detail_route(methods=['post'], url_path = 'add-rush')
+    @detail_route(methods=['post'], url_path='add-rush')
     def add_to_attendance(self, request, pk=None):
         event = self.get_object()
         rush = request.data['rush']
@@ -267,5 +328,4 @@ class EventViewSet(viewsets.ModelViewSet):
         else:
             return Response({
                 'failure'
-                })
-
+            })
