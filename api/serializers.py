@@ -263,6 +263,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class CommentViewSet(viewsets.ModelViewSet):
     model = Comment
+    #TODO: ISAUTHENTICATED PERMISSION, UPDATING 
     permission_classes = []
 
     def get_queryset(self):
