@@ -13,18 +13,19 @@ from django.shortcuts import get_object_or_404
 from django.db.models import Sum
 from authentication.models import UserProfile
 from events.models import Event
+from authentication.permissions import IsMyComment
 
 
-class ReadNestedWriteFlatMixin(object):
-    """
-    Mixin that sets the depth of the serializer to 0 (flat) for writing operations.
-    For all other operations it keeps the depth specified in the serializer_class
-    """
-    def get_serializer_class(self, *args, **kwargs):
-        serializer_class = super(ReadNestedWriteFlatMixin, self).get_serializer_class(*args, **kwargs)
-        if self.request.method in ['PATCH', 'POST', 'PUT']:
-            serializer_class.Meta.depth = 0
-        return serializer_class
+# class ReadNestedWriteFlatMixin(object):
+#    """
+#    Mixin that sets the depth of the serializer to 0 (flat) for writing operations.
+#    For all other operations it keeps the depth specified in the serializer_class
+#    """
+#    def get_serializer_class(self, *args, **kwargs):
+#        serializer_class = super(ReadNestedWriteFlatMixin, self).get_serializer_class(*args, **kwargs)
+#        if self.request.method in ['PATCH', 'POST', 'PUT']:
+#            serializer_class.Meta.depth = 0
+#        return serializer_class
 
 class OrganizationSerializer(serializers.ModelSerializer):
 
@@ -35,7 +36,7 @@ class OrganizationSerializer(serializers.ModelSerializer):
 class OrganizationViews(viewsets.ModelViewSet):
     serializer_class = OrganizationSerializer
     model = Organization
-    permission_classes = []
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         return Organization.tenant_objects.all()
@@ -77,7 +78,6 @@ class UserSerializer(serializers.ModelSerializer):
             )
             user_profile = UserProfile(user=new_user)
             user_profile.save()
-            print new_user
             return new_user
 
 
@@ -157,31 +157,39 @@ class RushViewSetRanked(viewsets.ModelViewSet):
     serializer_class = RushSerializer
 
     def get_queryset(self):
-        already_ranked = self.request.user.profile.ranking.values('rush')
+        already_ranked = Ranking.tenant_objects.filter(pk=self.request.user.id).values('rush')
         not_ranked = Rush.tenant_objects.exclude(pk__in=already_ranked)
         return not_ranked
 
 
 class RankSerializer(serializers.ModelSerializer):
-    rush = RushSerializer()
 
     class Meta:
         model = Ranking
-        depth = 1
         fields = ('rush', 'rank', 'id')
 
     def create(self, validated_data):
         user = self.context['user']
         request = self.context['request']
-        print request.data
-        rush = get_object_or_404(Rush, pk=request.data['rush']['id'])
+        rush = get_object_or_404(Rush, pk=request.data['rush'])
+        if Ranking.tenant_objects.filter(pk=rush.id).exists():
+            raise serializers.ValidationError("You have already ranked this rush")
         if rush.organization == user.organization:
             rank = Ranking(user=user, rush=rush, rank=validated_data[
                            'rank'], organization=user.organization)
             rank.save()
             return rank
         raise serializers.ValidationError(
-            "you are not in the same organization")
+            "No Rush Found")
+    def to_representation(self, instance):
+        ret = super(RankSerializer, self).to_representation(instance)
+        rush = Rush.tenant_objects.get(pk=ret['rush'])
+        ret['rush'] = {
+            'first_name': rush.first_name,
+            'last_name': rush.last_name,
+            'id': rush.id
+        }
+        return ret
 
 
 class RankViewSet(viewsets.ModelViewSet):
@@ -197,7 +205,7 @@ class RankViewSet(viewsets.ModelViewSet):
     def create(self, request):
         serializer = RankSerializer(
             data=request.data, context={'user': request.user, 'request': request})
-        serializer.is_valid()
+        serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
 
@@ -240,18 +248,21 @@ class RankListViewSet(viewsets.ViewSet):
         return Response(rankList)
 
 
-
 class CommentSerializer(serializers.ModelSerializer):
-    #we could load all users onto comment serializer when it starts then sort
-    #them by their pk TODO
+    # we could load all users onto comment serializer when it starts then sort
+    # them by their pk TODO
+
     def __init__(self, *args, **kwargs):
         super(CommentSerializer, self).__init__(*args, **kwargs)
-        #trying to enable caching maybe? I need to find a way to record DB hits
-        self.users = get_user_model().tenant_objects.all()
+        # trying to enable caching maybe? I need to find a way to record DB
+        # hits
+        self.users = get_user_model().objects.all()
+
     class Meta:
-        model = Comment 
+        model = Comment
         fields = ('id', 'created_at', 'comment', 'user', 'rush', 'event')
-        read_only_fields = ('id', 'created_at', )
+        read_only_fields = ('id', 'created_at',)
+
     def to_representation(self, instance):
         ret = super(CommentSerializer, self).to_representation(instance)
         user = self.users.get(pk=ret['user'])
@@ -261,16 +272,48 @@ class CommentSerializer(serializers.ModelSerializer):
         }
         return ret
 
+    def validate_user(self, value):
+        user = self.context['request'].user
+        request = self.context['request']
+        if not request.user.has_perm('chapter_admin'):
+            return user
+        if not value.organization == user.organization:
+            raise serializers.ValidationError(
+                {'user': 'No Matching User Found'})
+        return value
+
+    def validate_event(self, value):
+        user = self.context['request'].user
+        if value is None:
+            return value
+        if value.organization != user.organization:
+            raise serializers.ValidationError(
+                {'event': 'No Matching Event Found'})
+        return value
+
+    def validate_rush(self, value):
+        user = self.context['request'].user
+        if value.organization != user.organization:
+            raise serializers.ValidationError(
+                {'rush': 'No Matching Rush Found'})
+        return value
+        # maybe make a validator here for cleaning fields this really should
+        # be what is used so that errors are explained correctly
+        # errors up here render in whole page errors in
+        # viewset render on their own
+
+
 class CommentViewSet(viewsets.ModelViewSet):
     model = Comment
-    #TODO: ISAUTHENTICATED PERMISSION, UPDATING 
-    permission_classes = []
+    # TODO: ISAUTHENTICATED PERMISSION, UPDATING
+    permission_classes = [IsMyComment, permissions.IsAuthenticated]
 
     def get_queryset(self):
         return Comment.tenant_objects.all()
 
+    # maybe t`here should be a seperate Admin serializer to make the
+    # code and responsibilites more modular
     def get_serializer_class(self):
-        print self.request.method
         if self.request.method == 'GET':
             return CommentSerializer
         else:
@@ -290,26 +333,23 @@ class CommentViewSet(viewsets.ModelViewSet):
             'my_comments': my_comments_serializer.data
         })
 
-    def partial_update(self, request, pk=None):
-        comment = self.get_object()
-        if (comment.user.id == request.user.id):
-            return super(CommentViewSet, self).partial_update(request, pk)
-        else:
-            raise serializers.ValidationError(
-                "This is not your comment")
-
     def create(self, request):
-        rush = get_object_or_404(Rush, pk=request.data['rush'])
-        if rush.organization != request.user.organization:
-            raise serializers.ValidationError(
-                "This is not a rush of yours")
-        serializer = CommentSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save(user=request.user, organization=request.user.organization,
+        serializer = CommentSerializer(
+            data=request.data, context={'request': request})
+        if serializer.is_valid():
+            serializer.save(organization=request.user.organization,
                             rush_period=request.user.organization.active_rush_period)
-            print serializer.fields
 
             return Response(serializer.data)
+        return Response(serializer.errors)
+
+    def update(self, request, pk=None, *args, **kwargs):
+        comment = self.get_object()
+        if not request.user.has_perm('chapter_admin'):
+            request.data['user'] = request.user.id
+            request.data['rush'] = comment.rush.id
+        return super(CommentViewSet, self).update(request, pk, **kwargs)
+
 
 class EventSerializer(serializers.ModelSerializer):
 

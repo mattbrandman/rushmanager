@@ -15,7 +15,7 @@ class Comment(TenantAware):
     rush = models.ForeignKey(Rush)
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     event = models.ForeignKey(Event, blank=True, null=True)
-    created_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     comment = models.TextField()
     organization = models.ForeignKey(Organization)
     rush_period = models.ForeignKey(RushPeriod)

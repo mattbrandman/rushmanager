@@ -13,9 +13,11 @@ var app = angular.module('commentApp', ['ui.bootstrap', 'xeditable']);
 	var x = $location.path();
 		x = x.split('/');
 		x = x[2];
-
+		this.user = _currentUser.user;
+		this.is_admin = _currentUser.is_admin;
 		this.all_comments;
 		this.comment = {};
+		this.comment.user = this.user;
 		this.comment.rush = x;
 		this.my_comment_list = [];
 		this.users = [];
@@ -26,9 +28,11 @@ var app = angular.module('commentApp', ['ui.bootstrap', 'xeditable']);
 			var submitPromise = $http.post('/api/comments/', comment)
 			submitPromise.success(function(data) {
 				_this.all_comments.push(data);
+				_this.my_comment_list.push(data.id)
 			});
 			this.comment = {};
 			this.comment.rush = x;
+			this.comment.user = this.user;
 
 		};
 		this.isEqual = function(comment) {
@@ -38,6 +42,11 @@ var app = angular.module('commentApp', ['ui.bootstrap', 'xeditable']);
 				return false;
 			}
 		};
+
+		this.update = function(comment) {
+			var toSend = {'comment': comment.comment};
+			$http.patch('/api/comments/' + comment.id + '/', toSend);
+		}
 
 		var promise = my_api.getComments(x);
 		promise.success(function(data) {

@@ -20,11 +20,11 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat = "item in ctr.all_comments">
+				<tr ng-repeat = "item in ctr.all_comments | orderBy:'created_at'">
 					<td>{{item.user.email}}</td>
 
-					<td ng-if="ctr.isEqual(item)" editable-text = "item.comment">{{item.comment}}</td>
-					<td ng-if="ctr.isEqual(item) == false">{{item.comment}}</td>
+					<td ng-if="ctr.isEqual(item) || ctr.is_admin == true" editable-text = "item.comment" onaftersave = "ctr.update(item)">{{item.comment}}</td>
+					<td ng-if="ctr.isEqual(item) == false && ctr.is_admin ==  false ">{{item.comment}}</td>
 				</tr>
 			</tbody>
 		</table>
@@ -32,8 +32,8 @@
 
 			<div class ="form-group row">
 				<div class="col-md-6">
-				<label for = "selectUser">User:</label>
-					<select id="selectUser" style="margin-bottom:15px;" class="form-control"  ng-model = "ctr.comment.user" ng-options="user.id as user.email for user in ctr.users">
+				<label ng-show = "ctr.is_admin" for = "selectUser">User:</label>
+					<select ng-show = "ctr.is_admin" id="selectUser" style="margin-bottom:15px;" class="form-control"  ng-model = "ctr.comment.user" ng-options="user.id as user.email for user in ctr.users">
 					</select>
 				</div>
 				<div class="col-md-6">
@@ -54,4 +54,10 @@
 </div>
 
 {% endverbatim %}
+<script>
+var _currentUser = {
+	'is_admin': {% filter lower %} {{perms.authentication.chapter_admin}} {% endfilter %},
+	'user' : {{request.user.id}}
+};
+</script>
 {% endblock %}
