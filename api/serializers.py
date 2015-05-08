@@ -172,7 +172,7 @@ class RankSerializer(serializers.ModelSerializer):
         user = self.context['user']
         request = self.context['request']
         rush = get_object_or_404(Rush, pk=request.data['rush'])
-        if Ranking.tenant_objects.filter(pk=rush.id).exists():
+        if Ranking.tenant_objects.filter(rush__id=rush.id).exists():
             raise serializers.ValidationError("You have already ranked this rush")
         if rush.organization == user.organization:
             rank = Ranking(user=user, rush=rush, rank=validated_data[
@@ -190,7 +190,6 @@ class RankSerializer(serializers.ModelSerializer):
             'id': rush.id
         }
         return ret
-
 
 class RankViewSet(viewsets.ModelViewSet):
     # returns ranked kids
@@ -217,8 +216,10 @@ class RankViewSet(viewsets.ModelViewSet):
             pk__in=already_ranked).order_by('first_name')
         data = RushSerializer(unranked, many=True).data
         return Response(data)
-
-
+    def partial_update(self, request, pk=None):
+        #TODO: Update needs to be handled in a simliar fashion
+        request.data.pop('rush', None)
+        super(RankViewSet, self).partial_update(request, pk)
 class RankListViewSet(viewsets.ViewSet):
     model = Ranking
 

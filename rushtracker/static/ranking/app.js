@@ -52,6 +52,9 @@
 			$http.delete(url);
 		}
 
+		this.update = function(data) {
+			$http.patch('/api/ranked/' + data.id + '/', {'rank': data.rank});
+		}
 		
 	}]);
 	app.controller('RankGeneratorController', ['$http', '$q', function($http, $q){
