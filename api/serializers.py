@@ -207,7 +207,6 @@ class RankViewSet(viewsets.ModelViewSet):
         return Response(data)
     def partial_update(self, request, pk=None):
         #TODO: Update needs to be handled in a simliar fashion
-        print "hi"
         request.data.pop('rush', None)
         return super(RankViewSet, self).partial_update(request, pk)
     def update(self, request, pk=None, *args, **kwargs):
