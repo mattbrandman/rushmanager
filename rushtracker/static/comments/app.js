@@ -4,16 +4,23 @@ var app = angular.module('commentApp', ['ui.bootstrap', 'xeditable']);
     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
     $locationProvider.html5Mode(true);
 }]);
+	//TODO: maybe I should load events and user 
+	//in the django template or all at once 
+	//so that I don't have to hit the database
+	//a bunch of times
 	app.run(function(editableOptions) {
   	editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
 	});
 
 	app.controller('CommentViewController', ['my_api', '$location', '$http', function(my_api, $location, $http) {
-		
-	var x = $location.path();
+		var _this = this; 
+		var x = $location.path();
 		x = x.split('/');
 		x = x[2];
-		this.user = _currentUser.user;
+		this.user = {};
+		my_api.getRush(x).success(function(data) {
+			_this.user = data;
+		});
 		this.is_admin = _currentUser.is_admin;
 		this.all_comments;
 		this.comment = {};
@@ -22,7 +29,6 @@ var app = angular.module('commentApp', ['ui.bootstrap', 'xeditable']);
 		this.my_comment_list = [];
 		this.users = [];
 		this.events = [];
-		var _this = this;
 
 		this.submit = function(comment) {
 			var submitPromise = $http.post('/api/comments/', comment)
@@ -75,9 +81,13 @@ var app = angular.module('commentApp', ['ui.bootstrap', 'xeditable']);
 
 		this.getUsers = function() {
 			return $http.get('/api/users/');
-		}
+		};
 
 		this.getEvents = function() {
 			return $http.get('/api/events/');
-		}
+		};
+
+		this.getRush = function(id) {
+			return $http.get('/api/rush/' + id + '/');
+		};
 	}]);

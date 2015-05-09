@@ -130,7 +130,7 @@ class RushSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Rush
-        fields = ('first_name', 'last_name', 'id')
+        fields = ('first_name', 'last_name', 'id', 'picture')
 
 
 class RushViewSet(viewsets.ModelViewSet):
@@ -183,7 +183,6 @@ class RankSerializer(serializers.ModelSerializer):
 
 class RankViewSet(viewsets.ModelViewSet):
     # returns ranked kids
-    model = Ranking
     serializer_class = RankSerializer
     permission_classes = [
         permissions.IsAuthenticated, SameOrganizationPermission]
@@ -308,10 +307,9 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class CommentViewSet(viewsets.ModelViewSet):
-    model = Comment
     # TODO: ISAUTHENTICATED PERMISSION, UPDATING
     permission_classes = [IsMyComment, permissions.IsAuthenticated]
-
+    model = Comment
     def get_queryset(self):
         return Comment.tenant_objects.all()
 

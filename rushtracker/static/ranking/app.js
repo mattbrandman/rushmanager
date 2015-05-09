@@ -1,19 +1,24 @@
 (function(){
+	
+
 	var app = angular.module('rankingCreation', []);
+	
 	app.config(['$httpProvider', function($httpProvider) {
     $httpProvider.defaults.xsrfCookieName = 'csrftoken';
     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
-}]);
+	}]);
+
 	app.controller('RankingController', ['$scope', '$http', '$q', 'httpRushService', function( $scope, $http, $q, httpRushService){
 		this.ranking = {};
-		this.rankList = this.range;
+		this.numberRange = this.range;
+
 		//this is the list of rankings
 		this.rankingList = [];
 		var _this = this
 		var x = httpRushService.getRushes();
 		x.then(function(payload) {
 			_this.listOfRushes = payload.data;
-			_this.rankList = _this.range();
+			_this.numberRange = _this.range();
 			_this.ranking.rush = _this.listOfRushes[0];
 		});
 		var y = httpRushService.getRanks();
@@ -30,18 +35,22 @@
 			return result;
 		};
 
+		//TODO: right now i'm going to just pass in the select index
+		//later this should be done in a better way
 		this.addRanking = function() {
-			var _this = this
-			this.listOfRushes.splice(this.listOfRushes.indexOf(this.ranking.rush), 1);
-			var toSend = {
-				'rush': this.ranking.rush,
-				'rank': this.ranking.rank,
-			}
-			$http.post('/api/ranked/', toSend).success(function(data) {
+			var _this = this;
+			
+			//creates a map of indexes based on user id then finds the index
+			//of the selected rush
+			var index =  this.listOfRushes.map(function(el) {
+  				return el.id;
+			}).indexOf(this.ranking.rush);
+
+			this.listOfRushes.splice(index, 1);
+			$http.post('/api/ranked/', this.ranking).success(function(data) {
 				_this.rankingList.unshift(data);
 			});
 			this.ranking = {};
-			this.ranking.rush = this.listOfRushes[0];
 			
 		};
 
@@ -71,7 +80,7 @@
 
 	app.service('httpRushService', ['$http', function($http) {
 		this.getRushes = function() {
-			return $http.get('/api/ranked/get-unranked').
+			return $http.get('/api/ranked/get-unranked/').
 			success(function(data, status, headers, config){
 			//something funk with scopes and how data is formatted when returned
 		});

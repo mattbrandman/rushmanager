@@ -14,7 +14,7 @@
 				</div>
 
 				<div class="col-sm-5">
-					<select class="form-control" ng-model="rankingCtrl.ranking.rank" ng-options ="rank for rank in rankingCtrl.rankList" required></select>
+					<select class="form-control" ng-model="rankingCtrl.ranking.rank" ng-options ="rank for rank in rankingCtrl.numberRange" required></select>
 				</div>
 				<div class = "col-md-2">
 					<input type = "submit" class="btn btn-primary btn-block" value="Rank!" ng-click="rankingCtrl.addRanking()" ng-disabled="!rankingForm.$valid"/>
@@ -22,7 +22,7 @@
 			</div>
 			<div class = "row" ng-repeat="rank in rankingCtrl.rankingList" ng-cloak>
 				<div class = "col-xs-5">
-					<h3>{{rank.rush.first_name}}</h3>
+					<h3>{{rank.rush.first_name}} {{rank.rush.last_name}}</h3>
 				</div>
 				<div class = "col-xs-5">
 					<select class="form-control" ng-model="rank.rank" ng-options ="rank for rank in rankingCtrl.range()" ng-change="rankingCtrl.update(rank)" ng-cloak></select>

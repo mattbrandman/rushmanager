@@ -12,6 +12,7 @@
 {% verbatim %}
 <div ng-app="commentApp">
 	<div class="container" ng-controller = "CommentViewController as ctr">
+		<img class ="center-block" ng-src = "{{ctr.user.picture}}"/>
 		<table ng-cloak style="table-layout: fixed" class = "table table-striped table-bordered">
 			<thead>
 				<tr>
