@@ -16,16 +16,6 @@ from events.models import Event
 from authentication.permissions import IsMyComment
 
 
-# class ReadNestedWriteFlatMixin(object):
-#    """
-#    Mixin that sets the depth of the serializer to 0 (flat) for writing operations.
-#    For all other operations it keeps the depth specified in the serializer_class
-#    """
-#    def get_serializer_class(self, *args, **kwargs):
-#        serializer_class = super(ReadNestedWriteFlatMixin, self).get_serializer_class(*args, **kwargs)
-#        if self.request.method in ['PATCH', 'POST', 'PUT']:
-#            serializer_class.Meta.depth = 0
-#        return serializer_class
 
 class OrganizationSerializer(serializers.ModelSerializer):
 
