@@ -281,7 +281,7 @@ class CommentSerializer(serializers.ModelSerializer):
         ret = super(CommentSerializer, self).to_representation(instance)
         user = self.users.get(pk=ret['user'])
         ret['user'] = {
-            'email': user.email,
+            'email': str(user),
             'id': user.id
         }
         return ret
