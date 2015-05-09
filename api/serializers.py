@@ -172,7 +172,7 @@ class RankSerializer(serializers.ModelSerializer):
         user = self.context['user']
         request = self.context['request']
         rush = get_object_or_404(Rush, pk=request.data['rush'])
-        if Ranking.tenant_objects.filter(rush__id=rush.id).exists():
+        if Ranking.tenant_objects.filter(rush__id=rush.id).filter(user__id=user.id).exists():
             raise serializers.ValidationError("You have already ranked this rush")
         if rush.organization == user.organization:
             rank = Ranking(user=user, rush=rush, rank=validated_data[
@@ -218,8 +218,21 @@ class RankViewSet(viewsets.ModelViewSet):
         return Response(data)
     def partial_update(self, request, pk=None):
         #TODO: Update needs to be handled in a simliar fashion
+        print "hi"
         request.data.pop('rush', None)
-        super(RankViewSet, self).partial_update(request, pk)
+        return super(RankViewSet, self).partial_update(request, pk)
+    def update(self, request, pk=None, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        #if this breaks check code base it is copied right from it
+        instance = self.get_object()
+        #TODO: error check that rush is there 
+        request.data['rush'] = instance.rush.id
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data)
+
+
 class RankListViewSet(viewsets.ViewSet):
     model = Ranking
 
