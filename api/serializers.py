@@ -120,10 +120,6 @@ class UserViewSet(viewsets.ModelViewSet):
             'message': 'Failure, no default password set'
         })
 
-    def list(self, request):
-        return super(UserViewSet, self).list(request)
-    # cache is causing the old list to be returned.  override
-    # get query set to fix
 
 
 class RushSerializer(serializers.ModelSerializer):
@@ -254,12 +250,6 @@ class CommentSerializer(serializers.ModelSerializer):
     # we could load all users onto comment serializer when it starts then sort
     # them by their pk TODO
 
-    def __init__(self, *args, **kwargs):
-        super(CommentSerializer, self).__init__(*args, **kwargs)
-        # trying to enable caching maybe? I need to find a way to record DB
-        # hits
-        self.users = get_user_model().objects.all()
-
     class Meta:
         model = Comment
         fields = ('id', 'created_at', 'comment', 'user', 'rush', 'event')
@@ -267,10 +257,12 @@ class CommentSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         ret = super(CommentSerializer, self).to_representation(instance)
-        user = self.users.get(pk=ret['user'])
         ret['user'] = {
-            'email': str(user),
-            'id': user.id
+            'email': str(instance.user),
+            'id': instance.user.id
+        }
+        ret['event'] = {
+            'name': str(instance.event)
         }
         return ret
 
@@ -308,23 +300,18 @@ class CommentSerializer(serializers.ModelSerializer):
 class CommentViewSet(viewsets.ModelViewSet):
     # TODO: ISAUTHENTICATED PERMISSION, UPDATING
     permission_classes = [IsMyComment, permissions.IsAuthenticated]
-    model = Comment
+    serializer_class = CommentSerializer
     def get_queryset(self):
-        return Comment.tenant_objects.all()
+        return Comment.tenant_objects.all().select_related('event', 'user')
 
     # maybe t`here should be a seperate Admin serializer to make the
     # code and responsibilites more modular
-    def get_serializer_class(self):
-        if self.request.method == 'GET':
-            return CommentSerializer
-        else:
-            return CommentSerializer
     # returns a list of comments, and a list of the user comments
 
     @detail_route(methods=['get'], url_path="get-comments")
     def get_comments_for_rush(self, request, pk=None):
         rush = get_object_or_404(Rush, pk=pk)
-        serializer = CommentSerializer(rush.comment_set.all(), many=True)
+        serializer = CommentSerializer(rush.comment_set.all().select_related('event', 'user'), many=True)
         my_comments = Comment.tenant_objects.filter(
             rush=rush).filter(user=request.user)
         my_comments_serializer = CommentSerializer(my_comments, many=True)

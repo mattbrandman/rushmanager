@@ -16,12 +16,16 @@
 		<table ng-cloak style="table-layout: fixed" class = "table table-striped table-bordered">
 			<thead>
 				<tr>
+				<th>Event and Date</th>
 				<th>User</th>
 				<th>Comment</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr ng-repeat = "item in ctr.all_comments | orderBy:'created_at'">
+					<td><b>Date:</b> {{item.created_at | date:"MM/dd/yyyy"}}
+					<br><b>Event:</b> {{item.event.name}}
+					</td>
 					<td>{{item.user.email}}</td>
 
 					<td ng-if="ctr.isEqual(item) || ctr.is_admin == true" editable-textarea = "item.comment" onaftersave = "ctr.update(item)">{{item.comment}}</td>
