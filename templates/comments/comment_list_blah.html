@@ -24,7 +24,7 @@
 				<tr ng-repeat = "item in ctr.all_comments | orderBy:'created_at'">
 					<td>{{item.user.email}}</td>
 
-					<td ng-if="ctr.isEqual(item) || ctr.is_admin == true" editable-text = "item.comment" onaftersave = "ctr.update(item)">{{item.comment}}</td>
+					<td ng-if="ctr.isEqual(item) || ctr.is_admin == true" editable-textarea = "item.comment" onaftersave = "ctr.update(item)">{{item.comment}}</td>
 					<td ng-if="ctr.isEqual(item) == false && ctr.is_admin ==  false ">{{item.comment}}</td>
 				</tr>
 			</tbody>
