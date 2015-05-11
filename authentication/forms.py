@@ -2,7 +2,8 @@ from django.forms import ModelForm, DateInput, PasswordInput
 from rushtracker.models import Rush
 from organization.models import Organization
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
+from crispy_forms.layout import Submit, Layout, Fieldset, Div
+from crispy_forms.bootstrap import PrependedText
 from authentication.models import UserProfile
 from django.contrib.auth.models import Permission
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -25,8 +26,12 @@ class UserSignInForm(AuthenticationForm):
         self.helper = FormHelper(self)
         self.helper.render_hidden_fields = True
         self.helper.form_tag = False
-        self.helper.add_input(
-            Submit('submit', 'Submit', css_class='btn_primary'))
+
+        self.helper.layout = Layout(
+            PrependedText('username', '<span class="glyphicon glyphicon-user"></span>'),
+            PrependedText('password', '<span class="glyphicon glyphicon-lock"></span>'),
+        )
+        
     def clean_username(self):
         return self.cleaned_data.get('username').lower()
 

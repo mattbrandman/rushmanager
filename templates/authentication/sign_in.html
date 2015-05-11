@@ -10,17 +10,28 @@
 	</head>
 	
 	<body>
-	<div class = "container">
-		<div class = "row">
+		<div class = "container">
 			<div class = "col-md-8 col-md-offset-2">
-				<form method="post" action = "{% url 'authentication:sign_in' %}">
-					{% load crispy_forms_tags %}
-					{% crispy form %}
-					<a href="{%url 'authentication:sign_up' %}" class="btn btn-primary">Sign Up Now!</a>
-					<input type="hidden" name="next" value="{{next}}"/>
-				</form>
+				<div class = "panel panel-info" style="margin-top:50px">
+
+					<div class = "panel-heading">
+						<div class="panel-title">Sign In</div>
+					</div>
+
+					<div class="panel-body">
+						<form method="post" action = "{% url 'authentication:sign_in' %}" role="form">
+							{% load crispy_forms_tags %}
+							{% crispy form %}
+
+							<button value="Login" class="btn btn-success">Login</button>
+							
+							<input type="hidden" name="next" value="{{next}}"/>
+						</form>
+					</div>
+
+					<div class = "panel-footer">Don't have an account?  <a href="{%url 'authentication:sign_up' %}">Sign Up Now!</a></div>
+				</div>
 			</div>
 		</div>
-	</div>
 	</body>
 </html>
