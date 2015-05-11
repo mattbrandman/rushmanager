@@ -49,11 +49,12 @@ class RushPeriodViews(viewsets.ModelViewSet):
 
 class UserSerializer(serializers.ModelSerializer):
     confirm = serializers.CharField(max_length=50, write_only=True)
+    name = serializers.SerializerMethodField()
 
     class Meta:
         model = get_user_model()
         fields = ('email', 'is_staff', 'is_rush_committee',
-                  'id', 'password', 'confirm',)
+                  'id', 'password', 'confirm', 'name')
         extra_kwargs = {
             'password': {'write_only': True},
         }
@@ -70,7 +71,8 @@ class UserSerializer(serializers.ModelSerializer):
             user_profile = UserProfile(user=new_user)
             user_profile.save()
             return new_user
-
+    def get_name(self, obj):
+        return str(obj)
 
 # ViewSets define the view behavior.
 
@@ -120,6 +122,8 @@ class UserViewSet(viewsets.ModelViewSet):
         return Response({
             'message': 'Failure, no default password set'
         })
+
+
 
 
 
