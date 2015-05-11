@@ -8,11 +8,14 @@
 <script src={% static 'comments/app.js' %}></script>
 <link href= {% static 'xeditable.css' %} rel="stylesheet"/>
 <script src={% static 'xeditable.js' %}></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-sanitize.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.11.2/select.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.11.2/select.css"/>
 
 {% verbatim %}
 <div ng-app="commentApp">
 	<div class="container" ng-controller = "CommentViewController as ctr">
-		<img class ="center-block" ng-src = "{{ctr.user.picture}}"/>
+		<img class ="center-block" ng-src = "{{ctr.picture}}"/>
 		<table ng-cloak style="table-layout: fixed" class = "table table-striped table-bordered">
 			<thead>
 				<tr>
@@ -33,27 +36,34 @@
 				</tr>
 			</tbody>
 		</table>
-		<form ng-submit="ctr.submit(ctr.comment)">
+		<form name = "commentForm" novalidate ng-submit="ctr.submit(ctr.comment)">
 
 			<div class ="form-group row">
 				<div class="col-md-6">
-				<label ng-show = "ctr.is_admin" for = "selectUser">User:</label>
-					<select ng-show = "ctr.is_admin" id="selectUser" style="margin-bottom:15px;" class="form-control"  ng-model = "ctr.comment.user" ng-options="user.id as user.email for user in ctr.users">
-					</select>
+				<label ng-show = "ctr.is_admin" for = "selectUser">User:*</label>
+					<ui-select ng-show = "ctr.is_admin" id="selectUser" style="margin-bottom:15px;"  ng-model = "ctr.comment.user">
+						<ui-select-match placeholder="Select a User">
+    					{{$select.selected.email}}
+						</ui-select-match>
+						<ui-select-choices repeat = "user.id as user in ctr.users">{{user.email}}</ui-select-choices>
+					</ui-select required>
 				</div>
 				<div class="col-md-6">
 				<label for = "selectEvent">Event:</label>
-					<select id="selectEvent" class="form-control"  ng-model = "ctr.comment.event" ng-options="event.id as event.title for event in ctr.events">
-					</select>
+					<ui-select id="selectEvent" ng-model = "ctr.comment.event" ng-options="event.id as event.title for event in ctr.events">
+						<ui-select-match placeholder="Select An Event">{{$select.selected.title}}</ui-select-match>
+						<ui-select-choices repeat ="event.id as event in ctr.events">{{event.title}}</ui-select-choices>
+					</ui-select
+					>
 				</div>
 			</div>
 			<div class="form-group row">
 				<div class= "col-md-12 ">
-				<label for = "commentText">Comment:</label>
-					<textarea id="commentText" ng-model = "ctr.comment.comment" class="form-control"></textarea>
+				<label for = "commentText">Comment:*</label>
+					<textarea id="commentText" ng-model = "ctr.comment.comment" class="form-control" required></textarea>
 				</div>
 			</div>
-			<input type="submit" value="Submit" class="btn btn-primary"/>
+			<input type="submit" value="Submit" class="btn btn-primary" ng-disabled="!commentForm.$valid"/>
 		</form>
 	</div>
 </div>

@@ -8,7 +8,9 @@ from django.conf import settings
 from tenancy.models import TenantAware
 from django.contrib.postgres.fields import HStoreField
 
-
+#TODO no class with an underscore should be accessed as it could be changed 
+#this should probably all be in just the create user field
+#or if this is our class its fine and we can leave it
 class BrotherUserManager(BaseUserManager):
 
     def _create_user(self, email, password,
@@ -16,7 +18,7 @@ class BrotherUserManager(BaseUserManager):
         now = timezone.now()
         if not email:
             raise ValueError('The given email must be set')
-        email = self.normalize_email(email)
+        email = self.normalize_email(email).lower()
         user = self.model(email=email,
                           is_staff=is_staff, is_active=True,
                           is_superuser=is_superuser, last_login=now,

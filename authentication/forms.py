@@ -27,7 +27,8 @@ class UserSignInForm(AuthenticationForm):
         self.helper.form_tag = False
         self.helper.add_input(
             Submit('submit', 'Submit', css_class='btn_primary'))
-
+    def clean_username(self):
+        return self.cleaned_data.get('username').lower()
 
 class ChapterAdminForm(ModelForm):
     name = forms.CharField(max_length=50, required=False)

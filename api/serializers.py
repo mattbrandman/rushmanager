@@ -14,7 +14,8 @@ from django.db.models import Sum
 from authentication.models import UserProfile
 from events.models import Event
 from authentication.permissions import IsMyComment
-
+from decimal import *
+from rest_framework import mixins
 
 
 class OrganizationSerializer(serializers.ModelSerializer):
@@ -217,7 +218,7 @@ class RankViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-class RankListViewSet(viewsets.ViewSet):
+class RankListViewSet(viewsets.ReadOnlyModelViewSet):
     model = Ranking
 
     """
@@ -238,7 +239,7 @@ class RankListViewSet(viewsets.ViewSet):
             if specific_rank_value != None:
                 number_of_rankings = all_rankings.filter(
                     rush__id=rush.id).count()
-                average_rank = specific_rank_value / number_of_rankings
+                average_rank = Decimal(specific_rank_value) / Decimal(number_of_rankings)
                 rankList.append({
                     'rush': RushSerializer(rush).data,
                     'rank': average_rank

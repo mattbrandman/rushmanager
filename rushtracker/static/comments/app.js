@@ -1,7 +1,8 @@
-var app = angular.module('commentApp', ['ui.bootstrap', 'xeditable']);
+(function() {
+var app = angular.module('commentApp', ['ui.bootstrap', 'xeditable', 'ui.select', 'ngSanitize']);
 	app.config(['$httpProvider', '$locationProvider', function($httpProvider, $locationProvider) {
     $httpProvider.defaults.xsrfCookieName = 'csrftoken';
-    $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+    $httpProvider.defaults.xsrfHeaderName = 'x-CSRFToken';
     $locationProvider.html5Mode(true);
 }]);
 	//TODO: maybe I should load events and user 
@@ -14,31 +15,33 @@ var app = angular.module('commentApp', ['ui.bootstrap', 'xeditable']);
 
 	app.controller('CommentViewController', ['my_api', '$location', '$http', function(my_api, $location, $http) {
 		var _this = this; 
-		var x = $location.path();
-		x = x.split('/');
-		x = x[2];
-		this.user = {};
-		my_api.getRush(x).success(function(data) {
-			_this.user = data;
+		
+		var rushId = $location.path();
+		rushId = rushId.split('/');
+		rushId = rushId[2];
+
+		this.picture;
+		my_api.getRush(rushId).success(function(data) {
+			_this.picture = data.picture;
 		});
+
 		this.is_admin = _currentUser.is_admin;
-		this.all_comments;
+		this.all_comments = [];
 		this.comment = {};
-		this.comment.user = this.user;
-		this.comment.rush = x;
+		this.comment.user = {};
+		this.comment.rush = rushId;
 		this.my_comment_list = [];
 		this.users = [];
 		this.events = [];
+
 
 		this.submit = function(comment) {
 			var submitPromise = $http.post('/api/comments/', comment)
 			submitPromise.success(function(data) {
 				_this.all_comments.push(data);
 				_this.my_comment_list.push(data.id)
+				_this.comment.comment = "";
 			});
-			this.comment = {};
-			this.comment.rush = x;
-			this.comment.user = this.user;
 
 		};
 		this.isEqual = function(comment) {
@@ -54,7 +57,7 @@ var app = angular.module('commentApp', ['ui.bootstrap', 'xeditable']);
 			$http.patch('/api/comments/' + comment.id + '/', toSend);
 		}
 
-		var promise = my_api.getComments(x);
+		var promise = my_api.getComments(rushId);
 		promise.success(function(data) {
 			_this.all_comments = data['all_comments'];
 			var my_comments = data['my_comments'];
@@ -66,6 +69,7 @@ var app = angular.module('commentApp', ['ui.bootstrap', 'xeditable']);
 		var userPromise = my_api.getUsers();
 		userPromise.success(function(data) {
 			_this.users = data;
+			_this.comment.user = _currentUser.user;
 		});
 
 		var eventPromise = my_api.getEvents();
@@ -91,3 +95,4 @@ var app = angular.module('commentApp', ['ui.bootstrap', 'xeditable']);
 			return $http.get('/api/rush/' + id + '/');
 		};
 	}]);
+})();
