@@ -95,4 +95,6 @@ var app = angular.module('commentApp', ['ui.bootstrap', 'xeditable', 'ui.select'
 			return $http.get('/api/rush/' + id + '/');
 		};
 	}]);
+
+
 })();
