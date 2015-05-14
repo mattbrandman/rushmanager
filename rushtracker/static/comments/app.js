@@ -1,17 +1,11 @@
 (function() {
-var app = angular.module('commentApp', ['ui.bootstrap', 'xeditable', 'ui.select', 'ngSanitize']);
+var app = angular.module('commentApp', ['ui.bootstrap', 'ui.select', 'ngSanitize']);
 	app.config(['$httpProvider', '$locationProvider', function($httpProvider, $locationProvider) {
     $httpProvider.defaults.xsrfCookieName = 'csrftoken';
     $httpProvider.defaults.xsrfHeaderName = 'x-CSRFToken';
     $locationProvider.html5Mode(true);
 }]);
-	//TODO: maybe I should load events and user 
-	//in the django template or all at once 
-	//so that I don't have to hit the database
-	//a bunch of times
-	app.run(function(editableOptions) {
-  	editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
-	});
+
 
 	app.controller('CommentViewController', ['my_api', '$location', '$http', function(my_api, $location, $http) {
 		var _this = this; 
@@ -24,7 +18,7 @@ var app = angular.module('commentApp', ['ui.bootstrap', 'xeditable', 'ui.select'
 		my_api.getRush(rushId).success(function(data) {
 			_this.picture = data.picture;
 		});
-
+		this.editing = false;
 		this.is_admin = _currentUser.is_admin;
 		this.all_comments = [];
 		this.comment = {};
@@ -95,6 +89,24 @@ var app = angular.module('commentApp', ['ui.bootstrap', 'xeditable', 'ui.select'
 			return $http.get('/api/rush/' + id + '/');
 		};
 	}]);
+
+	app.directive('inlineEdit', function () {
+
+		return {
+			require: 'ngModel',
+			restrict: 'E',
+			scope: {
+				ngModel: '=',
+				update: '&'
+			},
+			controller: function($rootScope, $scope) {
+				this.editing = false;
+			},
+			controllerAs: 'ctrl',
+			bindToController: true,
+			templateUrl: '/static/directives/InlineEdit.html'
+		}
+	});
 
 
 })();

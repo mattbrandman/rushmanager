@@ -6,36 +6,17 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.1/ui-bootstrap-tpls.min.js"></script>
 <script  src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
 <script src={% static 'comments/app.js' %}></script>
-<link href= {% static 'xeditable.css' %} rel="stylesheet"/>
-<script src={% static 'xeditable.js' %}></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-sanitize.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.11.2/select.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.11.2/select.css"/>
-
 {% verbatim %}
 <div ng-app="commentApp">
 	<div class="container" ng-controller = "CommentViewController as ctr">
-		<img class ="center-block" ng-src = "{{ctr.picture}}"/>
-		<table ng-cloak style="table-layout: fixed; word-wrap:break-word" class = "table table-striped table-bordered">
-			<thead>
-				<tr>
-				<th class="hidden-xs">Event and Date</th>
-				<th>User</th>
-				<th>Comment</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat = "item in ctr.all_comments | orderBy:'created_at'">
-					<td class="hidden-xs"><b>Date:</b> {{item.created_at | date:"MM/dd/yyyy"}}
-					<br><b>Event:</b> {{item.event.name}}
-					</td>
-					<td>{{item.user.email}}</td>
 
-					<td ng-if="ctr.isEqual(item) || ctr.is_admin == true" editable-textarea = "item.comment" onaftersave = "ctr.update(item)">{{item.comment}}</td>
-					<td ng-if="ctr.isEqual(item) == false && ctr.is_admin ==  false ">{{item.comment}}</td>
-				</tr>
-			</tbody>
-		</table>
+		<img class ="center-block" ng-src = "{{::ctr.picture}}"/>
+			<div ng-repeat = "item in ctr.all_comments | orderBy:'created_at'">
+				<inline-edit ng-model="item" update="ctr.update(item)"></inline-edit>
+			</div>
 		<form name = "commentForm" novalidate ng-submit="ctr.submit(ctr.comment)">
 
 			<div class ="form-group row">
@@ -45,7 +26,7 @@
 						<ui-select-match placeholder="Select a User">
     					{{$select.selected.name}}
 						</ui-select-match>
-						<ui-select-choices repeat = "user.id as user in ctr.users">{{user.name}}</ui-select-choices>
+					                       	<ui-select-choices repeat = "user.id as user in ctr.users">{{user.name}}</ui-select-choices>
 					</ui-select required>
 				</div>
 				<div class="col-md-6">
