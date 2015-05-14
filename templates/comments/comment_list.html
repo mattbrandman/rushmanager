@@ -15,7 +15,16 @@
 
 		<img class ="center-block" ng-src = "{{::ctr.picture}}"/>
 			<div ng-repeat = "item in ctr.all_comments | orderBy:'created_at'">
-				<inline-edit ng-model="item" update="ctr.update(item)"></inline-edit>
+				<div ng-if="ctr.isEqual(item) || ctr.is_admin">
+					<inline-edit ng-model="item" update="ctr.update(item)"></inline-edit>
+				</div>
+				<div ng-if="!ctr.isEqual(item) && !ctr.is_admin">
+					<div class="row">
+					<h4 class="col-md-12" ng-click="ctrl.editing = true">{{item.user.email}}</h4>
+					<p class="col-md-6" style="word-wrap: break-word;">{{item.comment}}</p>
+					<p class="col-md-12">{{item.created_at | date:'MM/dd/yyyy @ h:mma'}}</p>
+					</div>
+				</div> 
 			</div>
 		<form name = "commentForm" novalidate ng-submit="ctr.submit(ctr.comment)">
 
