@@ -54,7 +54,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = ('email', 'is_staff', 'is_rush_committee',
-                  'id', 'password', 'confirm', 'name')
+                  'id', 'password', 'confirm', 'name', )
         extra_kwargs = {
             'password': {'write_only': True},
         }
@@ -128,18 +128,22 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class RushSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Rush
-        fields = ('first_name', 'last_name', 'id', 'picture')
+        fields = ('first_name', 'last_name', 'id', 'picture', 'dorm', 'contacted_date', 'primary_contact')
 
-
+    def to_representation(self, instance):
+        ret = super(RushSerializer, self).to_representation(instance)
+        user = instance.primary_contact
+        if instance.primary_contact is not None:
+            ret['primary_contact'] = {'name': user.first_name + ' ' + user.last_name}
+        return ret
 class RushViewSet(viewsets.ModelViewSet):
     serializer_class = RushSerializer
     model = Rush
 
     def get_queryset(self):
-        return Rush.tenant_objects.all()
+        return Rush.tenant_objects.all().select_related('primary_contact')
 
 
 class RushViewSetRanked(viewsets.ModelViewSet):

@@ -13,10 +13,11 @@ var app = angular.module('commentApp', ['ui.bootstrap', 'ui.select', 'ngSanitize
 		var rushId = $location.path();
 		rushId = rushId.split('/');
 		rushId = rushId[2];
+		this.rush = {};
 
 		this.picture;
 		my_api.getRush(rushId).success(function(data) {
-			_this.picture = data.picture;
+			_this.rush = data;
 		});
 		this.editing = false;
 		this.is_admin = _currentUser.is_admin;
@@ -99,14 +100,40 @@ var app = angular.module('commentApp', ['ui.bootstrap', 'ui.select', 'ngSanitize
 				ngModel: '=',
 				update: '&'
 			},
-			controller: function($rootScope, $scope) {
+			controller: function($rootScope, $scope, $timeout, $window) {
 				this.editing = false;
+				var _this = this;
+				this.comment = this.ngModel.comment;
+
+				this.editOpen = function() {
+					$window.onclick = function(event) {
+						_this.editing = false;
+						$scope.$apply();
+					}
+					$rootScope.$broadcast('newEdit', {id: this.ngModel.id });
+				};
+				$scope.$on('newEdit', function(event, args) {
+					if(args.id != _this.ngModel.id) {
+						_this.editing = false;
+					};
+				});
+				
 			},
 			controllerAs: 'ctrl',
 			bindToController: true,
 			templateUrl: '/static/directives/InlineEdit.html'
 		}
 	});
+	app.directive('autofocus', ['$timeout', function($timeout) {
+		return {
+			restrict: 'A',
+			link : function($scope, $element) {
+				$timeout(function() { 
+					$element[0].focus();
+				});
+			}
+		}
+	}]);
 
 
 })();

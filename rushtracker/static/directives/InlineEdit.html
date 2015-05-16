@@ -1,18 +1,21 @@
-<div class="row" ng-click="ctrl.editing = true">
-		<div ng-switch on="ctrl.editing">
-			<h4 class="col-md-12" ng-click="ctrl.editing = true">{{::ctrl.ngModel.user.email}}</h4>
-			<div ng-switch-when="false">
-					<p class="col-md-6" style="word-wrap: break-word;">{{::ctrl.ngModel.comment}}</p>
-			</div>
-			<div ng-switch-when="true">
-				<div class="col-md-6">
-					<textarea class="form-control" ng-model="ctrl.ngModel.comment"></textarea>
-				</div>
-				<div class="col-md-2">
-					<span><button class="btn btn-primary" ng-click="ctrl.update({comment: ctrl.ngModel}); ctrl.editing = false;$event.stopPropagation();">Submit</button></span>
-					<span><button class="btn btn-danger" ng-click="ctrl.editing = false;$event.stopPropagation();">Cancel</button></span>
-				</div>
-			</div>
-			<p class="col-md-12">{{ctrl.ngModel.created_at | date:'MM/dd/yyyy @ h:mma'}}</p>
-		</div>
+<div class="row" ng-click="ctrl.editing = true; ctrl.editOpen(); $event.stopPropagation();">
+    <div ng-switch on="ctrl.editing">
+        <h4 class="col-md-12" ng-click="ctrl.editing = true; ctrl.editOpen()">{{::ctrl.ngModel.user.email}}</h4>
+        <div ng-switch-when="false">
+            <p class="col-md-6" style="word-wrap: break-word; margin-left: 10px">{{::ctrl.ngModel.comment}}</p>
+        </div>
+        <div ng-switch-when="true">
+            <div class="col-md-6">
+                <textarea class="form-control" ng-model="ctrl.comment" autofocus></textarea>
+            </div>
+            <div class="col-md-6">
+                <!-- TODO: ng click should be a function on the controller-->
+                <span><button class="btn btn-primary" ng-click="ctrl.ngModel.comment = ctrl.comment; ctrl.update({comment: ctrl.ngModel}); ctrl.editing = false; $event.stopPropagation();">Submit</button></span>
+                <span><button class="btn btn-danger" ng-click="ctrl.comment = ctrl.ngModel.comment; ctrl.editing = false; $event.stopPropagation();">Cancel</button></span>
+            </div>
+            {{blur}}
+        </div>
+        <p class="col-md-12">{{ctrl.ngModel.created_at | date:'MM/dd/yyyy @ h:mma'}}</p>
+    </div>
 </div>
+<!--Should the borders be a bit longer???-->
