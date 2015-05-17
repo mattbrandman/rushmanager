@@ -108,6 +108,7 @@ var app = angular.module('commentApp', ['ui.bootstrap', 'ui.select', 'ngSanitize
 				this.editOpen = function() {
 					$window.onclick = function(event) {
 						_this.editing = false;
+						_this.comment = _this.ngModel.comment;
 						$scope.$apply();
 					}
 					$rootScope.$broadcast('newEdit', {id: this.ngModel.id });
