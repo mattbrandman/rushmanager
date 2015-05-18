@@ -13,7 +13,7 @@ from django.shortcuts import get_object_or_404
 from django.db.models import Sum
 from authentication.models import UserProfile
 from events.models import Event
-from authentication.permissions import IsMyComment
+from authentication.permissions import IsMineOrOwner
 from decimal import *
 from rest_framework import mixins
 
@@ -24,7 +24,7 @@ class OrganizationSerializer(serializers.ModelSerializer):
         model = Organization
 
 
-class OrganizationViews(viewsets.ModelViewSet):
+class OrganizationViews(viewsets.ReadOnlyModelViewSet):
     serializer_class = OrganizationSerializer
     model = Organization
     permission_classes = [permissions.IsAuthenticated]
@@ -191,7 +191,7 @@ class RankViewSet(viewsets.ModelViewSet):
     # returns ranked kids
     serializer_class = RankSerializer
     permission_classes = [
-        permissions.IsAuthenticated, SameOrganizationPermission]
+        permissions.IsAuthenticated, SameOrganizationPermission, IsMineOrOwner]
 
     def get_queryset(self):
         return Ranking.tenant_objects.filter(user__id=self.request.user.id).order_by('rush__first_name')
@@ -309,7 +309,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class CommentViewSet(viewsets.ModelViewSet):
     # TODO: ISAUTHENTICATED PERMISSION, UPDATING
-    permission_classes = [IsMyComment, permissions.IsAuthenticated]
+    permission_classes = [IsMineOrOwner, SameOrganizationPermission, permissions.IsAuthenticated]
     serializer_class = CommentSerializer
     def get_queryset(self):
         return Comment.tenant_objects.all().select_related('event', 'user')

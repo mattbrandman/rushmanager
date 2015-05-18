@@ -19,7 +19,10 @@ class Rush(TenantAware):
 	picture = models.ImageField(upload_to='profile_picture', blank=True, null=True)
 	rush_period = models.ManyToManyField(RushPeriod)
 	organization = models.ForeignKey(Organization)
-	rating = models.IntegerField(blank=True, null=True)
+	graduating_year = models.IntegerField(blank=True, null=True)
+	is_available = models.BooleanField('Is Available To Rush', default=True)
+	is_legacy = models.BooleanField('Legacy', default=False)
+
 
 	def __str__(self):
 		return self.first_name + " " + self.last_name
