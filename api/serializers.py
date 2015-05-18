@@ -135,8 +135,9 @@ class RushSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         ret = super(RushSerializer, self).to_representation(instance)
         user = instance.primary_contact
+
         if instance.primary_contact is not None:
-            ret['primary_contact'] = {'name': user.first_name + ' ' + user.last_name}
+            ret['primary_contact'] = {'name': str(user)}
         return ret
 class RushViewSet(viewsets.ModelViewSet):
     serializer_class = RushSerializer
