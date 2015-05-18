@@ -25,7 +25,7 @@
                 <h3 style="margin-left: -10px"> Comments: </h3>
                 <div style="border-bottom: 1px solid" ng-repeat="item in ctr.all_comments | orderBy:'created_at'">
                     <div ng-if="ctr.isEqual(item) || ctr.is_admin">
-                        <inline-edit ng-model="item" update="ctr.update(item)"></inline-edit>
+                        <inline-edit ng-model="item" update="ctr.update(item)" delete-comment="ctr.deleteComment(comment)"></inline-edit>
                     </div>
                     <div ng-if="!ctr.isEqual(item) && !ctr.is_admin">
                         <div class="row comment-box">

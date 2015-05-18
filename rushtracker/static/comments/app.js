@@ -50,7 +50,18 @@ var app = angular.module('commentApp', ['ui.bootstrap', 'ui.select', 'ngSanitize
 		this.update = function(comment) {
 			var toSend = {'comment': comment.comment};
 			$http.patch('/api/comments/' + comment.id + '/', toSend);
-		}
+		};
+
+		this.deleteComment = function(comment) {
+			var x = confirm("Are you sure you want to delete this comment?");
+			if(x == true) {
+				var index = this.all_comments.indexOf(comment);
+				this.all_comments.splice(index, 1);
+				$http.delete('/api/comments/' + comment.id + '/');
+			} else {
+				return;
+			}
+		};
 
 		var promise = my_api.getComments(rushId);
 		promise.success(function(data) {
@@ -70,7 +81,7 @@ var app = angular.module('commentApp', ['ui.bootstrap', 'ui.select', 'ngSanitize
 		var eventPromise = my_api.getEvents();
 		eventPromise.success(function(data) {
 			_this.events = data;
-		})
+		});
 	}]);
 
 	app.service('my_api', ['$http', function($http) {
@@ -98,9 +109,10 @@ var app = angular.module('commentApp', ['ui.bootstrap', 'ui.select', 'ngSanitize
 			restrict: 'E',
 			scope: {
 				ngModel: '=',
-				update: '&'
+				update: '&',
+				deleteComment: '&'
 			},
-			controller: function($rootScope, $scope, $timeout, $window) {
+			controller: function($rootScope, $scope, $timeout, $window, $http) {
 				this.editing = false;
 				var _this = this;
 				this.comment = this.ngModel.comment;

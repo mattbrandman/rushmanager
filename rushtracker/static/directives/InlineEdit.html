@@ -2,18 +2,20 @@
     <div ng-switch on="ctrl.editing">
         <h4 class="col-md-12" ng-click="ctrl.editing = true; ctrl.editOpen()">{{::ctrl.ngModel.user.email}}</h4>
         <div ng-switch-when="false">
-            <p class="col-md-6" style="word-wrap: break-word; margin-left: 10px">{{::ctrl.ngModel.comment}}</p>
+            <p class="col-md-12" style="word-wrap: break-word; margin-left: 10px">{{::ctrl.ngModel.comment}}</p>
+            
         </div>
         <div ng-switch-when="true">
-            <div class="col-md-6">
-                <textarea class="form-control" ng-model="ctrl.comment" autofocus></textarea>
+            <div class="col-md-12">
+                <textarea style="margin-bottom: 10px" class="form-control" ng-model="ctrl.comment" autofocus></textarea>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <!-- TODO: ng click should be a function on the controller-->
                 <span><button class="btn btn-primary" ng-click="ctrl.ngModel.comment = ctrl.comment; ctrl.update({comment: ctrl.ngModel}); ctrl.editing = false; $event.stopPropagation();">Submit</button></span>
                 <span><button class="btn btn-danger" ng-click="ctrl.comment = ctrl.ngModel.comment; ctrl.editing = false; $event.stopPropagation();">Cancel</button></span>
+                <span>
+                <button ng-click="ctrl.deleteComment({comment: ctrl.ngModel}); $event.stopPropagation()" class="btn btn-danger pull-right">Delete</button></span>
             </div>
-            {{blur}}
         </div>
         <p class="col-md-12">{{ctrl.ngModel.created_at | date:'MM/dd/yyyy @ h:mma'}}</p>
     </div>
