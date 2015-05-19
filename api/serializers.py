@@ -355,23 +355,20 @@ class EventSerializer(serializers.ModelSerializer):
         model = Event
         exclude = ['organization', ]
 
+    def to_representation(self, instance):
+        #TODO: don't use instance get the new version instance is the old version 
+        ret = super(EventSerializer, self).to_representation(instance)
+        attendance = instance.attendance
+        rs = RushSerializer(attendance, many=True)
+        ret['attendance'] = rs.data
+        return ret
 
 class EventViewSet(viewsets.ModelViewSet):
     serializer_class = EventSerializer
     model = Event
 
     def get_queryset(self):
-        return Event.tenant_objects.all()
+        return Event.tenant_objects.all().prefetch_related('attendance')
 
-    @detail_route(methods=['post'], url_path='add-rush')
-    def add_to_attendance(self, request, pk=None):
-        event = self.get_object()
-        rush = request.data['rush']
-        rush = get_object_or_404(Rush, rush)
-        if rush.organization == request.user.organization:
-            event.attendance.add(rush)
-            return Response(Rush)
-        else:
-            return Response({
-                'failure'
-            })
+
+

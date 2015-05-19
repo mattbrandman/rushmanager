@@ -20,7 +20,8 @@ class CreateEventForm(ModelForm):
         self.helper.layout = Layout(
             Field('title'),
             # TODO: maybe add description field
-            # Field('description', widget='description', required=False),
+            Field('description', widget='description', required=False),
+
             Field('date', css_class='datepicker'),
             # TODO: should attendance be part of this create form?
             Field('attendance', required=False),

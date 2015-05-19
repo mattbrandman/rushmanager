@@ -1,0 +1,11 @@
+<accordion-heading>
+    <div>
+        {{event.title}} - {{event.date}}
+    </div>
+</accordion-heading>
+{{event.description || "No Description Available"}} 
+<ui-select multiple ng-model="event.attendance">
+    <ui-select-match placeholder="Select Rushes That Attended">{{$item.first_name}}</ui-select-match>
+    <ui-select-choices repeat="rush.id as rush in ctrl.testList">{{rush.first_name}}</ui-select-choices>
+</ui-select>
+<button ng-click="ctrl.updateAttendance(event.attendance)" style="margin-top:10px" class="btn btn-primary">Update Attendance</button>

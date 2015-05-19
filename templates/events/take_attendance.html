@@ -1,12 +1,20 @@
-{% extends "base.html" %}
-{% block content %}
-{% verbatim %}
-<div ng-app="EventManagement">
-	<div ng-controller="EventController">
-		<div ng-repeat = "for "
-	</div>
+{% extends "base.html" %} {% block content %} {% load staticfiles %}
+<script src={% static 'angular.min.js' %}></script>
+<script src={% static 'events/app.js' %}></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.1/ui-bootstrap-tpls.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-sanitize.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.11.2/select.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.11.2/select.css" /> {% verbatim %}
+<div ng-app="eventManagement">
+    <div class="container">
+        <div ng-controller="EventController as ctrl">
+            <accordion close-others="true">
+                <accordion-group ng-repeat="event in ctrl.rushList">
+                    <rush-attendance ng-model = "event"></rush-attendance>
+                </accordion-group>
+            </accordion>
+        </div>
+    </div>
+
 </div>
-
-{% endverbatim %}
-{% endblock %}
-
+{% endverbatim %} {% endblock %}

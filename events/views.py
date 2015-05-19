@@ -6,7 +6,7 @@ from events.forms import CreateEventForm
 from rushtracker.models import Rush
 
 class EventCreateView(LoginRequiredMixin, generic.CreateView):
-    template_name = 'events/create_event.html'
+    template_name = 'events/take_attendance.html'
     form_class = CreateEventForm
     model = Event
 
@@ -18,7 +18,7 @@ class EventCreateView(LoginRequiredMixin, generic.CreateView):
         return reverse('rushtracker:index')
 
 class EventIndexView(LoginRequiredMixin, generic.ListView):
-	template_name = 'events/all_events.html'
+	template_name = 'events/take_attendance.html'
 	context_object_name = 'events'
 	def get_queryset(self):
 		return Event.tenant_objects.all().order_by('date')
