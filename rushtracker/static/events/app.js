@@ -33,6 +33,10 @@ var app = angular.module('eventManagement', ['ui.bootstrap', 'ui.select', 'ngSan
 				var _this = this;
 				this.testList = [];
 				this.rushList = [];
+				var temp = $scope.event.attendance.map(function(obj) {
+					return obj.id
+				});
+				$scope.event.attendance = temp;
 				this.updateAttendance = function(updateList) {
 					$http.patch('/api/events/' + $scope.event.id + '/', {attendance: updateList});
 				};

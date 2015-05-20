@@ -356,9 +356,11 @@ class EventSerializer(serializers.ModelSerializer):
         exclude = ['organization', ]
 
     def to_representation(self, instance):
-        #TODO: don't use instance get the new version instance is the old version 
+        #TODO: using prefetch related causes the 
+        #many to many to not update on the response to a PUT
         ret = super(EventSerializer, self).to_representation(instance)
-        attendance = instance.attendance
+        attendance = instance.attendance.all()
+        print instance.title
         rs = RushSerializer(attendance, many=True)
         ret['attendance'] = rs.data
         return ret
@@ -368,7 +370,7 @@ class EventViewSet(viewsets.ModelViewSet):
     model = Event
 
     def get_queryset(self):
-        return Event.tenant_objects.all().prefetch_related('attendance')
+        return Event.tenant_objects.all()
 
 
 
