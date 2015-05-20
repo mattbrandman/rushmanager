@@ -4,10 +4,19 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <div class="container-fluid">
-<div class="row">
-<div class ="col-md-8 col-md-offset-2">
-		{% load crispy_forms_tags %}
-		{% crispy form %}
-		</div>
-</div>		
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-info" style="margin-top: 10px">
+                <div class="panel-heading">
+                    <div class="panel-title">Sign In</div>
+                </div>
+                <div class="panel-body">
+                    <form method="post" class="form">
+                        {% load crispy_forms_tags %} {% crispy form %}
+                    </form>
+                    <button class="btn btn-primary">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

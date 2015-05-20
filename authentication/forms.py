@@ -46,8 +46,7 @@ class ChapterAdminForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(ChapterAdminForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
-        self.helper.add_input(
-            Submit('Submit', 'Submit', css_class='btn-primary'))
+        self.helper.form_tag = False
 
     def clean_password2(self):
         # Check that the two password entries match

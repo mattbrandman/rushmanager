@@ -234,6 +234,7 @@ class RankListViewSet(viewsets.ReadOnlyModelViewSet):
     Returns the rankings of the kids 
 
     """
+    queryset = Ranking.tenant_objects.all()
 
     def list(self, request, *args, **kwargs):
         all_rankings = Ranking.tenant_objects.filter(
