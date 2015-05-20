@@ -359,11 +359,19 @@ class EventSerializer(serializers.ModelSerializer):
         #TODO: using prefetch related causes the 
         #many to many to not update on the response to a PUT
         ret = super(EventSerializer, self).to_representation(instance)
-        attendance = instance.attendance.all()
+        attendance = instance.attendance
         print instance.title
         rs = RushSerializer(attendance, many=True)
         ret['attendance'] = rs.data
         return ret
+
+    def validate_attendance(self, value):
+        user = self.context['request'].user
+        for rush in value:
+            if rush.organization != user.organization:
+                raise serializers.ValidationError(
+                {'attendance': 'No Matching Rush Found'})
+        return value
 
 class EventViewSet(viewsets.ModelViewSet):
     serializer_class = EventSerializer

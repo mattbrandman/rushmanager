@@ -38,14 +38,16 @@ var app = angular.module('eventManagement', ['ui.bootstrap', 'ui.select', 'ngSan
 				});
 				$scope.event.attendance = temp;
 				this.updateAttendance = function(updateList) {
-					$http.patch('/api/events/' + $scope.event.id + '/', {attendance: updateList});
+					this.response = $http.patch('/api/events/' + $scope.event.id + '/', {attendance: updateList});
+					this.response.success(function(data) {
+						alert('Update Successfully')
+					});
 				};
 
 
 				var promise = $http.get('/api/events/');
 				promise.success(function(data) {
 					_this.rushList = data;
-					console.log(data);
 				});
 
 
