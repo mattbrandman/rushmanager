@@ -128,6 +128,7 @@ var app = angular.module('commentApp', ['ui.bootstrap', 'ui.select', 'ngSanitize
 				$scope.$on('newEdit', function(event, args) {
 					if(args.id != _this.ngModel.id) {
 						_this.editing = false;
+						_this.comment = _this.ngModel.comment;
 					};
 				});
 				
