@@ -16,7 +16,7 @@ from events.models import Event
 from authentication.permissions import IsMineOrOwner
 from decimal import *
 from rest_framework import mixins
-
+from rest_framework.viewsets import GenericViewSet
 
 class OrganizationSerializer(serializers.ModelSerializer):
 
@@ -39,12 +39,17 @@ class RushPeriodSerializer(serializers.ModelSerializer):
         model = RushPeriod
 
 
-class RushPeriodViews(viewsets.ModelViewSet):
+class RushPeriodViews(mixins.CreateModelMixin,
+                   mixins.RetrieveModelMixin,
+                   mixins.UpdateModelMixin,
+                   mixins.ListModelMixin,
+                   GenericViewSet):
     serializer_class = RushPeriodSerializer
     model = RushPeriod
 
     def get_queryset(self):
         return RushPeriod.tenant_objects.all()
+
 
 
 class UserSerializer(serializers.ModelSerializer):
