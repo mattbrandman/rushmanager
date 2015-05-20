@@ -271,6 +271,12 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = ('id', 'created_at', 'comment', 'user', 'rush', 'event')
         read_only_fields = ('id', 'created_at',)
 
+
+    def __init__(self, *args, **kwargs):
+        super(CommentSerializer, self).__init__(*args, **kwargs)
+        self.fields['user'].queryset = get_user_model().tenant_objects.all()
+        self.fields['rush'].queryset = Rush.tenant_objects.all()
+        self.fields['event'].queryset = Event.tenant_objects.all()
     def to_representation(self, instance):
         ret = super(CommentSerializer, self).to_representation(instance)
         ret['user'] = {

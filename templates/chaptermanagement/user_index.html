@@ -1,75 +1,79 @@
-{%extends "base.html" %}
-{% block content %}
-<div class = "container">
-<div class = "row">
-	<table class = "table table-striped table-bordered">
+{% extends "base.html" %}
+{%block content %}
+{% load staticfiles %}
+<script src={% static 'angular.min.js' %}></script>
+<script src={% static 'chaptermanagement/app.js' %}></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.1/ui-bootstrap-tpls.min.js"></script>
+{% verbatim %}
+<div class = "container-fluid" ng-app="chapterManagement" ng-controller="PageController as PageCtrl">
+	<table class = "table table-striped table-bordered" >
 		<thead>
 			<tr>
       <th>Email</th>
+      <th>Rush Committee</th>
+      <th class="hidden-xs">Reset</th>
 			</tr>
 		</thead>
 		<tbody>
-			{% for user in all_users %}
-			<tr>
-				<td >{{user.email}}</td>
+			<tr ng-repeat="brother in PageCtrl.brothers">
+				<td>{{brother.email}}</td>
+				<td ng-switch on="brother.is_rush_committee">
+				
+					<input type="button" ng-model="brother.is_rush_committee" ng-switch-when="false"value="ADD" ng-click="PageCtrl.ChangeCommitteeStatus(brother)"/>
+
+					<input type="button" ng-model="brother.is_rush_committee" ng-switch-when="true" value="REMOVE" ng-click="PageCtrl.ChangeCommitteeStatus(brother)"/>
+				</td>
+				<td class = "hidden-xs">
+					<input class="btn btn-danger" type="button" ng-click="PageCtrl.ResetPassword(brother)" ng-disabled="brother.reset" value="Reset Password"/>
+				</td>
 			</tr>
-			{% endfor %}
 		</tbody>
 	</table>
+	<button class="btn btn-default" ng-click="open()">New Brother</button>
+
+
+	<script type="text/ng-template" id="/add_brother_modal.html">
+		<tabset>
+		<tab heading="Singular">
+	        <div class="modal-header">
+	            <h3 class="modal-title">Add A New Brother</h3>
+	        </div>
+	        <div class="modal-body">
+	            <form ng-submit="ModalCtrl.ok()" >
+	                <label>Email: </label>
+	                <input type="email" ng-model="ModalCtrl.new_brother.email" class="form-control"/>
+	                <label>Password: </label>
+	                <input type="password" ng-model="ModalCtrl.new_brother.password" class="form-control"/>
+	                <label> Confirm Password: </label>
+	                <input type="password" ng-model="ModalCtrl.new_brother.confirm" class="form-control"/>
+	                <input type="submit" class="btn btn-primary" style ="display: None"/>
+	            </form>
+	        </div>
+	        <div class="modal-footer">
+	            <button type="submit" class="btn btn-primary" ng-click="ModalCtrl.ok()">OK</button>
+	            <button class="btn btn-warning" ng-click="ModalCtrl.cancel()">Cancel</button>
+	        </div>
+	        </tab>
+
+	        <tab heading = "Multiple">
+		        <div class="modal-header">
+		            <h3 class="modal-title">Add A New Brother</h3>
+		        </div>
+		        <div class = "modal-body">
+		        	<p>Please choose a CSV file.</p>
+		        	<p>The three headers should be Email, Password, Confirm</p>
+		        	<input id="csvFile" type="file" value="Click here" custom-on-change="ModalCtrl.uploadFile"/>
+		        </div>
+		        <div class="modal-footer">
+		        	<button type="submit" class="btn btn-primary" ng-click="ModalCtrl.okMany()">OK</button>
+		        	<button class="btn btn-warning" ng-click="ModalCtrl.cancel()">Cancel</button>
+		        </div>
+	        </tab>
+		</tabset>
+	</script>
 </div>
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-  Add New Brother
-</button>
-</div>
-    {% load crispy_forms_tags %}
-
-
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">New Brother</h4>
-      </div>
-      <div class="modal-body">
-      	    {% crispy SingleUserCreationForm %}
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="submit" form = "form1" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 
 
-<script>
-$(document).ready(function(){
-  var form = $('form');
-  form.on('submit', function(e) {
-    // prevent default action
-    e.preventDefault();
-    // send ajax request
-    $.ajax({
-      url: '/authentication/createSingleUser',
-      type: 'POST',
-      cache: false,
-      data: form.serialize(), //form serizlize data
-      success: function(data){
-        // Append with fadeIn see http://stackoverflow.com/a/978731
-        var item = $('<tr><td>' + data.email + '</td><tr>').hide()
-        $('table > tbody:last').append(item);
-        item.fadeIn("slow");
-        $('#myModal').modal('hide');
-      },
-      error: function(e){
-        alert(e);
-      }
-    });
-  });
-});
-</script>
+{% endverbatim %}
 {% endblock %}

@@ -84,11 +84,9 @@ class CreateRushForm(forms.ModelForm):
             image_data = b64decode(self.request.POST['pic64Value'][22:])
             image_name = str(uuid.uuid1())
             rush.picture = ContentFile(image_data, image_name)
-            print("here");
         
         else: 
             rush.picture = 'profile_picture/default_picture.png'
-            print ('Heres')
         rush.save()
         self.save_m2m()
 

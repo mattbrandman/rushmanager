@@ -10,7 +10,7 @@ from django.http import JsonResponse
 
 
 class IndexView(LoginRequiredMixin, PermissionRequiredMixin, generic.ListView):
-    template_name = "chaptermanagement/user_index_test.html"
+    template_name = "chaptermanagement/user_index.html"
     context_object_name = 'all_users'
     permission_required = "authentication.chapter_admin"
 

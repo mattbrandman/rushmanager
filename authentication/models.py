@@ -37,8 +37,8 @@ class BrotherUserManager(BaseUserManager):
 class BrotherUser(AbstractBaseUser, PermissionsMixin, TenantAware):
     email = models.CharField(max_length=100, unique=True)
     is_staff = models.BooleanField(default=False)
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
+    first_name = models.CharField(max_length=30, blank=True, null=True)
+    last_name = models.CharField(max_length=30, blank=True, null=True)
     date_created = models.DateTimeField(default=timezone.now, blank=True)
     is_active = models.BooleanField(default=True)
     organization = models.ForeignKey('organization.Organization')

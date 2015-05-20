@@ -36,7 +36,6 @@ class UserSignInForm(AuthenticationForm):
         return self.cleaned_data.get('username').lower()
 
 class ChapterAdminForm(ModelForm):
-    name = forms.CharField(max_length=50, required=False)
     fraternity = forms.CharField(max_length=100, required=True)
     chapter = forms.CharField(max_length=100, required=True)
     password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
@@ -68,10 +67,6 @@ class ChapterAdminForm(ModelForm):
         self.organization = CreateOrganizationForm(data)
         self.organization = self.organization.save()
         user = super(ChapterAdminForm, self).save(commit=False)
-        if self.cleaned_data['name']:
-            first_last = self.cleaned_data['name'].split(" ")
-            user.first_name = first_last[0]
-            user.last_name = first_last[1]
         user.set_password(self.cleaned_data["password1"])
         user.organization = self.organization
         user.save()
@@ -87,7 +82,7 @@ class ChapterAdminForm(ModelForm):
 
     class Meta:
         model = get_user_model()
-        fields = ('name', 'email', 'password1', 'password2')
+        fields = ('first_name', 'last_name', 'email', 'password1', 'password2')
 
 
 class UserProfileForm(ModelForm):
