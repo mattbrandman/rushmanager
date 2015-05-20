@@ -13,30 +13,30 @@
             <div class="col-md-4">
                 <img style="margin: 0px 0px 10px 0px" class="center-block" ng-src="{{::ctr.rush.picture}}" />
             </div>
-            <div class="col-md-8">
+            <div class="col-md-8" ng-cloak>
                 <h1 style="margin: ">{{::ctr.rush.first_name}} {{::ctr.rush.last_name}}</h1>
-                <h3> Primary Contact: {{ctr.rush.primary_contact.name || "Not Available "}}</h3>
-                <h3> Date Contacted: {{ctr.rush.date_contacted || "Not Available"}}</h3>
+                <h3 ng-cloak> Primary Contact: {{ctr.rush.primary_contact.name || "Not Available "}}</h3>
+                <h3 ng-cloak> Date Contacted: {{ctr.rush.date_contacted || "Not Available"}}</h3>
             </div>
         </div>
-        <div class="row">
+        <div class="row" ng-cloak>
             <div class="col-md-8 ">
             <!--TODO: Isaac do you think the comment box should be aligned with comments -->
-                <h3 style="margin-left: -10px"> Comments: </h3>
+                <h3 style="margin-left: -10px" ng-cloak> Comments: </h3>
                 <div style="border-bottom: 1px solid" ng-repeat="item in ctr.all_comments | orderBy:'created_at'">
                     <div ng-if="ctr.isEqual(item) || ctr.is_admin">
                         <inline-edit ng-model="item" update="ctr.update(item)" delete-comment="ctr.deleteComment(comment)"></inline-edit>
                     </div>
                     <div ng-if="!ctr.isEqual(item) && !ctr.is_admin">
                         <div class="row comment-box">
-                            <h4 class="col-md-12" ng-click="ctrl.editing = true">{{item.user.email}}</h4>
-                            <p class="col-md-6" style="word-wrap: break-word;">{{item.comment}}</p>
-                            <p class="col-md-12">{{item.created_at | date:'MM/dd/yyyy @ h:mma'}}</p>
+                            <h4 class="col-md-12" ng-click="ctrl.editing = true" ng-cloak>{{item.user.email}}</h4>
+                            <p class="col-md-6" style="word-wrap: break-word;" ng-cloak>{{item.comment}}</p>
+                            <p class="col-md-12" ng-cloak>{{item.created_at | date:'MM/dd/yyyy @ h:mma'}}</p>
                         </div>
                     </div>
                 </div>
 
-                <form name="commentForm" style="margin-top: 15px" novalidate ng-submit="ctr.submit(ctr.comment)">
+                <form name="commentForm" style="margin-top: 15px" novalidate ng-submit="ctr.submit(ctr.comment)" ng-cloak>
                     <fieldset>
                         <legend>Leave A Comment</legend>
                         <div class="form-group row">

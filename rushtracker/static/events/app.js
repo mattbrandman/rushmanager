@@ -24,6 +24,7 @@ var app = angular.module('eventManagement', ['ui.bootstrap', 'ui.select', 'ngSan
 		});
 	}]);
 
+	//TODO: move all lists into services 
 	app.directive('rushAttendance', function(){
 		return {
 			scope: {

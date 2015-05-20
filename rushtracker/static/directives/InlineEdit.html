@@ -1,4 +1,4 @@
-<div class="row" ng-click="ctrl.editing = true; ctrl.editOpen(); $event.stopPropagation();">
+<div class="row" ng-click="ctrl.editing = true; ctrl.editOpen(); $event.stopPropagation();" ng-cloak>
     <div ng-switch on="ctrl.editing">
         <h4 class="col-md-12" ng-click="ctrl.editing = true; ctrl.editOpen()">{{::ctrl.ngModel.user.email}}</h4>
         <div ng-switch-when="false">
@@ -17,7 +17,7 @@
                 <button ng-click="ctrl.deleteComment({comment: ctrl.ngModel}); $event.stopPropagation()" class="btn btn-danger pull-right">Delete</button></span>
             </div>
         </div>
-        <p class="col-md-12">{{ctrl.ngModel.created_at | date:'MM/dd/yyyy @ h:mma'}}</p>
+        <p class="col-md-12" ng-cloak>{{ctrl.ngModel.created_at | date:'MM/dd/yyyy @ h:mma'}}</p>
     </div>
 </div>
 <!--Should the borders be a bit longer???-->
