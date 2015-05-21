@@ -6,7 +6,7 @@ from events.forms import CreateEventForm
 from rushtracker.models import Rush
 
 class EventCreateView(LoginRequiredMixin, generic.CreateView):
-    template_name = 'events/take_attendance.html'
+    template_name = 'events/create_event.html'
     form_class = CreateEventForm
     model = Event
 

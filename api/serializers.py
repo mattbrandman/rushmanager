@@ -17,7 +17,7 @@ from authentication.permissions import IsMineOrOwner
 from decimal import *
 from rest_framework import mixins
 from rest_framework.viewsets import GenericViewSet
-
+import pdb
 class OrganizationSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -173,15 +173,10 @@ class RankSerializer(serializers.ModelSerializer):
         user = self.context['user']
         request = self.context['request']
         rush = get_object_or_404(Rush, pk=request.data['rush'])
-        if Ranking.tenant_objects.filter(rush__id=rush.id).filter(user__id=user.id).exists():
-            raise serializers.ValidationError("You have already ranked this rush")
-        if rush.organization == user.organization:
-            rank = Ranking(user=user, rush=rush, rank=validated_data[
-                           'rank'], organization=user.organization)
-            rank.save()
-            return rank
-        raise serializers.ValidationError(
-            "No Rush Found")
+        rank = Ranking(user=user, rush=rush, rank=validated_data[
+                       'rank'], organization=user.organization)
+        rank.save()
+        return rank
     def to_representation(self, instance):
         ret = super(RankSerializer, self).to_representation(instance)
         rush = Rush.tenant_objects.get(pk=ret['rush'])
@@ -191,7 +186,19 @@ class RankSerializer(serializers.ModelSerializer):
             'id': rush.id
         }
         return ret
+    def validate_rush(self, value):
+        user = self.context['user']
+        request = self.context['request']
+        if Ranking.tenant_objects.filter(rush__id=value.id).filter(user__id=user.id).exists():
+            raise serializers.ValidationError("You have already ranked this rush")
+        if value.organization != user.organization:
+            raise serializers.ValidationError(
+            "No Such Rush Exists")
 
+    def get_fields(self, *args, **kwargs):
+        fields = super(RankSerializer, self).get_fields(*args, **kwargs)
+        fields['rush'].queryset = Rush.tenant_objects.all()
+        return fields
 class RankViewSet(viewsets.ModelViewSet):
     # returns ranked kids
     serializer_class = RankSerializer
@@ -231,7 +238,7 @@ class RankViewSet(viewsets.ModelViewSet):
         self.perform_update(serializer)
         return Response(serializer.data)
 
-
+#TODO: this should be in the viewset above no need to be its own class
 class RankListViewSet(viewsets.ReadOnlyModelViewSet):
     model = Ranking
 
@@ -299,6 +306,7 @@ class CommentSerializer(serializers.ModelSerializer):
                 {'user': 'No Matching User Found'})
         return value
 
+    #TODO: this may be redundant as get_fields ensures right queryset is being used against
     def validate_event(self, value):
         user = self.context['request'].user
         if value is None:
@@ -361,19 +369,17 @@ class CommentViewSet(viewsets.ModelViewSet):
             request.data['rush'] = comment.rush.id
         return super(CommentViewSet, self).update(request, pk, **kwargs)
 
-
+#TODO: possibly set the fields attribute here for rush list
 class EventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
         exclude = ['organization', ]
-
     def to_representation(self, instance):
         #TODO: using prefetch related causes the 
-        #many to many to not update on the response to a PUT
+        #many to many to not update on the response to a PUT (but it is saved to the DB )
         ret = super(EventSerializer, self).to_representation(instance)
         attendance = instance.attendance
-        print instance.title
         rs = RushSerializer(attendance, many=True)
         ret['attendance'] = rs.data
         return ret
@@ -386,10 +392,15 @@ class EventSerializer(serializers.ModelSerializer):
                 {'attendance': 'No Matching Rush Found'})
         return value
 
+    def get_fields(self, *args, **kwargs):
+        fields = super(EventSerializer, self).get_fields(*args, **kwargs)
+        fields['attendance'].child_relation.queryset = Rush.tenant_objects.all()
+        return fields
+
 class EventViewSet(viewsets.ModelViewSet):
     serializer_class = EventSerializer
     model = Event
-
+    permission_classes = [SameOrganizationPermission, permissions.IsAuthenticated]
     def get_queryset(self):
         return Event.tenant_objects.all()
 
