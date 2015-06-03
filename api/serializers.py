@@ -385,6 +385,7 @@ class EventSerializer(serializers.ModelSerializer):
         return ret
 
     def validate_attendance(self, value):
+        print self
         user = self.context['request'].user
         for rush in value:
             if rush.organization != user.organization:
