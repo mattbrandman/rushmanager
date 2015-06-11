@@ -59,7 +59,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = ('email', 'is_staff', 'is_rush_committee',
-                  'id', 'password', 'confirm', 'name', )
+                  'id', 'password', 'confirm', 'name', 'organization')
         extra_kwargs = {
             'password': {'write_only': True},
         }
@@ -282,6 +282,7 @@ class CommentSerializer(serializers.ModelSerializer):
     def get_fields(self, *args, **kwargs):
         fields = super(CommentSerializer, self).get_fields(*args, **kwargs)
         fields['user'].queryset = get_user_model().tenant_objects.all()
+        print get_user_model().tenant_objects.all()
         fields['rush'].queryset = Rush.tenant_objects.all()
         fields['event'].queryset = Event.tenant_objects.all()
         return fields
