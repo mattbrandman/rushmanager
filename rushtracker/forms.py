@@ -96,7 +96,7 @@ class CreateRushForm(forms.ModelForm):
             rush.picture = 'profile_picture/default_picture.png'
         rush.save()
         self.save_m2m()
-        if self.cleaned_data['comment'] != None:
+        if self.cleaned_data['comment'] != None and len(self.cleaned_data['comment']) != 0:
             newComment = Comment()
             newComment.comment = self.cleaned_data['comment']
             newComment.organization = self.request.user.organization
