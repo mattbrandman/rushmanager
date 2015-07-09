@@ -55,13 +55,13 @@ class RushPeriodViews(mixins.CreateModelMixin,
 class UserSerializer(serializers.ModelSerializer):
     confirm = serializers.CharField(max_length=50, write_only=True)
     name = serializers.SerializerMethodField()
-
     class Meta:
         model = get_user_model()
         fields = ('email', 'is_staff', 'is_rush_committee',
                   'id', 'password', 'confirm', 'name', 'organization')
         extra_kwargs = {
             'password': {'write_only': True},
+            'organization':{'required': False}
         }
 
     def create(self, validated_data):
@@ -69,9 +69,9 @@ class UserSerializer(serializers.ModelSerializer):
         request = self.context['request']
         if validated_data['password'] == validated_data['confirm']:
             new_user = get_user_model().objects.create_user(
-                email=validated_data['email'],
-                password=validated_data['password'],
-                organization=user.organization
+                email = validated_data['email'],
+                password = validated_data['password'],
+                organization = user.organization
             )
             user_profile = UserProfile(user=new_user)
             user_profile.save()

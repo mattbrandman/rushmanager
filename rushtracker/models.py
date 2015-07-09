@@ -18,7 +18,7 @@ class Rush(TenantAware):
 	dorm = models.CharField('Dorm', max_length=200, blank=True, null=True)
 	picture = models.ImageField(upload_to='profile_picture', blank=True, null=True)
 	rush_period = models.ManyToManyField(RushPeriod)
-	organization = models.ForeignKey(Organization)
+	organization = models.ForeignKey(Organization, blank=True)
 	graduating_year = models.IntegerField(blank=True, null=True)
 	is_available = models.BooleanField('Is Available To Rush', default=True)
 	is_legacy = models.BooleanField('Legacy', default=False)
