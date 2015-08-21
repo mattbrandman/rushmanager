@@ -43,28 +43,31 @@ ALLOWED_HOSTS = [
 
 # Application definition
 
-INSTALLED_APPS = (
-    'django.contrib.admin',
+SHARED_APPS = (
+    'tenant_schemas',
+    'organization',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.postgres',
-    'django_extensions',
     'crispy_forms',
+    )
+TENANT_APPS = (
     'rushtracker',
     'comments',
     'events',
     'braces',
     'storages',
     'authentication',
-    'organization',
     'rushperiod',
     'tenancy',
     'ranking',
     'rest_framework',
 )
+
+INSTALLED_APPS = list(set(SHARED_APPS + TENANT_APPS))
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
@@ -85,6 +88,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'tenancy.middleware.ThreadLocals',
+    'tenant_schemas.middleware.TenantMiddleware',
 )
 
 STATICFILES_FINDERS = (
@@ -119,12 +123,15 @@ ANONYMOUS_USER_ID = None
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'tenant_schemas.postgresql_backed',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 DATABASES['default'] = dj_database_url.config(default='postgres://joe@localhost:5432/mydb')
 
+DATABASE_ROUTERS = {
+    'tenant_schemas.routers.TenantSyncRouter',
+}
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
