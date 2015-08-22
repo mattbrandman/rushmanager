@@ -30,7 +30,7 @@ class OrganizationViews(viewsets.ReadOnlyModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return Organization.tenant_objects.all()
+        return Organization.objects.all().filter(id=self.request.user.organization.id)
 
 
 class RushPeriodSerializer(serializers.ModelSerializer):
@@ -282,9 +282,6 @@ class CommentSerializer(serializers.ModelSerializer):
     def get_fields(self, *args, **kwargs):
         fields = super(CommentSerializer, self).get_fields(*args, **kwargs)
         fields['user'].queryset = get_user_model().tenant_objects.all()
-        print get_user_model().tenant_objects.all()
-        fields['rush'].queryset = Rush.tenant_objects.all()
-        fields['event'].queryset = Event.tenant_objects.all()
         return fields
     def to_representation(self, instance):
         ret = super(CommentSerializer, self).to_representation(instance)
@@ -305,23 +302,6 @@ class CommentSerializer(serializers.ModelSerializer):
         if not value.organization == user.organization:
             raise serializers.ValidationError(
                 {'user': 'No Matching User Found'})
-        return value
-
-    #TODO: this may be redundant as get_fields ensures right queryset is being used against
-    def validate_event(self, value):
-        user = self.context['request'].user
-        if value is None:
-            return value
-        if value.organization != user.organization:
-            raise serializers.ValidationError(
-                {'event': 'No Matching Event Found'})
-        return value
-
-    def validate_rush(self, value):
-        user = self.context['request'].user
-        if value.organization != user.organization:
-            raise serializers.ValidationError(
-                {'rush': 'No Matching Rush Found'})
         return value
         # maybe make a validator here for cleaning fields this really should
         # be what is used so that errors are explained correctly

@@ -12,4 +12,6 @@ class RushAdmin(admin.ModelAdmin):
 	inlines = [
 		CommentInline,
 	]
+	def get_queryset(self, request):
+		return Rush.objects.all()
 admin.site.register(Rush, RushAdmin)
