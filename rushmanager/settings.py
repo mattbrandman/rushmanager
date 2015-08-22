@@ -100,6 +100,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissions',
         'authentication.permissions.SameOrganizationPermission',
     ],
+    'DEFAULT_FILTER_BACKENDS':('rest_framework.filters.DjangoFilterBackend',)
 }
 
 ROOT_URLCONF = 'rushmanager.urls'
