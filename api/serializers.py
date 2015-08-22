@@ -365,19 +365,6 @@ class EventSerializer(serializers.ModelSerializer):
         ret['attendance'] = rs.data
         return ret
 
-    def validate_attendance(self, value):
-        print self
-        user = self.context['request'].user
-        for rush in value:
-            if rush.organization != user.organization:
-                raise serializers.ValidationError(
-                {'attendance': 'No Matching Rush Found'})
-        return value
-
-    def get_fields(self, *args, **kwargs):
-        fields = super(EventSerializer, self).get_fields(*args, **kwargs)
-        fields['attendance'].child_relation.queryset = Rush.tenant_objects.all()
-        return fields
 
 class EventViewSet(viewsets.ModelViewSet):
     serializer_class = EventSerializer
