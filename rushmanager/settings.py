@@ -36,7 +36,6 @@ CRISPY_FAIL_SILENTLY = not DEBUG
 ALLOWED_HOSTS = [
     'www.rushhound.com',
     'rushhound.com',
-    '127.0.0.1'
 ]
 #this is the profile for Users
 
