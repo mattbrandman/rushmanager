@@ -1,4 +1,3 @@
-
 try:
     from threading import local
 except ImportError:
@@ -7,19 +6,19 @@ except ImportError:
 
 _thread_locals = local()
 
+
 def get_current_user():
     return getattr(_thread_locals, 'user', None)
 
+
 class ThreadLocals(object):
+
     """Middleware that gets various objects from the
     request object and saves them in thread local storage."""
+
     def process_request(self, request):
         _thread_locals.user = getattr(request, 'user', None)
-<<<<<<< Updated upstream
-        return None
-=======
-        return request
->>>>>>> Stashed changes
+        _thread_locals.request = request
     def process_response(self, request, response):
-    	_thread_locals.user = None
-    	return response
+        _thread_locals.user = None
+        return response

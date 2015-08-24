@@ -8,10 +8,11 @@ from django.conf import settings
 from tenancy.models import TenantAware, TenantManager
 from django.contrib.postgres.fields import HStoreField
 from django.db.models.query import QuerySet
-
+from tenancy.middleware import _thread_locals
 #TODO no class with an underscore should be accessed as it could be changed 
 #this should probably all be in just the create user field
 #or if this is our class its fine and we can leave it
+
 class BrotherUserManager(BaseUserManager):
 
     def _create_user(self, email, password,
@@ -33,6 +34,14 @@ class BrotherUserManager(BaseUserManager):
 
     def create_superuser(self, email, password, **extra_fields):
         return self._create_user(email, password, True, True, **extra_fields)
+    
+    
+    def get_queryset(self):
+        if not isinstance(_thread_locals.user, BrotherUser):
+            return super(BrotherUserManager, self).get_queryset()
+        else:
+            self.organization = _thread_locals.user.organization 
+            return super(BrotherUserManager, self).get_queryset().filter(organization = self.organization )
 
 
 
