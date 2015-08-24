@@ -38,7 +38,7 @@ class BrotherUserManager(BaseUserManager):
     
     def get_queryset(self):
         #TODO: duck type? maybe hasattr(_thread_locals.user, <some attribute on Brother User>)
-        if not isinstance(_thread_locals.user, BrotherUser):
+        if not hasattr (_thread_locals, 'user') or not isinstance(_thread_locals.user, BrotherUser):
             return super(BrotherUserManager, self).get_queryset()
         else:
             self.organization = _thread_locals.user.organization 
