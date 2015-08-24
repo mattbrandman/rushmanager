@@ -37,6 +37,7 @@ class BrotherUserManager(BaseUserManager):
     
     
     def get_queryset(self):
+        #TODO: duck type? maybe hasattr(_thread_locals.user, <some attribute on Brother User>)
         if not isinstance(_thread_locals.user, BrotherUser):
             return super(BrotherUserManager, self).get_queryset()
         else:
@@ -58,6 +59,7 @@ class BrotherUser(AbstractBaseUser, PermissionsMixin, TenantAware):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
     objects = BrotherUserManager()
+    admin = models.Manager()
 
     def get_full_name(self):
         return self.first_name + " " + self.last_name

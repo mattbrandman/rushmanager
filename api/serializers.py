@@ -48,7 +48,7 @@ class RushPeriodViews(mixins.CreateModelMixin,
     model = RushPeriod
 
     def get_queryset(self):
-        return RushPeriod.tenant_objects.all()
+        return RushPeriod.objects.all()
 
 
 
@@ -87,7 +87,7 @@ class UserViewSet(viewsets.ModelViewSet):
     model = get_user_model()
 
     def get_queryset(self):
-        return get_user_model().tenant_objects.all().order_by('-is_rush_committee', 'email')
+        return get_user_model().objects.all().order_by('-is_rush_committee', 'email')
 
     def create(self, request):
         if not isinstance(request.data, list):
@@ -149,7 +149,7 @@ class RushViewSet(viewsets.ModelViewSet):
     model = Rush
 
     def get_queryset(self):
-        return Rush.tenant_objects.all().select_related('primary_contact')
+        return Rush.objects.all().select_related('primary_contact')
 
 
 class RushViewSetRanked(viewsets.ModelViewSet):
@@ -158,8 +158,8 @@ class RushViewSetRanked(viewsets.ModelViewSet):
     serializer_class = RushSerializer
 
     def get_queryset(self):
-        already_ranked = Ranking.tenant_objects.filter(pk=self.request.user.id).values('rush')
-        not_ranked = Rush.tenant_objects.exclude(pk__in=already_ranked)
+        already_ranked = Ranking.objects.filter(pk=self.request.user.id).values('rush')
+        not_ranked = Rush.objects.exclude(pk__in=already_ranked)
         return not_ranked
 
 
@@ -179,7 +179,7 @@ class RankSerializer(serializers.ModelSerializer):
         return rank
     def to_representation(self, instance):
         ret = super(RankSerializer, self).to_representation(instance)
-        rush = Rush.tenant_objects.get(pk=ret['rush'])
+        rush = Rush.objects.get(pk=ret['rush'])
         ret['rush'] = {
             'first_name': rush.first_name,
             'last_name': rush.last_name,
@@ -189,7 +189,7 @@ class RankSerializer(serializers.ModelSerializer):
     def validate_rush(self, value):
         user = self.context['user']
         request = self.context['request']
-        if Ranking.tenant_objects.filter(rush__id=value.id).filter(user__id=user.id).exists():
+        if Ranking.objects.filter(rush__id=value.id).filter(user__id=user.id).exists():
             raise serializers.ValidationError("You have already ranked this rush")
         if value.organization != user.organization:
             raise serializers.ValidationError(
@@ -202,7 +202,7 @@ class RankViewSet(viewsets.ModelViewSet):
         permissions.IsAuthenticated, SameOrganizationPermission, IsMineOrOwner]
 
     def get_queryset(self):
-        return Ranking.tenant_objects.filter(user__id=self.request.user.id).order_by('rush__first_name')
+        return Ranking.objects.filter(user__id=self.request.user.id).order_by('rush__first_name')
 
     def create(self, request):
         serializer = RankSerializer(
@@ -213,9 +213,9 @@ class RankViewSet(viewsets.ModelViewSet):
 
     @list_route(methods=['get'], url_path="get-unranked")
     def get_unranked(self, request):
-        already_ranked = Ranking.tenant_objects.filter(
+        already_ranked = Ranking.objects.filter(
             user__id=request.user.id).values('rush')
-        unranked = Rush.tenant_objects.exclude(
+        unranked = Rush.objects.exclude(
             pk__in=already_ranked).order_by('first_name')
         data = RushSerializer(unranked, many=True).data
         return Response(data)
@@ -242,12 +242,12 @@ class RankListViewSet(viewsets.ReadOnlyModelViewSet):
     Returns the rankings of the kids 
 
     """
-    queryset = Ranking.tenant_objects.all()
+    queryset = Ranking.objects.all()
 
     def list(self, request, *args, **kwargs):
-        all_rankings = Ranking.tenant_objects.filter(
+        all_rankings = Ranking.objects.filter(
             user__is_rush_committee=True)
-        all_rushes = Rush.tenant_objects.all()
+        all_rushes = Rush.objects.all()
         rankList = []
         rank = {}
         for rush in all_rushes:
@@ -306,7 +306,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsMineOrOwner, SameOrganizationPermission, permissions.IsAuthenticated]
     serializer_class = CommentSerializer
     def get_queryset(self):
-        return Comment.tenant_objects.all().select_related('event', 'user')
+        return Comment.objects.all().select_related('event', 'user')
 
     # maybe t`here should be a seperate Admin serializer to make the
     # code and responsibilites more modular
@@ -316,7 +316,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     def get_comments_for_rush(self, request, pk=None):
         rush = get_object_or_404(Rush, pk=pk)
         serializer = CommentSerializer(rush.comment_set.all().select_related('event', 'user'), many=True)
-        my_comments = Comment.tenant_objects.filter(
+        my_comments = Comment.objects.filter(
             rush=rush).filter(user=request.user)
         my_comments_serializer = CommentSerializer(my_comments, many=True)
 
@@ -363,7 +363,7 @@ class EventViewSet(viewsets.ModelViewSet):
     model = Event
     permission_classes = [SameOrganizationPermission, permissions.IsAuthenticated]
     def get_queryset(self):
-        return Event.tenant_objects.all()
+        return Event.objects.all()
 
 
 
