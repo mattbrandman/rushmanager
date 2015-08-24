@@ -62,7 +62,10 @@ class BrotherUser(AbstractBaseUser, PermissionsMixin, TenantAware):
     admin = models.Manager()
 
     def get_full_name(self):
-        return self.first_name + " " + self.last_name
+        if self.first_name and self.last_name:
+            return self.first_name + " " + self.last_name
+        else:
+            return " " 
 
     def get_short_name(self):
         return self.first_name
