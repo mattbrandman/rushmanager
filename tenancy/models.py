@@ -13,5 +13,6 @@ class TenantManager(models.Manager):
 class TenantAware(models.Model):
     tenant_objects = TenantManager()
     objects = models.Manager()
+
     class Meta:
         abstract = True

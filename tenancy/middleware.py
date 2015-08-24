@@ -1,3 +1,4 @@
+
 try:
     from threading import local
 except ImportError:
@@ -14,7 +15,11 @@ class ThreadLocals(object):
     request object and saves them in thread local storage."""
     def process_request(self, request):
         _thread_locals.user = getattr(request, 'user', None)
+<<<<<<< Updated upstream
         return None
+=======
+        return request
+>>>>>>> Stashed changes
     def process_response(self, request, response):
     	_thread_locals.user = None
     	return response

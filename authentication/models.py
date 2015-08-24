@@ -5,8 +5,9 @@ from django.contrib.auth.models import Permission, AbstractBaseUser, BaseUserMan
 from django.utils import timezone
 from django.db import connection
 from django.conf import settings
-from tenancy.models import TenantAware
+from tenancy.models import TenantAware, TenantManager
 from django.contrib.postgres.fields import HStoreField
+from django.db.models.query import QuerySet
 
 #TODO no class with an underscore should be accessed as it could be changed 
 #this should probably all be in just the create user field
@@ -32,6 +33,8 @@ class BrotherUserManager(BaseUserManager):
 
     def create_superuser(self, email, password, **extra_fields):
         return self._create_user(email, password, True, True, **extra_fields)
+
+
 
 
 class BrotherUser(AbstractBaseUser, PermissionsMixin, TenantAware):
