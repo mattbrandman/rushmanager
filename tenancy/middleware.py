@@ -14,6 +14,7 @@ class ThreadLocals(object):
     request object and saves them in thread local storage."""
     def process_request(self, request):
         _thread_locals.user = getattr(request, 'user', None)
+        return None
     def process_response(self, request, response):
     	_thread_locals.user = None
     	return response
