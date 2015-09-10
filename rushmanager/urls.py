@@ -16,7 +16,6 @@ from rest_framework.decorators import detail_route
 from authentication.permissions import SameOrganizationPermission
 from api import serializers
 from landing.views import HomePage
-# Serializers define the API representation.
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
