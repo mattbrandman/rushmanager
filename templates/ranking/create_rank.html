@@ -4,20 +4,25 @@
 <script src={% static 'angular.min.js' %}></script>
 <script src={% static 'ranking/app.js' %}></script>
 {% verbatim %}
-<div class = "container-fluid">
+<div class = "container">
+	<div class="page-header">
+        <h1> Rankings </h1>
+    </div>
 	<div ng-app="rankingCreation">
 		<form novalidate name="rankingForm" class="form-horizontal" ng-controller="RankingController as rankingCtrl" ng-cloak ng-submit = "rankingCtrl.addRanking()">
 			<div class="form-group">
 				<div class="col-sm-5">
-					<select class="form-control " ng-model="rankingCtrl.ranking.rush" ng-options="rush.id as rush.first_name + ' ' + rush.last_name for rush in rankingCtrl.listOfRushes" ng-click="$event.stopPropogation()">
+					<label class="text-center" for="rushToBeRanked"><h3>Rush</h3></label>
+					<select id="rushToBeRanked" class="form-control " ng-model="rankingCtrl.ranking.rush" ng-options="rush.id as rush.first_name + ' ' + rush.last_name for rush in rankingCtrl.listOfRushes" ng-click="$event.stopPropogation()">
 					</select>
 				</div>
 
 				<div class="col-sm-5">
-					<select class="form-control" ng-model="rankingCtrl.ranking.rank" ng-options ="rank for rank in rankingCtrl.numberRange" required></select>
+					<label class="text-center" for="rankingNumber"><h3>Ranking(1-10)</h3></label>
+					<select class="form-control" ng-model="rankingCtrl.ranking.rank" ng-options ="rank for rank in rankingCtrl.numberRange" id="rankingNumber" required></select>
 				</div>
 				<div class = "col-md-2">
-					<input type = "submit" class="btn btn-primary btn-block" value="Rank!" ng-click="rankingCtrl.addRanking()" ng-disabled="!rankingForm.$valid"/>
+					<input type = "submit" class="btn btn-primary btn-block" value="Rank!" ng-click="rankingCtrl.addRanking()" ng-disabled="!rankingForm.$valid" style="margin-top: 60px"/>
 				</div>
 			</div>
 			<div class = "row" ng-repeat="rank in rankingCtrl.rankingList" ng-cloak>

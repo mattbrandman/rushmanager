@@ -18,13 +18,13 @@ class CreateEventForm(ModelForm):
         self.helper = FormHelper(self)
 
         self.helper.layout = Layout(
-            Field('title'),
+            Field('title', required=False),
             # TODO: maybe add description field
-            Field('description', widget='description', required=False),
+            Field('description'),
 
             Field('date', css_class='datepicker'),
             # TODO: should attendance be part of this create form?
-            Field('attendance', required=False),
+            Field('attendance'),
             Submit('submit', 'Submit', css_class='btn-primary'))
     def save(self):
         if not self.request.user.has_perm('authentication.chapter_admin'):

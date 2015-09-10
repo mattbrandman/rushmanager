@@ -2,8 +2,89 @@
 {% block content %}
 {% load staticfiles %}
 
-<div class="container">
-</div>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
 
+    <title>Jumbotron Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="jumbotron.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Rush Hound</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <form class="navbar-form navbar-right">
+            <a class="btn btn-success" href="/authentication/sign_in">Sign in</a>
+          </form>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="container">
+        <h1>Rush Hound</h1>
+        <p>Rush Hound aims to be your all in one recruitment solution.  It is under active development and new feature are always being worked on.</p>
+        <p><a class="btn btn-primary btn-lg" href="authentication/sign_up" role="button">Sign Up &raquo;</a></p>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="col-md-4">
+          <h2>Tracking</h2>
+          <p>The main feature of rush hound is its tracking capabilities.  It allows greek life groups to create new potential members, comment on them, and assign them to members of the organization as a point of contact.</p>
+        </div>
+       
+        <div class="col-md-4">
+          <h2>Ranking</h2>
+          <p>Once all of your new recruits are listed in rush hound you have the ability to allow certain members of your organization the ability to rank them.  These rankings can be used to give a general portayal of members feelings towards a particular new recruit.</p>
+        </div>
+        <div class="col-md-4">
+          <h2>Events</h2>
+          <p>Rush hound allows you to enter events and track which recruits show up to those events.  This way you can see which new recruits are willing to commit time to join your organization.</p>
+       </div>
+      </div>
+
+      <hr>
+
+      <footer>
+        <p>&copy; Rushhound 2016</p>
+      </footer>
+    </div> <!-- /container -->
 
 {% endblock %}

@@ -149,7 +149,7 @@ class RushViewSet(viewsets.ModelViewSet):
     model = Rush
 
     def get_queryset(self):
-        return Rush.tenant_objects.all().select_related('primary_contact')
+        return Rush.tenant_objects.all().filter(rush_period=self.request.user.organization.active_rush_period).select_related('primary_contact')
 
 
 class RushViewSetRanked(viewsets.ModelViewSet):
@@ -225,7 +225,7 @@ class RankViewSet(viewsets.ModelViewSet):
         return super(RankViewSet, self).partial_update(request, pk)
     def update(self, request, pk=None, *args, **kwargs):
         partial = kwargs.pop('partial', False)
-        #if this breaks check code base it is copied right from it
+        #if this breaks check code base of rest framework it is copied right from it
         instance = self.get_object()
         #TODO: error check that rush is there 
         request.data['rush'] = instance.rush.id
@@ -306,7 +306,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsMineOrOwner, SameOrganizationPermission, permissions.IsAuthenticated]
     serializer_class = CommentSerializer
     def get_queryset(self):
-        return Comment.tenant_objects.all().select_related('event', 'user')
+        return Comment.tenant_objects.all().select_related('event', 'user').filter(rush_period=self.request.user.organization.active_rush_period)
 
     # maybe t`here should be a seperate Admin serializer to make the
     # code and responsibilites more modular
@@ -315,7 +315,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     @detail_route(methods=['get'], url_path="get-comments")
     def get_comments_for_rush(self, request, pk=None):
         rush = get_object_or_404(Rush, pk=pk)
-        serializer = CommentSerializer(rush.comment_set.all().select_related('event', 'user'), many=True)
+        serializer = CommentSerializer(rush.comment_set.all().filter(rush_period=self.request.user.organization.active_rush_period).select_related('event', 'user'), many=True)
         my_comments = Comment.tenant_objects.filter(
             rush=rush).filter(user=request.user)
         my_comments_serializer = CommentSerializer(my_comments, many=True)

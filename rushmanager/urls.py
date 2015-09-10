@@ -15,6 +15,7 @@ from rest_framework import serializers, permissions
 from rest_framework.decorators import detail_route
 from authentication.permissions import SameOrganizationPermission
 from api import serializers
+from landing.views import HomePage
 # Serializers define the API representation.
 
 # Routers provide an easy way of automatically determining the URL conf.
@@ -30,7 +31,7 @@ router.register(r'organization', serializers.OrganizationViews, 'organization')
 router.register(r'rushperiod', serializers.RushPeriodViews, 'rushperiod')
 
 urlpatterns = patterns('',
-    url(r'^$', IndexView.as_view()),
+    url(r'^$', HomePage.as_view()),
 	url(r'^api/', include(router.urls)),
 	url(r'^rushtracker/', include('rushtracker.urls', namespace="rushtracker")),
     url(r'^events/', include('events.urls', namespace="events")),

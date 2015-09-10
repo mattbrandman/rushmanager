@@ -8,6 +8,9 @@
 <div ng-app="eventManagement">
     <div class="container">
         <div ng-controller="EventController as ctrl">
+        <div class="page-header">
+            <h1> Events </h1>
+        </div>
             <accordion close-others="true">
                 <accordion-group ng-repeat="event in ctrl.rushList">
                     <rush-attendance ng-model = "event"></rush-attendance>

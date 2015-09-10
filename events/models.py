@@ -6,7 +6,7 @@ class Event(TenantAware):
     title = models.CharField('Event Title', max_length=200)
     description = models.CharField(max_length=2000, blank=True, null=True)
     date = models.DateField('Event Date')
-    attendance = models.ManyToManyField(Rush, blank=True)
+    attendance = models.ManyToManyField(Rush, null=True, blank=True)
     organization = models.ForeignKey(Organization)
 
     def __str__(self):
