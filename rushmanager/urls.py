@@ -31,7 +31,8 @@ router.register(r'organization', serializers.OrganizationViews, 'organization')
 router.register(r'rushperiod', serializers.RushPeriodViews, 'rushperiod')
 
 urlpatterns = patterns('',
-    url(r'^$', HomePage.as_view()),
+    url(r'^$', IndexView.as_view()),
+    url(r'^home/$', HomePage.as_view()),
 	url(r'^api/', include(router.urls)),
 	url(r'^rushtracker/', include('rushtracker.urls', namespace="rushtracker")),
     url(r'^events/', include('events.urls', namespace="events")),

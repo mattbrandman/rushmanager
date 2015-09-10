@@ -15,7 +15,7 @@ AUTH_USER_MODEL = 'authentication.BrotherUser'
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-DEBUG = False
+DEBUG = True
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
@@ -26,7 +26,7 @@ SECRET_KEY = 'lz=alvono%-*#ork1e7nifb^675+6_hl$lmp7zor6s&p5$k4x0'
 
 TEMPLATE_DEBUG = False
 
-LOGIN_URL = '/authentication/sign_in'
+LOGIN_URL = '/home/'
 
 #Change this once profile views are up and running 
 LOGIN_REDIRECT_URL = '/rushtracker/'
