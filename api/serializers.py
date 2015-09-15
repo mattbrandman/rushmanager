@@ -135,7 +135,7 @@ class UserViewSet(viewsets.ModelViewSet):
 class RushSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rush
-        fields = ('first_name', 'last_name', 'id', 'picture', 'dorm', 'contacted_date', 'primary_contact')
+        fields = ('first_name', 'last_name', 'id', 'picture', 'dorm', 'contacted_date', 'primary_contact', 'phone_number')
 
     def to_representation(self, instance):
         ret = super(RushSerializer, self).to_representation(instance)
