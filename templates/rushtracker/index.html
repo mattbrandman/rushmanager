@@ -10,16 +10,11 @@
 {% verbatim %}
 <div ng-app="RushApp" class="container">
     <div ng-controller="RushTableController as ctrl">
-        <table ng-table="vm.tableParams" class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                </tr>
-            </thead>
-            <tr ng-repeat="rush in ctrl.rushes">
-                <td>{{rush.first_name}}</td>
-                <td>{{rush.last_name}}</td>
+        <table ng-table="ctrl.tableParams" class="table table-bordered">
+            <tr ng-repeat="rush in $data">
+           		{{data}}
+                <td data-title="'Name'" sortable="'first_name'">{{rush.first_name}}</td>
+                <td data-title="'Name2'" sortable="'last_name'">{{rush.last_name}}</td>
             </tr>
         </table>
     </div>
