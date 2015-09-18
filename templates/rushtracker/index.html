@@ -112,9 +112,7 @@ $(document).ready( function () {
     if ("{{ request.user.get_full_name }}" == " ") {
      $('button#nameModalButton').click()
     }
-    if ("{{request.user.get_full_name }}" == "Ben Yarsky") {
-        window.location = "http://thetrendguys.com/wp-content/uploads/2013/07/Horror-Movie-Facts.jpg";
-    }
+
 } );
 </script>
 {% endblock %}
