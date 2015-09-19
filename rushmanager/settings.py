@@ -67,6 +67,7 @@ INSTALLED_APPS = (
     'tenancy',
     'ranking',
     'rest_framework',
+    'autofixture'
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -103,7 +104,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissions',
         'authentication.permissions.SameOrganizationPermission',
     ],
-    'DEFAULT_FILTER_BACKENDS':('rest_framework.filters.DjangoFilterBackend',)
+    'DEFAULT_FILTER_BACKENDS':('rest_framework.filters.DjangoFilterBackend', 'rest_framework.filters.OrderingFilter')
 }
 
 ROOT_URLCONF = 'rushmanager.urls'

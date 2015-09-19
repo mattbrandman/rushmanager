@@ -4,7 +4,11 @@
         return $resource('/api/rush/:rushId', null, {
         	'update': {
         		method: 'PUT'
+        	},
+        	'query': {
+        		isArray:false
         	}
+
         });
     }]);
 })();

@@ -17,7 +17,13 @@ from authentication.permissions import IsMineOrOwner
 from decimal import *
 from rest_framework import mixins
 from rest_framework.viewsets import GenericViewSet
+from rest_framework.pagination import PageNumberPagination
 import pdb
+
+class LargeResultsSetPagination(PageNumberPagination):
+    page_size = 10
+    max_page_size = 1000
+
 class OrganizationSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -134,6 +140,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class RushSerializer(serializers.ModelSerializer):
+    ordering_fields = ('first_name', 'last_name')
     class Meta:
         model = Rush
         fields = ('first_name', 'last_name', 'id', 'picture', 'dorm', 'contacted_date', 'primary_contact', 'phone_number')
@@ -147,6 +154,7 @@ class RushSerializer(serializers.ModelSerializer):
         return ret
 class RushViewSet(viewsets.ModelViewSet):
     serializer_class = RushSerializer
+    pagination_class = LargeResultsSetPagination
     model = Rush
 
     def get_queryset(self):

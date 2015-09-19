@@ -1,6 +1,6 @@
 (function(){
 
-	var app = angular.module('RushApp', ['RushFactory', 'ngTable']);
+	var app = angular.module('RushApp', ['RushFactory', 'ui.bootstrap']);
 	
 	
 
@@ -9,12 +9,32 @@
     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 	}]);
 
-	app.controller('RushTableController', ['Rush', 'NgTableParams', function(Rush, NgTableParams){
+	app.controller('RushTableController', ['Rush', function(Rush){
 		var vm = this;
-		this.rushes = Rush.query();
-		this.tableParams = new NgTableParams({page: 1, count:10}, {getData: function($defer, params) {
-			this.r
-		}});
+		Rush.query(function(data) {
+			vm.rushes = data.results;
+			vm.totalRushes = data.count;
+			vm.perPage = 10;
+		});
+		this.reverse = false;
+		var currentColumn = null;
+		this.sort = function(column) {
+			if (this.column == null && currentColumn != null) {
+				paginationControl = 1;
+			} else {
+				currentColumn = column;
+				paginationControl = 1;
+			}
+			var minusSign='';
+			if (vm.reverse == true) {
+				var minusSign = '-';
+			}
+			Rush.query({'ordering': minusSign + currentColumn,
+						'page': vm.paginationControl}, function(data) {
+				vm.rushes = data.results;
+				console.log(vm.rushes);
+			});
+		}
 	}]);
 
 })();
