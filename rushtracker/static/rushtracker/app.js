@@ -4,9 +4,10 @@
 	
 	
 
-	app.config(['$httpProvider', function($httpProvider) {
+	app.config(['$httpProvider', '$resourceProvider', function($httpProvider, $resourceProvider) {
     $httpProvider.defaults.xsrfCookieName = 'csrftoken';
     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+    $resourceProvider.defaults.stripTrailingSlashes = false;
 	}]);
 
 	app.controller('RushTableController', ['Rush', function(Rush){
@@ -19,7 +20,7 @@
 		this.reverse = false;
 		var currentColumn = null;
 		this.sort = function(column) {
-			if (this.column == null && currentColumn != null) {
+			if (column == null && currentColumn != null) {
 				paginationControl = 1;
 			} else {
 				currentColumn = column;
@@ -32,7 +33,6 @@
 			Rush.query({'ordering': minusSign + currentColumn,
 						'page': vm.paginationControl}, function(data) {
 				vm.rushes = data.results;
-				console.log(vm.rushes);
 			});
 		}
 	}]);

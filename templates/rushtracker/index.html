@@ -7,16 +7,18 @@
 <script src={% static 'rushtracker/app.js' %}></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.4/ui-bootstrap-tpls.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-resource.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 {% verbatim %}
 <div ng-app="RushApp" class="container">
     <div ng-controller="RushTableController as ctrl">
         <table class="table table-bordered" style="table-layout:fixed">
             <tr>
-                <th ng-click="ctrl.reverse= !ctrl.reverse; ctrl.sort('first_name')">First Name</th>
-                <th ng-click="ctrl.reverse= !ctrl.reverse; ctrl.sort('last_name')">Last Name</th>
+                <th ng-click="ctrl.reverse= !ctrl.reverse; ctrl.sort('first_name'); ctrl.active='first_name'" style="cursor:pointer">First Name <i ng-if="ctrl.active != 'first_name'" class="fa fa-sort"></i><i ng-if="ctrl.active == 'first_name' && ctrl.reverse==true" class="fa fa-sort-desc"></i><i ng-if="ctrl.active == 'first_name' && ctrl.reverse==false" class="fa fa-sort-asc"></i></th>
+
+                <th ng-click="ctrl.reverse= !ctrl.reverse; ctrl.sort('last_name'); ctrl.active='last_name'" style="cursor:pointer">Last Name <i ng-if="ctrl.active != 'last_name'" class="fa fa-sort"></i><i ng-if="ctrl.active == 'last_name' && ctrl.reverse==true" class="fa fa-sort-desc"></i><i ng-if="ctrl.active == 'last_name' && ctrl.reverse==false" class="fa fa-sort-asc"></i></th>
             </tr>
             <tr ng-repeat="rush in ctrl.rushes">
-                <td>{{rush.first_name}}</td>
+                <td ng-click="ctrl.active = first">{{rush.first_name}}</td>
                 <td>{{rush.last_name}}</td>
             </tr>
         </table>
