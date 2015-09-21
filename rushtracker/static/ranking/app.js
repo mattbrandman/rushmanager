@@ -82,10 +82,10 @@
 				return {'background-color': 'green'};
 			}
 			if(ranking > 5 && ranking < 7.5) {
-				return {'background-color': 'orange'};
+				return {'background-color': 'yellow'};
 			}
 			if(ranking > 2.5 && ranking < 5) {
-				return {'background-color': 'yellow'};
+				return {'background-color': 'orange'};
 			}
 			if(ranking < 2.5) {
 				return {'background-color': 'red'};
