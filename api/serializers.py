@@ -36,7 +36,7 @@ class OrganizationViews(viewsets.ReadOnlyModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return Organization.objects.all().filter(id=self.request.user.organization.id)
+        return Organization.objects.all().filter(id=self.request.user.organization.id).filter(rush_period=self.request.user.organization.active_rush_period)
 
 
 class RushPeriodSerializer(serializers.ModelSerializer):
