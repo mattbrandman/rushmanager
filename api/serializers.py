@@ -104,8 +104,8 @@ class UserViewSet(viewsets.ModelViewSet):
     def change_rush_comm(self, request, pk=None):
         user = self.get_object()
         user.is_rush_committee = not user.is_rush_committee
-        perm_add = Permission.tenant_objects.get(codename='add_ranking')
-        perm_delete = Permission.tenant_objects.get(codename='delete_ranking')
+        perm_add = Permission.objects.get(codename='add_ranking')
+        perm_delete = Permission.objects.get(codename='delete_ranking')
         if not user.is_rush_committee:
             user.user_permissions.remove(perm_add)
             user.user_permissions.remove(perm_delete)
