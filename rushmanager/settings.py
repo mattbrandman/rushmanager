@@ -15,7 +15,7 @@ AUTH_USER_MODEL = 'authentication.BrotherUser'
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-DEBUG = False
+DEBUG = bool(os.environ.get('DJANGO_DEBUG', ''))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
@@ -24,7 +24,7 @@ SECRET_KEY = 'lz=alvono%-*#ork1e7nifb^675+6_hl$lmp7zor6s&p5$k4x0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-TEMPLATE_DEBUG = False
+TEMPLATE_DEBUG = DEBUG
 
 LOGIN_URL = '/home/'
 

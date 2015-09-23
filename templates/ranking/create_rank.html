@@ -46,7 +46,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="rank in RankCtrl.generatedList" ng-style="RankCtrl.determineColor(rank.rank)">
+					<tr ng-repeat="rank in RankCtrl.generatedList | orderBy: '-rank'" ng-style="RankCtrl.determineColor(rank.rank)">
 						<td>{{rank.rush.first_name}} {{rank.rush.last_name}}</td>
 						<td>{{rank.rank}}</td>
 					</tr>
