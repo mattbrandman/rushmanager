@@ -15,11 +15,7 @@ AUTH_USER_MODEL = 'authentication.BrotherUser'
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-<<<<<<< HEAD
 DEBUG = bool(os.environ.get('DJANGO_DEBUG', ''))
-=======
-DEBUG = True
->>>>>>> index
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
