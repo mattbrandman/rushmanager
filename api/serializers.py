@@ -102,6 +102,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
     @detail_route(methods=['patch'], url_path='change-rush-comm-status')
     def change_rush_comm(self, request, pk=None):
+        #TODO: Make sure this has correct permissions
         user = self.get_object()
         user.is_rush_committee = not user.is_rush_committee
         perm_add = Permission.objects.get(codename='add_ranking')
