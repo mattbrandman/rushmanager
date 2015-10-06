@@ -1,50 +1,16 @@
-{% extends "base.html" %}
-{% block content %}
-
 <div class="container">
-    <h1>{{ rush }}</h1>
+    <div style="font-size: 250%" class="row text-center page-header"><p><b>{{ctrl.rush.first_name}}'s Profile</b></p></div>
     <div class="row">
-    <div class="col-md-6">
-        {% if rush.picture %}
-            <!-- TODO: add max width to the picture -->
-            <img class="rush-detail-img" src='{{ MEDIA_URL }}{{ rush.picture }}' />
-        {% endif %}
+        <div class="col-md-4">
+            <img src="{{ctrl.rush.picture}}">
+        </div>
+        <div class="col-md-8">
+            <p>Name: {{ctrl.rush.first_name}} {{ctrl.rush.last_name}}</p>
+            <p>Primary Contact: {{ctrl.rush.primary_contact.name}}</p>
+            <p>Phone Number: {{ctrl.rush.phone_number}}</p>
+        </div>
     </div>
-    <div class="col-md-6">
-    <h3>INFO</h3>
-        <ul>
-            {% if rush.dorm %}<li><b>Dorm: </b>{{ rush.dorm }}</li>{% endif %}
-            {% if rush.primary_contact %}<li><b>Primary Contact: </b>{{ rush.primary_contact }}</li>{% endif %}
-            {% if rush.secondary_contact %}<li><b>Secondary Contact: </b>{{ rush.secondary_contact }}</li>{% endif %}
-            {% if rush.rank %}<li><b>Number System: </b>{{ rush.rank }}</li>{% endif %}
-            {% if rush.phone_number %}<li><b>Phone Number: </b>{{ rush.phone_number }}</li>{% endif %}
-            <a href="{% url 'rushtracker:update' rush.id %}" target='_self'>Edit</a>
-        </ul>
-    <h3>ATTENDANCE ({{ rush_attendance.count }})</h3>
-        <ul>
-            {% if rush_attendance %}
-                {% for event in rush_attendance %}
-                   <li>{{ event.date }} | {{ event }}</li>
-                {% endfor %}
-            {% else %}
-                <p>{{ rush }} has not been to any events yet</p>
-            {% endif %}
-        </ul>
-
-    <h3>COMMENTS</h3>   
-        <ul>
-            {% if comments %}
-                {% for comment in comments %}
-                    <li>{{ comment.comment }}</li>
-                {% endfor %}
-                <a href="{% url 'comments:new_comment' rush.id %}">See All</a>
-            {% else %}
-                <p>no comments about {{ rush }}, to comment click <a href="{% url 'comments:new_comment' rush.id %}">Here</a></p>
-            {% endif %}
-
-        </ul>
-                        
+    <div class="row">
+    	<div class="page-header" style="font-size: 250%">Comments </div>
     </div>
 </div>
-
-{% endblock %}

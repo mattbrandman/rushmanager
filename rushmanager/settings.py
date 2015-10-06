@@ -15,7 +15,7 @@ AUTH_USER_MODEL = 'authentication.BrotherUser'
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-DEBUG = bool(os.environ.get('DJANGO_DEBUG', ''))
+DEBUG = True
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
@@ -93,6 +93,9 @@ STATICFILES_FINDERS = (
 #'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "templates"),
+    )
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
@@ -100,7 +103,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissions',
         'authentication.permissions.SameOrganizationPermission',
     ],
-    'DEFAULT_FILTER_BACKENDS':('rest_framework.filters.DjangoFilterBackend', 'rest_framework.filters.OrderingFilter')
+    'DEFAULT_FILTER_BACKENDS':('rest_framework.filters.DjangoFilterBackend', 'rest_framework.filters.OrderingFilter', 'rest_framework.filters.SearchFilter')
 }
 
 ROOT_URLCONF = 'rushmanager.urls'

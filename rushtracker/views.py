@@ -15,7 +15,7 @@ from authentication.mixins import CorrectOrganizationMixin
 from authentication.forms import UserUpdateNameForm
 
 class IndexView(LoginRequiredMixin, generic.ListView):
-	template_name = 'rushtracker/index.html'
+	template_name = 'base.html'
 	context_object_name = 'all_rushes'
 	def get_queryset(self):
 		return Rush.tenant_objects.all()
