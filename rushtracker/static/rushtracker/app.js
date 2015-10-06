@@ -10,15 +10,14 @@
     $resourceProvider.defaults.stripTrailingSlashes = false;
 	}]);
 
-	app.controller('RushTableController', ['Rush', '$state', function(Rush, $state){
+	app.controller('RushTableController', ['promiseObj', 'Rush', '$state', function(promiseObj, Rush, $state){
 		var vm = this;
 		this.page_size  = 100;
-		Rush.query(function(data) {
-			vm.rushes = data.results;
-			vm.totalRushes = data.count;
-			vm.perPage = vm.page_size;
-			vm.page_size = 100;
-		});
+		var data = promiseObj.data;
+		vm.rushes = data.results;
+		vm.totalRushes = data.count;
+		vm.perPage = vm.page_size;
+		vm.page_size = 100;
 		this.goDetail = function(id) {
 			$state.go('rush.detail', {'id': id});
 		} 

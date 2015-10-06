@@ -18,7 +18,12 @@ rushApp.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
     .state('rush.list', {
       url: "/list",
       templateUrl: "static/rushtracker/index.html",
-      controller: 'RushTableController as ctrl'
+      controller: 'RushTableController as ctrl',
+      resolve: {
+        promiseObj: function($http) {
+          return $http.get('/api/rush/');
+        }
+      }
     })
     .state('rush.detail', {
       url: "/:id",

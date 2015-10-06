@@ -20,7 +20,7 @@
         </div>
     </div>
 
-        <table class="table table-bordered table-striped" style="table-layout:fixed">
+        <table class="table table-bordered" style="table-layout:fixed">
         <thead>
             <tr>
                 <th ng-click="ctrl.sort('first_name'); ctrl.active='first_name'" style="cursor:pointer">First Name <i ng-if="ctrl.active != 'first_name'" class="fa fa-sort"></i><i ng-if="ctrl.active == 'first_name' && ctrl.reverse==true" class="fa fa-sort-desc"></i><i ng-if="ctrl.active == 'first_name' && ctrl.reverse==false" class="fa fa-sort-asc"></i></th>
@@ -28,9 +28,9 @@
                 <th ng-click="ctrl.sort('last_name'); ctrl.active='last_name'" style="cursor:pointer">Last Name <i ng-if="ctrl.active != 'last_name'" class="fa fa-sort"></i><i ng-if="ctrl.active == 'last_name' && ctrl.reverse==true" class="fa fa-sort-desc"></i><i ng-if="ctrl.active == 'last_name' && ctrl.reverse==false" class="fa fa-sort-asc"></i></th>
             </tr>
             </thead>
-            <tr ng-repeat="rush in ctrl.rushes" ng-click="ctrl.goDetail(rush.id)">
-                <td ng-click="ctrl.active = first">{{rush.first_name}}</td>
-                <td>{{rush.last_name}}</td>
+            <tr ng-repeat="rush in ctrl.rushes" ng-click="ctrl.goDetail(rush.id)" style="display:table-row; cursor: pointer" class="hvr-fade">
+                <td ng-click="ctrl.active = first" style="display: table-cell">{{rush.first_name}}</td>
+                <td> {{rush.last_name}}</td>
             </tr>
         </table>
         <pagination total-items="ctrl.totalRushes" ng-model="ctrl.paginationControl" ng-change="ctrl.sort()" items-per-page="ctrl.perPage"></pagination>
