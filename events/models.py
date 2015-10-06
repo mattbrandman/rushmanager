@@ -9,6 +9,6 @@ class Event(TenantAware):
     date = models.DateField('Event Date')
     organization = models.ForeignKey(Organization)
     rush_period = models.ForeignKey(RushPeriod, null=True, blank=True)
-
+    attendance = models.ManyToManyField(Rush, null=True, blank=True)
     def __str__(self):
         return self.title
