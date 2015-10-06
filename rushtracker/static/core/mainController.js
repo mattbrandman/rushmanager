@@ -2,10 +2,11 @@
 
 var rushApp = angular.module('routerApp', ['ui.router', 'RushApp', 'commentApp']);
 
-rushApp.config(function($stateProvider, $urlRouterProvider) {
+rushApp.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
   //
   // For any unmatched url, redirect to /state1
   $urlRouterProvider.otherwise("/rush/list");
+  $locationProvider.html5Mode(false);
   //
   // Now set up the states
   $stateProvider

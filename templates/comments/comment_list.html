@@ -1,6 +1,6 @@
 
 
-<div ng-app="commentApp">
+<div>
     <div class="container" ng-controller="CommentViewController as ctr">
         <div class="row">
             <div class="col-md-4">
@@ -13,6 +13,11 @@
                 <h3 ng-cloak> Phone Number: {{ctr.rush.phone_number || "Not Available"}}</h3>
             </div>
         </div>
+        <div class="row">
+            <button class="btn btn-primary">Edit</button>
+            <button class="btn btn-alert">Edit</button>
+        </div>
+
         <div class="row" ng-cloak>
             <div class="col-md-8 ">
             <!--TODO: Isaac do you think the comment box should be aligned with comments -->
