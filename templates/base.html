@@ -2,55 +2,58 @@
 <!DOCTYPE html>
 <html>
 <!--This loads in all jquery and jquery ui scripts and css files-->
+
 <head>
-<title>Rush Hound</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"/>
-<link rel="stylesheet" href="{% static 'shame.css' %}" />
-<script src={% static 'angular.min.js' %}></script>
-<script src={% static 'core/factory.js' %}></script>
-<script src={% static 'core/mainController.js' %}></script>
-<script src={% static 'rushtracker/app.js' %}></script>
-<script src={% static 'comments/app.js' %}></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.11.2/select.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.11.2/select.css" /> 
-<link href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.0.2/css/hover.css" rel="stylesheet"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-sanitize.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.4/ui-bootstrap-tpls.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-resource.js"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.js"></script>
+    <title>Rush Hound</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="{% static 'shame.css' %}" />
+    <script src={% static 'angular.min.js' %}></script>
+    <script src={% static 'core/factory.js' %}></script>
+    <script src={% static 'core/mainController.js' %}></script>
+    <script src={% static 'rushtracker/app.js' %}></script>
+    <script src={% static 'comments/app.js' %}></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.11.2/select.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.11.2/select.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.0.2/css/hover.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-sanitize.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.4/ui-bootstrap-tpls.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-resource.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.min.js"></script>
+    <!-- Angular Material Javascript now available via Google CDN; version 0.11.2 used here -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.min.js"></script>
+    <script src="{% static 'papaparse.js' %}"></script>
 </head>
-<script src="{% static 'papaparse.js' %}"></script>
 {% verbatim %}
 <!-- DataTables -->
 <!-- this is an example bootstrap navbar, we should just work off of that -->
-<body ng-app="routerApp">
-  <nav class="navbar navbar-default">
-    <div class="container-fluid">
-      <!-- Brand and toggle get grouped for better mobile display -->
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="/#/">Rush Hound</a>
-      </div>
 
-      
-    </div><!-- /.container-fluid -->
-  </nav> 
-  <div ui-view></div>
+<body ng-app="routerApp">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/#/">Rush Hound</a>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+    <div ui-view></div>
 </body>
 {% endverbatim %}
 <script>
-  var _currentUser = {
-    'is_admin': {% filter lower %} {{perms.authentication.chapter_admin}} {% endfilter %},
-    'user' : {{request.user.id}}
-  };
-
+var _currentUser = {
+    'is_admin': { % filter lower %} {{perms.authentication.chapter_admin}} { % endfilter %},
+    'user': {{request.user.id}}
+};
 </script>
 </html>
-

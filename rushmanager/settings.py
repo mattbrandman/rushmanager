@@ -29,7 +29,7 @@ TEMPLATE_DEBUG = DEBUG
 LOGIN_URL = '/home/'
 
 #Change this once profile views are up and running 
-LOGIN_REDIRECT_URL = '/rushtracker/'
+LOGIN_REDIRECT_URL = '/'
 
 CRISPY_FAIL_SILENTLY = not DEBUG
 
