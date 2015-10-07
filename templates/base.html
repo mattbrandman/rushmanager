@@ -51,9 +51,10 @@
 </body>
 {% endverbatim %}
 <script>
-var _currentUser = {
-    'is_admin': { % filter lower %} {{perms.authentication.chapter_admin}} { % endfilter %},
-    'user': {{request.user.id}}
-};
+  var _currentUser = {
+    'is_admin': {% filter lower %} {{perms.authentication.chapter_admin}} {% endfilter %},
+    'user' : {{request.user.id}}
+  };
+
 </script>
 </html>
