@@ -1,6 +1,6 @@
 <div class="row" ng-click="ctrl.editing = true; ctrl.editOpen(); $event.stopPropagation();" ng-cloak>
     <div ng-switch on="ctrl.editing">
-        <h4 class="col-md-12" ng-click="ctrl.editing = true; ctrl.editOpen()">{{::ctrl.ngModel.user.email}}</h4>
+        <p class="col-md-12" style="font-size: 1.5rem" ng-click="ctrl.editing = true; ctrl.editOpen()">{{::ctrl.ngModel.user.email}}</p>
         <div ng-switch-when="false">
             <p class="col-md-12" style="word-wrap: break-word; margin-left: 10px">{{::ctrl.ngModel.comment}}</p>
             

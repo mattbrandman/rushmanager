@@ -1,34 +1,25 @@
-{% extends 'base.html' %}
-{% load staticfiles %}
-{% block content%}
-<div class="container">
-	<div class = "row">
-		<div class="col-md-4 col-md-offset-4">
-			<label>Profile Picture, Drag File Here To Add</label>
-		</div>
-	</div>
-	<div class ="row" id="drop-target">
-		<div class="col-md-4 col-md-offset-4">
-		<!--TODO: stop the little resizing bootstrap does it looks bad also toy with image size and offset and
-		shrink/enlarge and center canvas-->
-			<canvas width = 300 height=300 id="myCanvas" style="border: 1px solid black;"></canvas>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-12">
-			{% load crispy_forms_tags %}
-			{% crispy form %}
-		</div>
-	</div>
+<div class="modal-header">
+    <div class="modal-title">Create a new rush</div>
 </div>
-
-
-<script>
-$(".datepicker").datepicker({});
-</script>
-<script src ="{% static 'rushtracker/dropoptions.js' %}"></script>
-<script>
-	$(".chosen-select").select2({placeholder: 'Select at least one rush period', width: '100%' });
-	$(".create-select2").select2();
-</script>
-{% endblock %}
+<div class="modal-body">
+    <label> First Name </label>
+    <input class="form-control" ng-model="ctrl.rush.first_name"/>
+    <label> Last Name </label>
+    <input class="form-control" ng-model="ctrl.rush.last_name"/>
+    <label> Phone Number </label>
+    <input class="form-control" ng-model="ctrl.rush.phone_number"/>
+    <label> Primary Contact </label>
+    <ui-select id="selectContact" ng-model="ctrl.rush.primary_contact">
+        <ui-select-match allow-clear placeholder="Select a User">{{$select.selected.name}}</ui-select-match>
+        <ui-select-choices repeat="user.id as user in ctrl.brothers | filter: {name: $select.search}">{{user.name}}</ui-select-choices>
+    </ui-select>
+    <label> Rush Period</label>
+    <ui-select multiple id="selectContact" ng-model="ctrl.rush.rush_period">
+        <ui-select-match allow-clear placeholder="Select a rush period">{{$item.name}}</ui-select-match>
+        <ui-select-choices repeat="rushPeriod.id as rushPeriod in ctrl.rushPeriods | filter: {name: $select.search}">{{rushPeriod.name}}</ui-select-choices>
+    </ui-select>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ctrl.save()">Submit</button>
+    <button class="btn btn-danger" ng-click="ctrl.cancel()">Cancel</button>
+</div>

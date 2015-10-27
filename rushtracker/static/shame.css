@@ -1,15 +1,53 @@
 .rush-detail-img {
-    width:100%;
+    width: 100%;
 }
 
 .comment-pic {
-    margin-bottom:20px;
+    margin-bottom: 20px;
 }
 
 #yes {
-	visibility:hidden;
+    visibility: hidden;
 }
 
 .events-margin {
-    margin:5px;
+    margin: 5px;
+}
+
+
+/* entire container, keeps perspective */
+
+/* entire container, keeps perspective */
+
+.flip-container {
+  -webkit-perspective: 1000;
+}
+
+.card {
+box-shadow: 0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12);
+}
+/* flip the pane when hovered */
+.ui-select-toggle {
+	border: .0625rem solid #ccc;
+}
+
+.caret {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 2px;
+    vertical-align: middle;
+    border-top: 4px dashed;
+    border-top: 4px solid\9;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+}
+
+.ui-select-match-item{
+    border: .0625rem solid #ccc;
+}
+
+.ui-select-multiple {
+    height: auto !important;
+    padding: 6px 6px 3px !important;
 }

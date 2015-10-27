@@ -1,70 +1,74 @@
-
-
-<div>
-    <div class="container" ng-controller="CommentViewController as ctr">
-        <div class="row">
-            <div class="col-md-4">
-                <img style="margin: 0px 0px 10px 0px; width: 300px; height: 300px" class="center-block" ng-src="{{::ctr.rush.picture}}" />
-            </div>
-            <div class="col-md-8" ng-cloak>
-                <h1 style="margin: ">{{::ctr.rush.first_name}} {{::ctr.rush.last_name}}</h1>
-                <h3 ng-cloak> Primary Contact: {{ctr.rush.primary_contact.name || "Not Available "}}</h3>
-                <h3 ng-cloak> Date Contacted: {{ctr.rush.date_contacted || "Not Available"}}</h3>
-                <h3 ng-cloak> Phone Number: {{ctr.rush.phone_number || "Not Available"}}</h3>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4">
-            <button class="btn btn-primary">Edit</button>
-            <button class="btn btn-danger">Delete</button>
+<div class="container" ng-controller="CommentViewController as ctr">
+<h1 class="text-center"> {{::ctr.rush.first_name}} {{::ctr.rush.last_name}}</h1>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    Profile
+                </div>
+                <div class="card-block">
+                    <img style="margin: 0px 0px 10px 0px; width: 300px; height: 300px" class="center-block" ng-src="{{::ctr.rush.picture}}" />
+                    <p ng-cloak> Primary Contact: {{ctr.rush.primary_contact.name || "Not Available "}}</p>
+                    <p ng-cloak> Date Contacted: {{ctr.rush.date_contacted || "Not Available"}}</p>
+                    <p ng-cloak> Phone Number: {{ctr.rush.phone_number || "Not Available"}}</p>
+                    <button class="btn btn-primary">Edit</button>
+                    <button class="btn btn-danger">Delete</button>
+                </div>
             </div>
         </div>
-
-        <div class="row" ng-cloak>
-            <div class="col-md-8 ">
-            <!--TODO: Isaac do you think the comment box should be aligned with comments -->
-                <h3 style="margin-left: -10px" ng-cloak> Comments: </h3>
-                <div style="border-bottom: 1px solid" ng-repeat="item in ctr.all_comments | orderBy:'created_at'">
-                    <div ng-if="ctr.isEqual(item) || ctr.is_admin">
-                        <inline-edit ng-model="item" update="ctr.update(item)" delete-comment="ctr.deleteComment(comment)"></inline-edit>
-                    </div>
-                    <div ng-if="!ctr.isEqual(item) && !ctr.is_admin">
-                        <div class="row comment-box">
-                            <h4 class="col-md-12" ng-click="ctrl.editing = true" ng-cloak>{{item.user.email}}</h4>
-                            <p class="col-md-6" style="word-wrap: break-word;" ng-cloak>{{item.comment}}</p>
-                            <p class="col-md-12" ng-cloak>{{item.created_at | date:'MM/dd/yyyy @ h:mma'}}</p>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    Leave a comment
+                </div>
+                <div class="card-block">
+                    <form name="commentForm" style="margin-top: 15px" novalidate ng-submit="ctr.submit(ctr.comment)" ng-cloak>
+                        <fieldset>
+                            <div class="iform-group row">
+                                <div class="col-md-6">
+                                    <label ng-show="ctr.is_admin" for="selectUser">User:*</label>
+                                    <ui-select ng-show="ctr.is_admin" id="selectUser" style="margin-bottom:15px;" ng-model="ctr.comment.user">
+                                        <ui-select-match placeholder="Select a User">{{$select.selected.name}}</ui-select-match>
+                                        <ui-select-choices repeat="user.id as user in ctr.users | filter: {name: $select.search}">{{user.name}}</ui-select-choices>
+                                    </ui-select required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="selectEvent">Event:</label>
+                                    <ui-select id="selectEvent" ng-model="ctr.comment.event">
+                                        <ui-select-match placeholder="Select An Event">{{$select.selected.title}}</ui-select-match>
+                                        <ui-select-choices repeat="event.id as event in ctr.events | filter: {title: $select.search}">{{event.title}}</ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-12 ">
+                                    <label for="commentText">Comment:*</label>
+                                    <textarea id="commentText" ng-model="ctr.comment.comment" class="form-control" required></textarea>
+                                </div>
+                            </div>
+                            <input type="submit" value="Submit" class="btn btn-primary" ng-disabled="!commentForm.$valid" />
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    Comments
+                </div>
+                <div class="card-block">
+                    <div style="border-bottom: 1px solid" ng-repeat="item in ctr.all_comments | orderBy:'created_at'">
+                        <div ng-if="ctr.isEqual(item) || ctr.is_admin">
+                            <inline-edit ng-model="item" update="ctr.update(item)" delete-comment="ctr.deleteComment(comment)"></inline-edit>
+                        </div>
+                        <div ng-if="!ctr.isEqual(item) && !ctr.is_admin">
+                            <div class="row comment-box">
+                                <p class="col-md-12" ng-click="ctrl.editing = true" style="font-size: 1.5 rem" ng-cloak>{{item.user.email}}</p>
+                                <p class="col-md-6" style="word-wrap: break-word;" ng-cloak>{{item.comment}}</p>
+                                <p class="col-md-12" ng-cloak>{{item.created_at | date:'MM/dd/yyyy @ h:mma'}}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <form name="commentForm" style="margin-top: 15px" novalidate ng-submit="ctr.submit(ctr.comment)" ng-cloak>
-                    <fieldset>
-                        <legend>Leave A Comment</legend>
-                        <div class="form-group row">
-                            <div class="col-md-6">
-                                <label ng-show="ctr.is_admin" for="selectUser">User:*</label>
-                                <ui-select ng-show="ctr.is_admin" id="selectUser" style="margin-bottom:15px;" ng-model="ctr.comment.user">
-                                    <ui-select-match placeholder="Select a User">{{$select.selected.name}}</ui-select-match>
-                                    <ui-select-choices repeat="user.id as user in ctr.users">{{user.name}}</ui-select-choices>
-                                </ui-select required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="selectEvent">Event:</label>
-                                <ui-select id="selectEvent" ng-model="ctr.comment.event" ng-options="event.id as event.title for event in ctr.events">
-                                    <ui-select-match placeholder="Select An Event">{{$select.selected.title}}</ui-select-match>
-                                    <ui-select-choices repeat="event.id as event in ctr.events">{{event.title}}</ui-select-choices>
-                                </ui-select>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-md-12 ">
-                                <label for="commentText">Comment:*</label>
-                                <textarea id="commentText" ng-model="ctr.comment.comment" class="form-control" required></textarea>
-                            </div>
-                        </div>
-                        <input type="submit" value="Submit" class="btn btn-primary" ng-disabled="!commentForm.$valid" />
-                    </fieldset>
-                </form>
             </div>
         </div>
     </div>

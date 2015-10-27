@@ -37,7 +37,7 @@ class OrganizationViews(viewsets.ReadOnlyModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return Organization.objects.all().filter(id=self.request.user.organization.id).filter(rush_period=self.request.user.organization.active_rush_period)
+        return Organization.objects.all().filter(id=self.request.user.organization.id)
 
 
 class RushPeriodSerializer(serializers.ModelSerializer):
@@ -143,15 +143,12 @@ class UserViewSet(viewsets.ModelViewSet):
 class RushSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rush
-        fields = ('first_name', 'last_name', 'id', 'picture', 'dorm', 'contacted_date', 'primary_contact', 'phone_number')
+        fields = ('first_name', 'last_name', 'id', 'picture', 'dorm', 'contacted_date', 'primary_contact', 'phone_number', 'organization', 'rush_period')
+    def to_internal_value(self, data):
+        request = self.context['request']
+        data['organization'] = request.user.organization.id
+        return super(RushSerializer, self).to_internal_value(data)
 
-    def to_representation(self, instance):
-        ret = super(RushSerializer, self).to_representation(instance)
-        user = instance.primary_contact
-
-        if instance.primary_contact is not None:
-            ret['primary_contact'] = {'name': str(user)}
-        return ret
 class RushViewSet(viewsets.ModelViewSet):
     serializer_class = RushSerializer
     pagination_class = LargeResultsSetPagination
@@ -162,7 +159,6 @@ class RushViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return Rush.tenant_objects.all().filter(rush_period=self.request.user.organization.active_rush_period).select_related('primary_contact')
-
 
 class RushViewSetRanked(viewsets.ModelViewSet):
     # returns unranked kids

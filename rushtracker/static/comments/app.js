@@ -1,6 +1,7 @@
 (function() {
 var app = angular.module('commentApp', ['ui.bootstrap', 'ui.select', 'ngSanitize']);
-	app.config(['$httpProvider', '$locationProvider', function($httpProvider, $locationProvider) {
+	app.config(['$httpProvider', '$locationProvider', 'uiSelectConfig', function($httpProvider, $locationProvider, uiSelectConfig) {
+	uiSelectConfig.theme = 'bootstrap';
     $httpProvider.defaults.xsrfCookieName = 'csrftoken';
     $httpProvider.defaults.xsrfHeaderName = 'x-CSRFToken';
     $locationProvider.html5Mode(true);
@@ -23,7 +24,6 @@ var app = angular.module('commentApp', ['ui.bootstrap', 'ui.select', 'ngSanitize
 		this.is_admin = _currentUser.is_admin;
 		this.all_comments = [];
 		this.comment = {};
-		this.comment.user = {};
 		this.comment.rush = rushId;
 		this.my_comment_list = [];
 		this.users = [];
