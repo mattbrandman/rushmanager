@@ -18,6 +18,8 @@ from decimal import *
 from rest_framework import mixins
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.pagination import PageNumberPagination
+import uuid
+import boto
 import pdb
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -149,6 +151,7 @@ class RushSerializer(serializers.ModelSerializer):
         data['organization'] = request.user.organization.id
         return super(RushSerializer, self).to_internal_value(data)
 
+
 class RushViewSet(viewsets.ModelViewSet):
     serializer_class = RushSerializer
     pagination_class = LargeResultsSetPagination
@@ -159,6 +162,15 @@ class RushViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return Rush.tenant_objects.all().filter(rush_period=self.request.user.organization.active_rush_period).select_related('primary_contact')
+
+    @detail_route(methods=['get'], url_path='signs3')
+    def reset_to_default_password(self, request, pk=None):
+        fileName = uuid.uuid1()
+        myConnect = boto.connect_s3()
+        return Response({
+            'url': myConnect.generate_url(1000, 'PUT', 'rushmanagerbucket', '/media/profile_picture/' + str(fileName), headers={'Content-Type': 'image/png'}),
+            'myUrl': 'https://s3.amazonaws.com/rushmanagerbucket/media/profile_picture/' + str(fileName)
+            })
 
 class RushViewSetRanked(viewsets.ModelViewSet):
     # returns unranked kids

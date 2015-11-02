@@ -1,7 +1,6 @@
 (function() {
 
-    var app = angular.module('RushApp', ['RushFactory', 'ui.bootstrap', 'ngAnimate']);
-
+    var app = angular.module('RushApp', ['RushFactory', 'ui.bootstrap', 'ngAnimate', 'ngFileUpload', 'ngImgCrop']);
 
 
     app.config(['$httpProvider', '$resourceProvider', function($httpProvider, $resourceProvider) {
@@ -10,9 +9,11 @@
         $resourceProvider.defaults.stripTrailingSlashes = false;
     }]);
 
-    app.controller('RushTableController', ['promiseObj', 'Rush', '$state', '$uibModal', '$http', function(promiseObj, Rush, $state, $uibModal, $http) {
+    app.controller('RushTableController', ['promiseObj', 'brotherPromiseObj', 'Rush', '$state', '$uibModal', '$http', 'Upload', function(promiseObj, brotherPromiseObj, Rush, $state, $uibModal, $http, Upload) {
         var vm = this;
+        this.brothers = brotherPromiseObj.data;
         this.page_size = 100;
+        vm.pickingPicture = false;
         var data = promiseObj.data;
         vm.rushes = data.results;
         vm.totalRushes = data.count;
@@ -23,6 +24,24 @@
                 'id': id
             });
         }
+        this.upload = function(file, id) {
+            var myUrl = $http.get('/api/rush/0/signs3/?ctype=' + file.type).then(function(data) {
+                $http({
+                    url: data.data.url,
+                    method: 'PUT',
+                    data: file,
+                    headers: {'Content-Type': 'image/png', 'x-amz-acl': 'public-read'}
+                }).then(function(data) {
+                    console.log(data);
+                });
+            });
+        }
+        this.getContact = function(input) {
+            var index = vm.brothers.map(function(x) {
+                return x.id;
+            }).indexOf(input);
+            return vm.brothers[index];
+        };
         this.reverse = false;
         var currentColumn = "first_name";
         this.active = "first_name";
@@ -64,6 +83,7 @@
 
         this.open = function() {
             var modalInstance = $uibModal.open({
+                animation: true,
                 templateUrl: '/static/rushtracker/create_rush.html',
                 controller: 'ModalInstanceCtrl',
                 controllerAs: 'ctrl',

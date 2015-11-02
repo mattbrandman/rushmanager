@@ -7,7 +7,10 @@
         	},
         	'query': {
         		isArray:false
-        	}
+        	},
+            'patch': {
+                method: 'PATCH'
+            }
 
         });
     }]);

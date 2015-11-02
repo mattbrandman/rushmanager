@@ -22,6 +22,9 @@ rushApp.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
       resolve: {
         promiseObj: function($http) {
           return $http.get('/api/rush/');
+        },
+        brotherPromiseObj: function($http) {
+          return $http.get('/api/users/');
         }
       }
     })

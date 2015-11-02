@@ -7,7 +7,7 @@
                     Profile
                 </div>
                 <div class="card-block">
-                    <img style="margin: 0px 0px 10px 0px; width: 300px; height: 300px" class="center-block" ng-src="{{::ctr.rush.picture}}" />
+                    <img style="margin: 0px 0px 10px 0px; width: 300px; height: 300px" class="center-block" ng-src="{{ctr.rush.picture || 'https://rushmanagerbucket.s3.amazonaws.com/media/profile_picture/default_picture.png'}}" />
                     <p ng-cloak> Primary Contact: {{ctr.rush.primary_contact.name || "Not Available "}}</p>
                     <p ng-cloak> Date Contacted: {{ctr.rush.date_contacted || "Not Available"}}</p>
                     <p ng-cloak> Phone Number: {{ctr.rush.phone_number || "Not Available"}}</p>
@@ -56,6 +56,9 @@
                     Comments
                 </div>
                 <div class="card-block">
+                    <div ng-if="ctr.all_comments.length == 0">
+                    No comments at this time.
+                    </div>
                     <div style="border-bottom: 1px solid" ng-repeat="item in ctr.all_comments | orderBy:'created_at'">
                         <div ng-if="ctr.isEqual(item) || ctr.is_admin">
                             <inline-edit ng-model="item" update="ctr.update(item)" delete-comment="ctr.deleteComment(comment)"></inline-edit>
