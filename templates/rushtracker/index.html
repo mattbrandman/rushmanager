@@ -18,20 +18,21 @@
                 </div>
                 <div class="card-block" style="height: 500px">
                     <div ng-if="rush.pickingPicture">
-                        <div ngf-drop ng-model="picFile" ngf-pattern="image/*" class="cropArea">
-                            <img-crop area-type="square" image="picFile  | ngfDataUrl" result-image="ctrl.croppedDataUrl" ng-init="ctrl.croppedDataUrl=''">
+                        <div ngf-drop ng-model="picFile" ngf-pattern="image/*" class="cropArea center-block">
+                            <img-crop class="center-block" area-type="square" image="picFile  | ngfDataUrl" result-image="ctrl.croppedDataUrl" result-image-size = "300" ng-init="ctrl.croppedDataUrl=''">
                             </img-crop>
                         </div>
                     </div>
                     <div ng-if="!rush.pickingPicture">
-                        <img class="center-block" ng-src="{{rush.picture || 'https://s3-us-west-2.amazonaws.com/rushmanagerbucket/media/profile_picture/default_picture.png'}}" />
+                        <img style="width: 300px; height: 300px" class="center-block" ng-src="{{rush.picture || 'https://s3-us-west-2.amazonaws.com/rushmanagerbucket/media/profile_picture/default_picture.png'}}" />
                     </div>
                     <div ng-show="!rush.pickingPicture">
                         <button style="margin-top: 10px" class="btn btn-primary form-control" ngf-select ng-model="picFile" accept="*/*" ng-click="rush.pickingPicture=true" ngf-fix-orientation="false">Change Picture</button>
                     </div>
 
                     <div ng-show="rush.pickingPicture">
-                        <button style="margin-top: 10px" class="btn btn-primary form-control" ng-click="ctrl.upload(ctrl.croppedDataUrl, rush.id)">Submit</button>
+                        <button style="margin-top: 10px" class="btn btn-primary form-control" ng-click="ctrl.upload(ctrl.croppedDataUrl, rush)">Submit</button>
+                        <button class="btn btn-danger form-control" style="margin-top: 5px" ng-click="rush.pickingPicture = false; picFile = ''">Cancel</button>
                     </div>
                     <div>{{croppedDataUrl}}</div>
                     <p class="card-text">Phone #: {{rush.phone_number || "n/a"}}</p>

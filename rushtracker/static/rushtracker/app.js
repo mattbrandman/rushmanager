@@ -24,15 +24,18 @@
                 'id': id
             });
         }
-        this.upload = function(file, id) {
-            var myUrl = $http.get('/api/rush/0/signs3/?ctype=' + file.type).then(function(data) {
+        this.upload = function(file, rush) {
+            var myUrl = $http.get('/api/rush/0/signs3/').then(function(data) {
+                var customUrl = data.data.myUrl;
                 $http({
                     url: data.data.url,
                     method: 'PUT',
-                    data: file,
-                    headers: {'Content-Type': 'image/png', 'x-amz-acl': 'public-read'}
+                    data: Upload.dataUrltoBlob(file),
+                    headers: {'Content-Type': 'image/png'}
                 }).then(function(data) {
-                    console.log(data);
+                    Rush.patch({rushId:  rush.id}, {'picture': customUrl});
+                    rush.picture = customUrl;
+                    rush.pickingPicture = false;
                 });
             });
         }

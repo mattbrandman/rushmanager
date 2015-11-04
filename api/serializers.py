@@ -169,7 +169,7 @@ class RushViewSet(viewsets.ModelViewSet):
         myConnect = boto.connect_s3()
         return Response({
             'url': myConnect.generate_url(1000, 'PUT', 'rushmanagerbucket', '/media/profile_picture/' + str(fileName), headers={'Content-Type': 'image/png'}),
-            'myUrl': 'https://s3.amazonaws.com/rushmanagerbucket/media/profile_picture/' + str(fileName)
+            'myUrl': 'https://s3-us-west-2.amazonaws.com/rushmanagerbucket/media/profile_picture/' + str(fileName)
             })
 
 class RushViewSetRanked(viewsets.ModelViewSet):
