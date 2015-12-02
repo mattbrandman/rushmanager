@@ -18,7 +18,7 @@ class IndexView(LoginRequiredMixin, generic.ListView):
 	template_name = 'rushtracker/index.html'
 	context_object_name = 'all_rushes'
 	def get_queryset(self):
-		return Rush.tenant_objects.all()
+		return Rush.tenant_objects.all().filter(rush_period = self.request.user.organization.active_rush_period)
 
 	def get_context_data(self):
 		context = super(IndexView, self).get_context_data()
