@@ -14,6 +14,7 @@
     <script src={% static 'core/mainController.js' %}></script>
     <script src={% static 'rushtracker/app.js' %}></script>
     <script src={% static 'comments/app.js' %}></script>
+    <script src={% static 'events/app.js' %}></script>
     <script src={% static 'ng-img-crop.js' %}></script>
     <link rel="stylesheet" href={% static 'ng-img-crop.css' %}/>
 
@@ -43,7 +44,7 @@
                 <a class="nav-link" href="/#/">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Features</a>
+                <a class="nav-link" ui-sref="events.list">Events</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Pricing</a>

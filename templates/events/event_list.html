@@ -1,0 +1,14 @@
+<div class="container">
+    <div ng-controller="EventController as ctrl">
+        <div class="page-header">
+            <h1> Events </h1>
+        </div>
+        <ul class="list-group">
+            <li class="list-group-item" ng-repeat="event in ctrl.eventList" ui-sref="events.detail({id: {{event.id}}})" style="cursor: pointer">
+            <p>Name: {{event.title}}</p>
+            <p>Date: {{event.date}} </p>
+            <button class = "btn btn-primary" ui-sref="events.attendance({id: {{event.id}}})" ng-click="$event.stopPropagation()">Take Attendance</button>
+            </li>
+        </ul>
+    </div>
+</div>

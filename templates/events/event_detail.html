@@ -1,0 +1,14 @@
+<div class="container text-center">
+    <div class="row">
+        <h1>{{ctrl.myEvent.title}}</h1>
+        <h4>{{ctrl.myEvent.date}}</h4>
+        <a ui-sref="events.attendance({id: {{ctrl.myEvent.id}}})">Take Attendance</a>
+        <ul>
+            <li ng-repeat="rush in ctrl.myEvent.attendance">
+            	{{rush.first_name}} {{rush.last_name}}
+            </li>
+        </ul>
+    </div>
+    <div>
+    </div>
+</div>
