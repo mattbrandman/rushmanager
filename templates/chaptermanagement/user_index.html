@@ -9,6 +9,7 @@
                     <th>Email</th>
                     <th>Rush Committee</th>
                     <th class="hidden-xs">Reset</th>
+                    <th>Delete</th>
                 </tr>
             </thead>
             <tbody>
@@ -20,6 +21,8 @@
                     </td>
                     <td class="hidden-xs">
                         <input class="btn btn-danger" type="button" ng-click="PageCtrl.ResetPassword(brother)" ng-disabled="brother.reset" value="Reset Password" />
+                    </td>
+                    <td><input type="button" class="btn btn-danger" ng-click="PageCtrl.deleteUser(brother.id)" value="Delete"/>
                     </td>
                 </tr>
             </tbody>

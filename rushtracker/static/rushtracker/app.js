@@ -88,7 +88,7 @@
             var modalInstance = $uibModal.open({
                 animation: true,
                 templateUrl: '/static/rushtracker/create_rush.html',
-                controller: 'ModalInstanceCtrl',
+                controller: 'RushModalInstanceCtrl',
                 controllerAs: 'ctrl',
                 resolve: {
                     brothers: function() {
@@ -109,7 +109,7 @@
         this.update = function(id) {
             var modalInstance = $uibModal.open({
                 templateUrl: '/static/rushtracker/create_rush.html',
-                controller: 'ModalInstanceCtrl',
+                controller: 'RushModalInstanceCtrl',
                 controllerAs: 'ctrl',
                 resolve: {
                     brothers: function() {
@@ -134,7 +134,7 @@
         this.rush = promiseObj.data;
     }]);
 
-    app.controller('ModalInstanceCtrl', ['$uibModalInstance', 'brothers', 'Rush', 'rush_periods', 'currentRush', function($uibModalInstance, brothers, Rush, rush_periods, currentRush) {
+    app.controller('RushModalInstanceCtrl', ['$uibModalInstance', 'brothers', 'Rush', 'rush_periods', 'currentRush', function($uibModalInstance, brothers, Rush, rush_periods, currentRush) {
         var updating = false;
         if (currentRush == null) {
             console.log(null);

@@ -24,5 +24,8 @@ class Rush(TenantAware):
 	is_legacy = models.BooleanField('Legacy', default=False)
 
 
-	def __str__(self):
-		return self.first_name + " " + self.last_name
+	def __unicode__(self):
+		if self.last_name != None:
+			return self.first_name + self.last_name
+		else:
+			return self.first_name 
