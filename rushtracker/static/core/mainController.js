@@ -1,6 +1,6 @@
 (function() {
 
-    var rushApp = angular.module('routerApp', ['ui.router', 'RushApp', 'commentApp', 'eventManagement']);
+    var rushApp = angular.module('routerApp', ['ui.router', 'RushApp', 'commentApp', 'eventManagement', 'chapterManagement']);
 
     rushApp.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
         //
@@ -58,5 +58,21 @@
                 templateUrl: "static/events/take_attendance.html",
                 controller: "EventAttendanceController as ctrl"
             })
+            .state('brothers', {
+                abstract: true,
+                url: "/brothers",
+                template: "<div ui-view></div>"
+            })
+            .state('brothers.list', {
+                url: "/list",
+                templateUrl: "static/chaptermanagement/user_index.html",
+            })
     });
+
+    rushApp.controller('NavCtrl', function($scope, $location) {
+        this.isActive = function(route) {
+            return $location.path().includes(route);
+        };
+    });
+
 })();

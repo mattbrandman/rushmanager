@@ -42,7 +42,7 @@ class BrotherUserManager(BaseUserManager):
             return super(BrotherUserManager, self).get_queryset()
         else:
             self.organization = _thread_locals.user.organization 
-            return super(BrotherUserManager, self).get_queryset().filter(organization = self.organization )
+            return super(BrotherUserManager, self).get_queryset().filter(organization = self.organization)
 
 
 

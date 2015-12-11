@@ -15,9 +15,9 @@
     <script src={% static 'rushtracker/app.js' %}></script>
     <script src={% static 'comments/app.js' %}></script>
     <script src={% static 'events/app.js' %}></script>
+    <script src={% static 'chaptermanagement/app.js' %}></script>
     <script src={% static 'ng-img-crop.js' %}></script>
     <link rel="stylesheet" href={% static 'ng-img-crop.css' %}/>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.13.2/select.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/9.1.2/ng-file-upload.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.13.2/select.css" />
@@ -38,21 +38,20 @@
 
 <body ng-app="routerApp">
     <nav class="navbar navbar-light bg-faded">
-        <a class="navbar-brand" href="/#/">Rush Hound</a>
-        <ul class="nav navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" href="/#/">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" ui-sref="events.list">Events</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Pricing</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">About</a>
-            </li>
-        </ul>
+        <div ng-controller="NavCtrl as navctrl">
+            <a class="navbar-brand" href="/#/">Rush Hound</a>
+            <ul class="nav navbar-nav">
+                <li ng-class="{'nav-item': 1 == 1, active: navctrl.isActive('/rush/')}">
+                    <a class="nav-link" href="/#/">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li ng-class="{'nav-item': 1 == 1, active: navctrl.isActive('/events/')}">
+                    <a class="nav-link" ui-sref="events.list">Events</a>
+                </li>
+                <li ng-class="{'nav-item': 1 == 1, active: navctrl.isActive('/brothers/')}">
+                    <a class="nav-link" ui-sref="brothers.list">Management</a>
+                </li>
+            </ul>
+        </div>
         <form class="form-inline navbar-form pull-right">
             <input class="form-control" type="text" placeholder="Search">
             <button class="btn btn-success-outline" type="submit">Search</button>
@@ -61,6 +60,7 @@
     <div ui-view></div>
 </body>
 {% endverbatim %}
+
 <script>
 var _currentUser = {
     'is_admin':{{perms.authentication.chapter_admin|lower}},

@@ -5,7 +5,7 @@
 	</div>
 
     <div class="col-md-3" ng-repeat="rush in ctrl.rushes">
-        <button style="height: 200px; width: 200px" class="btn btn-secondary" ng-click= "ctrl.addAttendance(rush.id)">
+        <button style="height: 200px; width: 200px" ng-class="ctrl.setButtonClass(rush.id)" ng-click= "ctrl.addAttendance(rush.id)">
             {{rush.first_name}}
         </button>
     </div>

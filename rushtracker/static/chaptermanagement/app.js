@@ -4,14 +4,12 @@ var app = angular.module('chapterManagement', ['ui.bootstrap']);
     $httpProvider.defaults.xsrfCookieName = 'csrftoken';
     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 }]);
-	app.value('Papa', Papa);
 
-	app.controller('PageController', ['$http', '$modal', '$log', '$scope', 'Papa', function($http, $modal, $log, $scope, Papa){	
+	app.controller('PageController', ['$http', '$uibModal', '$log', '$scope', function($http, $uibModal, $log, $scope){	
 		this.brothers = [];
 		this.rush_committee = [];
 		var _display = this;
 		var getBrothers = $http.get('/api/users/');
-		$scope.items = ['item1', 'item2', 'item3']
 		getBrothers.success(function(data) {
 			_display.brothers = data;
 		});
@@ -35,7 +33,7 @@ var app = angular.module('chapterManagement', ['ui.bootstrap']);
 
   		$scope.open = function (size) {
 
-		    var modalInstance = $modal.open({
+		    var modalInstance = $uibModal.open({
 		      templateUrl: '/add_brother_modal.html',
 		      controller: 'ModalInstanceCtrl',
 		      controllerAs: 'ModalCtrl',
@@ -61,19 +59,10 @@ var app = angular.module('chapterManagement', ['ui.bootstrap']);
 // Please note that $modalInstance represents a modal window (instance) dependency.
 // It is not the same as the $modalservice used above.
 
-	app.controller('ModalInstanceCtrl', function ($scope, $modalInstance, $http, Papa) {
+	app.controller('ModalInstanceCtrl', function ($scope, $modalInstance, $http) {
 	this.new_brother = {};
 	var file = [];
 
-	  this.uploadFile = function() {
-	  	var x = document.getElementById("csvFile");
-	  	Papa.parse(x.files[0], {
-			complete: function(results) {
-					file = results.data;
-			},
-			header:true,
-		});
-	  };
 
 
 	  this.ok = function () {

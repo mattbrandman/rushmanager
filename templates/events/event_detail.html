@@ -1,13 +1,17 @@
-<div class="container text-center">
+<div class="container">
     <div class="row">
-        <h1>{{ctrl.myEvent.title}}</h1>
-        <h4>{{ctrl.myEvent.date}}</h4>
-        <a ui-sref="events.attendance({id: {{ctrl.myEvent.id}}})">Take Attendance</a>
-        <ul>
-            <li ng-repeat="rush in ctrl.myEvent.attendance">
-            	{{rush.first_name}} {{rush.last_name}}
+        <h1>Event Title: {{ctrl.myEvent.title}}</h1>
+        <h4>Date: {{ctrl.myEvent.date}}</h4>
+    </div>
+    <div class="row">
+        <ul class="list-group">
+            <li class="list-group-item" ng-repeat="rush in ctrl.myEvent.attendance">
+                {{rush.first_name}} {{rush.last_name}}
             </li>
         </ul>
+        <div class="text-center">
+            <button class="btn btn-primary form-control" style="margin-top: 10px" ui-sref="events.attendance({id: {{ctrl.myEvent.id}}})">Take Attendance</button>
+        </div>
     </div>
     <div>
     </div>
