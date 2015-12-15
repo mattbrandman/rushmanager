@@ -17,7 +17,7 @@ class Rush(TenantAware):
 	rank = models.IntegerField('Rank', default = 5, blank=True, null=True)
 	dorm = models.CharField('Dorm', max_length=200, blank=True, null=True)
 	picture = models.CharField(max_length=500, blank=True, null=True)
-	rush_period = models.ManyToManyField(RushPeriod)
+	rush_period = models.ManyToManyField(RushPeriod, related_name="rushes")
 	organization = models.ForeignKey(Organization, blank=True)
 	graduating_year = models.IntegerField(blank=True, null=True)
 	is_available = models.BooleanField('Is Available To Rush', default=True)

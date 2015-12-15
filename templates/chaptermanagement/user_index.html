@@ -1,32 +1,19 @@
 <div class="container" ng-app="chapterManagement" ng-controller="PageController as PageCtrl">
     <div class="row">
-        <h1> Brothers </h1>
+        <h1> Members </h1>
     </div>
     <div class="row">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Email</th>
-                    <th>Rush Committee</th>
-                    <th class="hidden-xs">Reset</th>
-                    <th>Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="brother in PageCtrl.brothers">
-                    <td>{{brother.email}}</td>
-                    <td ng-switch on="brother.is_rush_committee">
-                        <input type="button" class="btn btn-primary" ng-model="brother.is_rush_committee" ng-switch-when="false" value="ADD" ng-click="PageCtrl.ChangeCommitteeStatus(brother)" />
-                        <input type="button" class="btn btn-danger" ng-model="brother.is_rush_committee" ng-switch-when="true" value="REMOVE" ng-click="PageCtrl.ChangeCommitteeStatus(brother)" />
-                    </td>
-                    <td class="hidden-xs">
-                        <input class="btn btn-danger" type="button" ng-click="PageCtrl.ResetPassword(brother)" ng-disabled="brother.reset" value="Reset Password" />
-                    </td>
-                    <td><input type="button" class="btn btn-danger" ng-click="PageCtrl.deleteUser(brother.id)" value="Delete"/>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <ul class="list-group">
+            <li class="list-group-item" ng-repeat="brother in PageCtrl.brothers">
+                {{brother.name}}
+                <div ng-switch on="brother.is_rush_committee">
+                    <input type="button" class="btn btn-primary" ng-model="brother.is_rush_committee" ng-switch-when="false" value="ADD" ng-click="PageCtrl.ChangeCommitteeStatus(brother)" />
+                    <input type="button" class="btn btn-danger" ng-model="brother.is_rush_committee" ng-switch-when="true" value="REMOVE" ng-click="PageCtrl.ChangeCommitteeStatus(brother)" />
+                </div>
+                <input class="btn btn-danger" type="button" ng-click="PageCtrl.ResetPassword(brother)" ng-disabled="brother.reset" value="Reset Password" />
+                <input type="button" class="btn btn-danger" ng-click="PageCtrl.deleteUser(brother.id)" value="Delete" />
+            </li>
+        </ul>
         <button class="btn btn-secondary" ng-click="open()">New Brother</button>
     </div>
     <script type="text/ng-template" id="/add_brother_modal.html">

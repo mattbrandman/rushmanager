@@ -1,6 +1,6 @@
 (function() {
 
-    var rushApp = angular.module('routerApp', ['ui.router', 'RushApp', 'commentApp', 'eventManagement', 'chapterManagement']);
+    var rushApp = angular.module('routerApp', ['ui.router', 'RushApp', 'commentApp', 'eventManagement', 'chapterManagement', 'recruitmentPeriod']);
 
     rushApp.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
         //
@@ -66,6 +66,21 @@
             .state('brothers.list', {
                 url: "/list",
                 templateUrl: "static/chaptermanagement/user_index.html",
+            })
+            .state('recruitmentperiod' , {
+                abstract: true,
+                url: "/recruitmentperiod",
+                template: "<div ui-view></div>"
+            })
+            .state('recruitmentperiod.list', {
+                url:"/list",
+                templateUrl: "static/rushperiod/index.html",
+                controller: "RecruitmentList as ctrl",
+                resolve: {
+                    promiseObj: function($http) {
+                        return $http.get('/api/rushperiod/');
+                    }
+                }
             })
     });
 

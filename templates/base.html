@@ -8,6 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="{% static 'shame.css' %}" />
+    <link rel="stylesheet" href="
+https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.4.0/css/pikaday.css"/>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-animate.min.js"></script>
     <script src={% static 'core/factory.js' %}></script>
@@ -16,8 +18,10 @@
     <script src={% static 'comments/app.js' %}></script>
     <script src={% static 'events/app.js' %}></script>
     <script src={% static 'chaptermanagement/app.js' %}></script>
+    <script src={% static 'rushperiod/app.js' %}></script>
     <script src={% static 'ng-img-crop.js' %}></script>
     <link rel="stylesheet" href={% static 'ng-img-crop.css' %}/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.4.0/pikaday.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.13.2/select.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/9.1.2/ng-file-upload.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.13.2/select.css" />
@@ -50,16 +54,16 @@
                 <li ng-class="{'nav-item': 1 == 1, active: navctrl.isActive('/brothers/')}">
                     <a class="nav-link" ui-sref="brothers.list">Management</a>
                 </li>
+                <li ng-class="{'nav-item': 1 == 1, active: navctrl.isActive('/recruitmentperiod/')}">
+                    <a class="nav-link" ui-sref="recruitmentperiod.list">Recruitment Period</a>
+                </li>
             </ul>
         </div>
-        <form class="form-inline navbar-form pull-right">
-            <input class="form-control" type="text" placeholder="Search">
-            <button class="btn btn-success-outline" type="submit">Search</button>
-        </form>
     </nav>
     <div ui-view></div>
 </body>
 {% endverbatim %}
+
 
 <script>
 var _currentUser = {

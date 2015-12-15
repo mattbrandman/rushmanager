@@ -5,13 +5,15 @@ from django.contrib.auth.models import Permission, AbstractBaseUser, BaseUserMan
 from django.utils import timezone
 from django.db import connection
 from django.conf import settings
+from django.contrib.auth.models import check_password
 from tenancy.models import TenantAware, TenantManager
 from django.contrib.postgres.fields import HStoreField
 from django.db.models.query import QuerySet
 from tenancy.middleware import _thread_locals
-#TODO no class with an underscore should be accessed as it could be changed 
-#this should probably all be in just the create user field
-#or if this is our class its fine and we can leave it
+# TODO no class with an underscore should be accessed as it could be changed
+# this should probably all be in just the create user field
+# or if this is our class its fine and we can leave it
+
 
 class BrotherUserManager(BaseUserManager):
 
@@ -37,12 +39,11 @@ class BrotherUserManager(BaseUserManager):
     
     
     def get_queryset(self):
-        #TODO: duck type? maybe hasattr(_thread_locals.user, <some attribute on Brother User>)
         if not hasattr (_thread_locals, 'user') or not isinstance(_thread_locals.user, BrotherUser):
             return super(BrotherUserManager, self).get_queryset()
         else:
             self.organization = _thread_locals.user.organization 
-            return super(BrotherUserManager, self).get_queryset().filter(organization = self.organization)
+            return super(BrotherUserManager, self).get_queryset().filter(organization = self.organization )
 
 
 

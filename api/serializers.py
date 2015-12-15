@@ -46,15 +46,20 @@ class RushPeriodSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = RushPeriod
+        fields = ('id', 'name', 'start_date', 'end_date', 'organization', 'rushes')
+        extra_kwargs = {
+            'rushes': {'read_only': True}
+        }
 
+    def to_internal_value(self, data):
+        request = self.context['request']
+        data['organization'] = request.user.organization.id
+        return super(RushPeriodSerializer, self).to_internal_value(data)
 
-class RushPeriodViews(mixins.CreateModelMixin,
-                   mixins.RetrieveModelMixin,
-                   mixins.UpdateModelMixin,
-                   mixins.ListModelMixin,
-                   GenericViewSet):
+class RushPeriodViews(viewsets.ModelViewSet):
     serializer_class = RushPeriodSerializer
     model = RushPeriod
+
 
     def get_queryset(self):
         return RushPeriod.tenant_objects.all()
