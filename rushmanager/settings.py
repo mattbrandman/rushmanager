@@ -100,7 +100,6 @@ REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissions',
         'authentication.permissions.SameOrganizationPermission',
     ],
     'DEFAULT_FILTER_BACKENDS':('rest_framework.filters.DjangoFilterBackend', 'rest_framework.filters.OrderingFilter', 'rest_framework.filters.SearchFilter')
