@@ -6,7 +6,7 @@
 <head>
     <title>Rush Hound</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" href="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
     <link rel="stylesheet" href="{% static 'shame.css' %}" />
     <link rel="stylesheet" href="
 https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.4.0/css/pikaday.css"/>
@@ -41,12 +41,12 @@ https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.4.0/css/pikaday.css"/>
 <!-- this is an example bootstrap navbar, we should just work off of that -->
 
 <body ng-app="routerApp">
-    <nav class="navbar navbar-light bg-faded">
+    <nav class="navbar navbar-default">
         <div ng-controller="NavCtrl as navctrl">
             <a class="navbar-brand" href="/#/">Rush Hound</a>
             <ul class="nav navbar-nav">
                 <li ng-class="{'nav-item': 1 == 1, active: navctrl.isActive('/rush/')}">
-                    <a class="nav-link" href="/#/">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/#/">Recruits <span class="sr-only">(current)</span></a>
                 </li>
                 <li ng-class="{'nav-item': 1 == 1, active: navctrl.isActive('/events/')}">
                     <a class="nav-link" ui-sref="events.list">Events</a>
