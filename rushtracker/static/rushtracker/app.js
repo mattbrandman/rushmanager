@@ -10,6 +10,7 @@
     }]);
 
     app.controller('RushTableController', ['promiseObj', 'brotherPromiseObj', 'Rush', '$state', '$http', 'Upload', function(promiseObj, brotherPromiseObj, Rush, $state, $http, Upload) {
+        this.selected = [];
         var vm = this;
         this.brothers = brotherPromiseObj.data;
         this.page_size = 100;

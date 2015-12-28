@@ -1,4 +1,26 @@
-<div>
+<md-toolbar class="md-background">
+    <h1 class="md-toolbar-tools">Potential New Members</h1>
+</md-toolbar>
 
+<md-toolbar class="md-table-toolbar md-default">
+  <div class="md-toolbar-tools">
+    <span>Potential New Members</span>
+  </div>
+</md-toolbar>
 
-</div>
+<md-table-container>
+    <table md-table md-row-select ng-model="ctrl.selected">
+        <thead md-head>
+            <tr md-row>
+                <th md-column><span>First Name</span></th>
+                <th md-column><span>Last Name</span></th>
+            </tr>
+        </thead>
+        <tbody md-body>
+            <tr md-row md-select="rush" md-select-id="{{rush.first_name}}" ng-repeat="rush in ctrl.rushes">
+                <td md-cell>{{rush.first_name}}</td>
+                <td md-cell>{{rush.last_name}}</td>
+            </tr>
+        </tbody>
+    </table>
+</md-table-container>

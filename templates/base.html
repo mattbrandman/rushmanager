@@ -7,6 +7,7 @@
     <title>Rush Hound</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="{% static 'shame.css' %}" />
+    <link rel="stylesheet" href={% static 'md-data-table.css' %}/>
     <link rel="stylesheet" href="
 https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.4.0/css/pikaday.css" />
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css" />
@@ -21,6 +22,7 @@ https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.4.0/css/pikaday.css" />
     <script src={% static 'rushperiod/app.js' %}></script>
     <script src={% static 'ng-img-crop.js' %}></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
+    <script src={% static 'md-data-table.js' %}></script>
 
     <link rel="stylesheet" href={% static 'ng-img-crop.css' %}/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.4.0/pikaday.js"></script>
@@ -42,18 +44,16 @@ https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.4.0/css/pikaday.css" />
 <body layout="row" ng-app="routerApp">
     <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
         <md-toolbar class="md-theme-indigo">
-            <h1 class="md-toolbar-tools">Sidenav Left</h1>
+            <h1 class="md-toolbar-tools">Rush Hound</h1>
         </md-toolbar>
-        <md-content layout-padding>
-            <md-button ng-click="close()" class="md-primary" hide-gt-md>
-                Close Sidenav Left
-            </md-button>
-            <p hide-md show-gt-md>
-                This sidenav is locked open on your device. To go back to the default behavior, narrow your display.
-            </p>
-        </md-content>
+            <md-list>
+                <md-list-item ng-click="alert('blah')">Potential New Members</md-list-item>
+                <md-list-item>Events</md-list-item>
+                <md-list-item>Recruitment Period</md-list-item>
+                <md-list-item>Chapter Management</md-list-item>
+            </md-list>
     </md-sidenav>
-    <div ui-view></div>
+    <div layout="column" layout-fill ui-view></div>
 </body>
 
 {% endverbatim %}

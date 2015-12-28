@@ -1,6 +1,6 @@
 (function() {
 
-    var rushApp = angular.module('routerApp', ['ui.router', 'RushApp', 'commentApp', 'eventManagement', 'chapterManagement', 'recruitmentPeriod', 'ngMaterial']);
+    var rushApp = angular.module('routerApp', ['ui.router', 'RushApp', 'commentApp', 'eventManagement', 'chapterManagement', 'recruitmentPeriod', 'ngMaterial', 'md.data.table']);
 
     rushApp.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
         //
@@ -14,7 +14,7 @@
             .state('rush', {
                 abstract: true,
                 url: "/rush",
-                template: "<div ui-view></div>"
+                template: "<div layout='column' ui-view></div>"
             })
             .state('rush.list', {
                 url: "/list",
