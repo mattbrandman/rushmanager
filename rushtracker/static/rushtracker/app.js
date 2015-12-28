@@ -9,7 +9,7 @@
         $resourceProvider.defaults.stripTrailingSlashes = false;
     }]);
 
-    app.controller('RushTableController', ['promiseObj', 'brotherPromiseObj', 'Rush', '$state', '$uibModal', '$http', 'Upload', function(promiseObj, brotherPromiseObj, Rush, $state, $uibModal, $http, Upload) {
+    app.controller('RushTableController', ['promiseObj', 'brotherPromiseObj', 'Rush', '$state', '$http', 'Upload', function(promiseObj, brotherPromiseObj, Rush, $state, $http, Upload) {
         var vm = this;
         this.brothers = brotherPromiseObj.data;
         this.page_size = 100;
@@ -84,82 +84,11 @@
             });
         }
 
-        this.open = function() {
-            var modalInstance = $uibModal.open({
-                animation: true,
-                templateUrl: '/static/rushtracker/create_rush.html',
-                controller: 'NewRushModalInstanceCtrl',
-                controllerAs: 'ctrl',
-                resolve: {
-                    brothers: function() {
-                        return $http.get('/api/users/');
-                    },
-                    rush_periods: function() {
-                        return $http.get('/api/rushperiod/')
-                    }
-                }
-            });
-            modalInstance.result.then(function(data) {
-                vm.rushes.push(data);
-                vm.totalRushes += 1;
-            });
-
-        };
-
-        this.update = function(id) {
-            var modalInstance = $uibModal.open({
-                templateUrl: '/static/rushtracker/create_rush.html',
-                controller: 'NewRushModalInstanceCtrl',
-                controllerAs: 'ctrl',
-                resolve: {
-                    brothers: function() {
-                        return $http.get('/api/users/');
-                    },
-                    rush_periods: function() {
-                        return $http.get('/api/rushperiod/');
-                    },
-                    currentRush: function() {
-                        return $http.get('/api/rush/' + id + '/?format=json');
-                    }
-                }
-            });
-            modalInstance.result.then(function(data) {
-                vm.sort();
-            });
-        }
 
     }]);
 
     app.controller('RushDetailController', ['promiseObj', function(promiseObj) {
         this.rush = promiseObj.data;
     }]);
-
-    app.controller('NewRushModalInstanceCtrl', ['$uibModalInstance', 'brothers', 'Rush', 'rush_periods', 'currentRush', function($uibModalInstance, brothers, Rush, rush_periods, currentRush) {
-        var updating = false;
-        if (currentRush == null) {
-            console.log(null);
-        } else {
-            updating = true;
-            this.rush = currentRush.data;
-        }
-        this.brothers = brothers.data
-        this.rushPeriods = rush_periods.data
-        this.rush;
-        this.save = function() {
-            if (updating == true) {
-                Rush.update({
-                    'rushId': this.rush.id
-                }, this.rush);
-                $uibModalInstance.close()
-            } else {
-                Rush.save(this.rush, function(data) {
-                    $uibModalInstance.close(data);
-                });
-            }
-        }
-        this.cancel = function() {
-            $uibModalInstance.dismiss('cancel');
-        }
-    }]).value('currentRush', null);
 
 })();
