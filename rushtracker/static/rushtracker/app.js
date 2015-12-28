@@ -1,6 +1,6 @@
 (function() {
 
-    var app = angular.module('RushApp', ['RushFactory', 'ui.bootstrap', 'ngAnimate', 'ngFileUpload', 'ngImgCrop']);
+    var app = angular.module('RushApp', ['RushFactory', 'ngAnimate', 'ngFileUpload', 'ngImgCrop']);
 
 
     app.config(['$httpProvider', '$resourceProvider', function($httpProvider, $resourceProvider) {

@@ -1,6 +1,6 @@
 (function() {
 
-    var rushApp = angular.module('routerApp', ['ui.router', 'RushApp', 'commentApp', 'eventManagement', 'chapterManagement', 'recruitmentPeriod']);
+    var rushApp = angular.module('routerApp', ['ui.router', 'RushApp', 'commentApp', 'eventManagement', 'chapterManagement', 'recruitmentPeriod', 'ngMaterial']);
 
     rushApp.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
         //

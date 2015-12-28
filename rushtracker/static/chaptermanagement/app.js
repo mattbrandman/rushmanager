@@ -1,5 +1,5 @@
 (function() {
-var app = angular.module('chapterManagement', ['ui.bootstrap']);
+var app = angular.module('chapterManagement', []);
 	app.config(['$httpProvider', function($httpProvider) {
     $httpProvider.defaults.xsrfCookieName = 'csrftoken';
     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';

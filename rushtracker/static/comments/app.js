@@ -1,5 +1,5 @@
 (function() {
-var app = angular.module('commentApp', ['ui.bootstrap', 'ui.select', 'ngSanitize']);
+var app = angular.module('commentApp', ['ui.select', 'ngSanitize']);
 	app.config(['$httpProvider', '$locationProvider', 'uiSelectConfig', function($httpProvider, $locationProvider, uiSelectConfig) {
 	uiSelectConfig.theme = 'bootstrap';
     $httpProvider.defaults.xsrfCookieName = 'csrftoken';

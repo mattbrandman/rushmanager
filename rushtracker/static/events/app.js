@@ -1,5 +1,5 @@
 (function() {
-    var app = angular.module('eventManagement', ['ui.bootstrap', 'ui.select', 'ngSanitize']);
+    var app = angular.module('eventManagement', ['ui.select', 'ngSanitize']);
     app.config(['$httpProvider', function($httpProvider) {
         $httpProvider.defaults.xsrfCookieName = 'csrftoken';
         $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';

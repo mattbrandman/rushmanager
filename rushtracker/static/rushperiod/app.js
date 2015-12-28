@@ -1,14 +1,14 @@
 (function() {
 
 
-    var app = angular.module('recruitmentPeriod', ['ui.bootstrap', 'pikaday']);
+    var app = angular.module('recruitmentPeriod', ['pikaday']);
 
     app.config(['$httpProvider', function($httpProvider) {
         $httpProvider.defaults.xsrfCookieName = 'csrftoken';
         $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
     }]);
 
-    app.controller('RecruitmentList', ['promiseObj', '$uibModal', function(promiseObj, $uibModal) {
+    app.controller('RecruitmentList', ['promiseObj', function(promiseObj) {
         var _this = this;
         this.recPerList = promiseObj.data;
 

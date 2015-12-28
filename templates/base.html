@@ -6,10 +6,10 @@
 <head>
     <title>Rush Hound</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" href="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="{% static 'shame.css' %}" />
     <link rel="stylesheet" href="
-https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.4.0/css/pikaday.css"/>
+https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.4.0/css/pikaday.css" />
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css" />
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-animate.min.js"></script>
     <script src={% static 'core/factory.js' %}></script>
@@ -20,6 +20,8 @@ https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.4.0/css/pikaday.css"/>
     <script src={% static 'chaptermanagement/app.js' %}></script>
     <script src={% static 'rushperiod/app.js' %}></script>
     <script src={% static 'ng-img-crop.js' %}></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
+
     <link rel="stylesheet" href={% static 'ng-img-crop.css' %}/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.4.0/pikaday.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.13.2/select.js"></script>
@@ -27,41 +29,33 @@ https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.4.0/css/pikaday.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.13.2/select.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.0.2/css/hover.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-sanitize.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.14.3/ui-bootstrap-tpls.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-resource.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.min.js"></script>
     <!-- Angular Material Javascript now available via Google CDN; version 0.11.2 used here -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.min.js"></script>
     <script src="{% static 'papaparse.js' %}"></script>
 </head>
 {% verbatim %}
 <!-- DataTables -->
 <!-- this is an example bootstrap navbar, we should just work off of that -->
-
-<body ng-app="routerApp">
-    <nav class="navbar navbar-light bg-faded">
-        <div ng-controller="NavCtrl as navctrl">
-            <a class="navbar-brand" href="/#/">Rush Hound</a>
-            <ul class="nav navbar-nav">
-                <li ng-class="{'nav-item': 1 == 1, active: navctrl.isActive('/rush/')}">
-                    <a class="nav-link" href="/#/">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li ng-class="{'nav-item': 1 == 1, active: navctrl.isActive('/events/')}">
-                    <a class="nav-link" ui-sref="events.list">Events</a>
-                </li>
-                <li ng-class="{'nav-item': 1 == 1, active: navctrl.isActive('/brothers/')}">
-                    <a class="nav-link" ui-sref="brothers.list">Management</a>
-                </li>
-                <li ng-class="{'nav-item': 1 == 1, active: navctrl.isActive('/recruitmentperiod/')}">
-                    <a class="nav-link" ui-sref="recruitmentperiod.list">Recruitment Period</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+<body layout="row" ng-app="routerApp">
+    <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
+        <md-toolbar class="md-theme-indigo">
+            <h1 class="md-toolbar-tools">Sidenav Left</h1>
+        </md-toolbar>
+        <md-content layout-padding>
+            <md-button ng-click="close()" class="md-primary" hide-gt-md>
+                Close Sidenav Left
+            </md-button>
+            <p hide-md show-gt-md>
+                This sidenav is locked open on your device. To go back to the default behavior, narrow your display.
+            </p>
+        </md-content>
+    </md-sidenav>
     <div ui-view></div>
 </body>
+
 {% endverbatim %}
 
 
