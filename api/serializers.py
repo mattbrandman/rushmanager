@@ -59,7 +59,7 @@ class RushPeriodSerializer(serializers.ModelSerializer):
 class RushPeriodViews(viewsets.ModelViewSet):
     serializer_class = RushPeriodSerializer
     model = RushPeriod
-
+    search_fields=("name",)
 
     def get_queryset(self):
         return RushPeriod.tenant_objects.all()

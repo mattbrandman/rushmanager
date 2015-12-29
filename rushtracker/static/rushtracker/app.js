@@ -9,7 +9,7 @@
         $resourceProvider.defaults.stripTrailingSlashes = false;
     }]);
 
-    app.controller('RushTableController', ['promiseObj', 'brotherPromiseObj', 'Rush', '$state', '$http', 'Upload', function(promiseObj, brotherPromiseObj, Rush, $state, $http, Upload) {
+    app.controller('RushTableController', ['promiseObj', 'brotherPromiseObj', 'Rush', '$state', '$http', 'Upload', '$mdDialog', function(promiseObj, brotherPromiseObj, Rush, $state, $http, Upload, $mdDialog) {
         this.selected = [];
         var vm = this;
         this.brothers = brotherPromiseObj.data;
@@ -91,9 +91,26 @@
             });
         }
 
+        this.newRushDialog = function($event) {
+            $mdDialog.show({
+                targetEvent: $event,
+                templateUrl: '/static/rushtracker/create_rush.html',
+                controllerAs: 'newRushController as ctrl',
+                resolve: {
+                    promiseObj: function() { 
+                        return $http.get('/api/rushperiod/');s
+                    }
+                }
+            })
+        }
+
 
     }]);
-
+    app.controller('newRushController', ['$mdDialog', 'promiseObj', function($mdDialog, promiseObj){
+        this.getMatches = function(searchText) {
+            
+        }
+    }])
     app.controller('RushDetailController', ['promiseObj', 'comments', '$http', function(promiseObj, comments, $http) {
         _this = this;
         this.rush = promiseObj.data;
