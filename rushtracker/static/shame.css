@@ -1,0 +1,6 @@
+table.md-table tr.md-clickable {
+  cursor: pointer;
+}
+table.md-table tr.md-clickable:focus {
+  outline: none;
+}

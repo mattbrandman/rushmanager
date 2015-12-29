@@ -31,7 +31,16 @@
             })
             .state('rush.detail', {
                 url: "/:id",
-                templateUrl: "static/comments/comment_list.html",
+                templateUrl: "static/rushtracker/rush_detail.html",
+                controller: 'RushDetailController as ctrl',
+                resolve: {
+                    promiseObj: function($http, $stateParams) {
+                        return $http.get('/api/rush/' + $stateParams.id);
+                    },
+                    comments: function($http, $stateParams) {
+                        return $http.get('/api/comments/?rush=' + $stateParams.id)
+                    }
+                }
             })
             .state('events', {
                 abstract: true,

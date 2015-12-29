@@ -1,16 +1,66 @@
-<div class="container">
-    <div style="font-size: 250%" class="row text-center page-header"><p><b>{{ctrl.rush.first_name}}'s Profile</b></p></div>
-    <div class="row">
-        <div class="col-md-4">
-            {{ctrl.rush.first_name}} {{ctrl.rush.last_name}}
-            <img src="{{ctrl.rush.picture}}">
-        </div>
-        <div class="col-md-8">
-            <p>Primary Contact: {{ctrl.rush.primary_contact.name}}</p>
-            <p>Phone Number: {{ctrl.rush.phone_number}}</p>
-        </div>
+<md-toolbar class="md-background">
+    <h1 class="md-toolbar-tools">Details On {{ctrl.rush.first_name}} {{ctrl.rush.last_name}}</h1>
+</md-toolbar>
+<div layout="row" layout-sm="column">
+    <div>
+        <md-card>
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline">{{ctrl.rush.first_name}} {{ctrl.rush.last_name}}</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+               <img class="md-media-md card-media" ng-src="{{ctrl.rush.picture}}" />
+            </md-card-content>
+            <md-card-content>
+            <p>Dorm: {{ctrl.rush.dorm || "N/A"}}</p>
+
+            <p>Phone Number: {{ctrl.rush.phone_number || "N/A"}}</p>
+            </md-card-content>
+
+            <md-card-actions layout="row" layout-align="end center">
+                <md-button>Change Picture</md-button>
+                <md-button>Edit</md-button>
+            </md-card-actions>
+        </md-card>
     </div>
-    <div class="row">
-    	<div class="page-header" style="font-size: 250%">Comments </div>
+    <div flex layout="column">
+        <md-card layout="column">
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline"> 
+                        New Comment
+                    </span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-content layout-padding>
+                <form>
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Comment</label>
+                        <textarea ng-model="ctrl.newComment"></textarea>
+                    </md-input-container>
+                </form>
+                <md-button class="md-raised" ng-click="ctrl.submitComment()">Submit</md-button>
+            </md-content>
+        </md-card>
+        <md-card>
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline"> 
+                        Comments
+                    </span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-divider></md-divider>
+            <md-list>
+                <md-list-item ng-repeat="comment in ctrl.comments">
+                    <div class="md-list-item-text">
+                        <h3>{{comment.user.email}}</h3>
+                        <p>{{comment.comment}}</p>
+                    </div>
+                <md-divider></md-divider>
+                </md-list-item>
+            </md-list>
+        </md-card>
     </div>
 </div>

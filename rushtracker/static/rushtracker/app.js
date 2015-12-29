@@ -32,9 +32,15 @@
                     url: data.data.url,
                     method: 'PUT',
                     data: Upload.dataUrltoBlob(file),
-                    headers: {'Content-Type': 'image/png'}
+                    headers: {
+                        'Content-Type': 'image/png'
+                    }
                 }).then(function(data) {
-                    Rush.patch({rushId:  rush.id}, {'picture': customUrl});
+                    Rush.patch({
+                        rushId: rush.id
+                    }, {
+                        'picture': customUrl
+                    });
                     rush.picture = customUrl;
                     rush.pickingPicture = false;
                 });
@@ -88,8 +94,21 @@
 
     }]);
 
-    app.controller('RushDetailController', ['promiseObj', function(promiseObj) {
+    app.controller('RushDetailController', ['promiseObj', 'comments', '$http', function(promiseObj, comments, $http) {
+        _this = this;
         this.rush = promiseObj.data;
+        this.comments = comments.data;
+
+        this.submitComment = function() {
+            var promise = $http.post('/api/comments/', {
+                'comment': this.newComment,
+                'rush': this.rush.id,
+                'user': _currentUser.user
+            });
+            promise.then(function(data) {
+                _this.newComment = "";
+            });
+        }
     }]);
 
 })();

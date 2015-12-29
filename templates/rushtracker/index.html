@@ -17,7 +17,7 @@
             </tr>
         </thead>
         <tbody md-body>
-            <tr md-row md-select="rush" md-select-id="{{rush.first_name}}" ng-repeat="rush in ctrl.rushes">
+            <tr class="md-clickable" md-row md-select="rush" md-select-id="{{rush.first_name}}" ng-repeat="rush in ctrl.rushes" ng-click="ctrl.goDetail(rush.id)">
                 <td md-cell>{{rush.first_name}}</td>
                 <td md-cell>{{rush.last_name}}</td>
             </tr>

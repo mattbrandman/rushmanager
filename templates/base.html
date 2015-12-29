@@ -47,10 +47,10 @@ https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.4.0/css/pikaday.css" />
             <h1 class="md-toolbar-tools">Rush Hound</h1>
         </md-toolbar>
             <md-list>
-                <md-list-item ng-click="alert('blah')">Potential New Members</md-list-item>
-                <md-list-item>Events</md-list-item>
-                <md-list-item>Recruitment Period</md-list-item>
-                <md-list-item>Chapter Management</md-list-item>
+                <md-list-item ui-sref="rush.list">Potential New Members</md-list-item>
+                <md-list-item ui-sref="events.list">Events</md-list-item>
+                <md-list-item ui-sref="recruitmentperiod.list">Recruitment Period</md-list-item>
+                <md-list-item ui-sref="brothers.list">Chapter Management</md-list-item>
             </md-list>
     </md-sidenav>
     <div layout="column" layout-fill ui-view></div>

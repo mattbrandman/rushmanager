@@ -330,25 +330,13 @@ class CommentViewSet(viewsets.ModelViewSet):
     # TODO: ISAUTHENTICATED PERMISSION, UPDATING
     permission_classes = [IsMineOrOwner, SameOrganizationPermission, permissions.IsAuthenticated]
     serializer_class = CommentSerializer
+    filter_fields = ('rush',)
     def get_queryset(self):
         return Comment.tenant_objects.all().select_related('event', 'user').filter(rush_period=self.request.user.organization.active_rush_period)
 
     # maybe t`here should be a seperate Admin serializer to make the
     # code and responsibilites more modular
     # returns a list of comments, and a list of the user comments
-
-    @detail_route(methods=['get'], url_path="get-comments")
-    def get_comments_for_rush(self, request, pk=None):
-        rush = get_object_or_404(Rush, pk=pk)
-        serializer = CommentSerializer(rush.comment_set.all().filter(rush_period=self.request.user.organization.active_rush_period).select_related('event', 'user'), many=True)
-        my_comments = Comment.tenant_objects.filter(
-            rush=rush).filter(user=request.user)
-        my_comments_serializer = CommentSerializer(my_comments, many=True)
-
-        return Response({
-            'all_comments': serializer.data,
-            'my_comments': my_comments_serializer.data
-        })
 
     def create(self, request):
         serializer = CommentSerializer(
