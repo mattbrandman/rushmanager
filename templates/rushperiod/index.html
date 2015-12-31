@@ -1,10 +1,15 @@
-<div class="container">
-<h1>Recruitment Periods</h1>
-    <ul class="list-group">
-        <li class="list-group-item" ng-repeat="period in ctrl.recPerList">
-            <p>{{period.name}}</p>
-            <p>{{period.start_date | date:'longDate'}} - {{period.end_date | date:'longDate'}}</p>
-        </li>
-    </ul>
-    <button class="btn btn-primary" ng-click="ctrl.open()">Create New Recruitment Period</button>
-</div>
+<md-toolbar class="md-background">
+    <h1 class="md-toolbar-tools">Recruitment Period </h1>
+</md-toolbar>
+<md-content>
+    <md-list>
+        <md-list-item class="md-2-line md-long-text" ng-repeat="period in ctrl.recPerList" layout="row">
+            <div class="md-list-item-text">
+                <h3>{{period.name}}</h3>
+                <p>{{period.start_date | date:'longDate'}} - {{period.end_date | date:'longDate'}}</p>
+            </div>
+        </md-list-item>
+    </md-list>
+    <md-divider></md-divider>
+    <md-button class="md-raised" ng-click="ctrl.open()">Create New Recruitment Period</md-button>
+</md-content>
