@@ -307,7 +307,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsMineOrOwner, SameOrganizationPermission, permissions.IsAuthenticated]
     serializer_class = CommentSerializer
     def get_queryset(self):
-        return Comment.tenant_objects.all().select_related('event', 'user').filter(rush_period=self.request.user.organization.active_rush_period)
+        return Comment.tenant_objects.all().select_related('event', 'user')
 
     # maybe t`here should be a seperate Admin serializer to make the
     # code and responsibilites more modular
