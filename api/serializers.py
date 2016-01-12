@@ -316,7 +316,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     @detail_route(methods=['get'], url_path="get-comments")
     def get_comments_for_rush(self, request, pk=None):
         rush = get_object_or_404(Rush, pk=pk)
-        serializer = CommentSerializer(rush.comment_set.all().filter(rush_period=self.request.user.organization.active_rush_period).select_related('event', 'user'), many=True)
+        serializer = CommentSerializer(rush.comment_set.all().select_related('event', 'user'), many=True)
         my_comments = Comment.tenant_objects.filter(
             rush=rush).filter(user=request.user)
         my_comments_serializer = CommentSerializer(my_comments, many=True)
