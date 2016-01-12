@@ -95,10 +95,11 @@
             $mdDialog.show({
                 targetEvent: $event,
                 templateUrl: '/static/rushtracker/create_rush.html',
-                controllerAs: 'newRushController as ctrl',
+                controller: 'newRushController',
+                controllerAs: 'ctrl',
                 resolve: {
-                    promiseObj: function() { 
-                        return $http.get('/api/rushperiod/');s
+                    promiseObj: function() {
+                        return $http.get('/api/rushperiod/')
                     }
                 }
             })
@@ -106,11 +107,18 @@
 
 
     }]);
-    app.controller('newRushController', ['$mdDialog', 'promiseObj', function($mdDialog, promiseObj){
-        this.getMatches = function(searchText) {
-            
+    app.controller('newRushController', ['$mdDialog', 'promiseObj', '$http', function($mdDialog, promiseObj, $http) {
+        this.rushPeriodList = promiseObj.data;
+        this.close = function() {
+            $mdDialog.cancel();
         }
-    }])
+        this.getMatch = function(searchText) {
+            return $http.get('/api/rushperiod?search=' + searchText).then(function(response) {
+                return response.data;
+            });
+        }
+        this.getMatch('');
+    }]);
     app.controller('RushDetailController', ['promiseObj', 'comments', '$http', function(promiseObj, comments, $http) {
         _this = this;
         this.rush = promiseObj.data;

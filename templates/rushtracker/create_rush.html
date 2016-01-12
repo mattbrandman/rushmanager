@@ -12,10 +12,15 @@
                     <input>
                 </md-input-container>
             </div>
-                <md-autocomplete md-selected-item="ctrl.selectedItem" md-search-text="ctrl.searchText" md-items="item in ctrl.getMatches(ctrl.searchText)" md-item-text="item.name" md-floating-label="Recruitment Period">
-                    <span md-highlight-text="searchText">{{item.display}}</span>
+                <md-autocomplete md-selected-item="ctrl.selectedItem" md-search-text="ctrl.searchText" md-min-length="0" md-items="item in ctrl.getMatch(ctrl.searchText)" md-item-text="item.name" md-floating-label="Recruitment Period">
+                    <span md-highlight-text="ctrl.searchText">{{item.name}}</span>
                 </md-autocomplete>
             </md-input-container>
         </form>
+        {{ctrl.x}}
     </md-dialog-content>
+    <md-dialog-actions>
+        <md-button class="md-primary">Add PNM</md-button>
+        <md-button ng-click="ctrl.close()" class="md-primary">Close</md-button>
+    </md-dialog-actions>
 </md-dialog>
