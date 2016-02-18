@@ -102,13 +102,24 @@
                         return $http.get('/api/rushperiod/')
                     }
                 }
-            })
+            }).then(function(data) {
+                vm.rushes.push(data);
+            });
         }
 
 
     }]);
-    app.controller('newRushController', ['$mdDialog', 'promiseObj', '$http', function($mdDialog, promiseObj, $http) {
+    app.controller('newRushController', ['$mdDialog', 'promiseObj', '$http', 'Rush', function($mdDialog, promiseObj, $http, Rush) {
+        var _this = this;
         this.rushPeriodList = promiseObj.data;
+        $http.get('/api/organization/').then(function(response) {
+            _this.current_period = response.data[0].active_rush_period;
+        }).then(function(data) {
+            _this.selectedItem = _this.rushPeriodList.filter(function(v) {
+                return v.id === _this.current_period;
+            })[0];
+        });
+
         this.close = function() {
             $mdDialog.cancel();
         }
@@ -117,7 +128,14 @@
                 return response.data;
             });
         }
-        this.getMatch('');
+
+        this.saveRush = function() {
+            this.newRush.rush_period = [this.selectedItem.id,];
+            Rush.save(this.newRush, function(data) {
+                $mdDialog.hide(data);
+            });
+        }
+
     }]);
     app.controller('RushDetailController', ['promiseObj', 'comments', '$http', function(promiseObj, comments, $http) {
         _this = this;
@@ -135,5 +153,9 @@
             });
         }
     }]);
+
+    app.filter('statusNumberToString', function() {
+        
+    })
 
 })();

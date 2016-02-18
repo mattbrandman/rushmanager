@@ -1,6 +1,6 @@
 (function() {
 
-    var rushApp = angular.module('routerApp', ['ui.router', 'RushApp', 'commentApp', 'eventManagement', 'chapterManagement', 'recruitmentPeriod', 'ngMaterial', 'md.data.table']);
+    var rushApp = angular.module('routerApp', ['ui.router', 'RushApp', 'commentApp', 'eventManagement', 'chapterManagement', 'recruitmentPeriod', 'ngMaterial', 'md.data.table', '720kb.datepicker']);
 
     rushApp.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
         //
@@ -79,7 +79,7 @@
             .state('recruitmentperiod' , {
                 abstract: true,
                 url: "/recruitmentperiod",
-                template: "<div ui-view></div>"
+                template: "<div ui-view layout='column' flex></div>"
             })
             .state('recruitmentperiod.list', {
                 url:"/list",

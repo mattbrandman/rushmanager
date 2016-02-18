@@ -19,12 +19,15 @@
             <tr md-row>
                 <th md-column><span>First Name</span></th>
                 <th md-column><span>Last Name</span></th>
+                <th md-column><span>Status</span></th>
             </tr>
         </thead>
         <tbody md-body>
             <tr class="md-clickable" md-row md-select="rush" md-select-id="{{rush.first_name}}" ng-repeat="rush in ctrl.rushes" ng-click="ctrl.goDetail(rush.id)">
                 <td md-cell>{{rush.first_name}}</td>
                 <td md-cell>{{rush.last_name}}</td>
+                <td md-cell></td>
+
             </tr>
         </tbody>
     </table>

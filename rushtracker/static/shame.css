@@ -4,3 +4,7 @@ table.md-table tr.md-clickable {
 table.md-table tr.md-clickable:focus {
   outline: none;
 }
+
+.ng-scope{
+  height: 100%;
+}

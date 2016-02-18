@@ -5,11 +5,11 @@
             <div layout="row">
                 <md-input-container flex>
                     <label>First Name</label>
-                    <input>
+                    <input ng-model = "ctrl.newRush.first_name">
                 </md-input-container>
                 <md-input-container flex>
                     <label>Last Name</label>
-                    <input>
+                    <input ng-model = "ctrl.newRush.last_name">
                 </md-input-container>
             </div>
                 <md-autocomplete md-selected-item="ctrl.selectedItem" md-search-text="ctrl.searchText" md-min-length="0" md-items="item in ctrl.getMatch(ctrl.searchText)" md-item-text="item.name" md-floating-label="Recruitment Period">
@@ -20,7 +20,7 @@
         {{ctrl.x}}
     </md-dialog-content>
     <md-dialog-actions>
-        <md-button class="md-primary">Add PNM</md-button>
+        <md-button ng-click="ctrl.saveRush()" class="md-primary">Add PNM</md-button>
         <md-button ng-click="ctrl.close()" class="md-primary">Close</md-button>
     </md-dialog-actions>
 </md-dialog>

@@ -33,17 +33,20 @@ https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.4.0/css/pikaday.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.0.2/css/hover.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-sanitize.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-resource.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://rawgit.com/720kb/angular-datepicker/master/dist/angular-datepicker.min.css"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.min.js"></script>
     <!-- Angular Material Javascript now available via Google CDN; version 0.11.2 used here -->
     <script src="{% static 'papaparse.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.1/moment.js"></script>
+    <script src="https://rawgit.com/720kb/angular-datepicker/master/dist/angular-datepicker.min.js"></script>
 </head>
 {% verbatim %}
 <!-- DataTables -->
 <!-- this is an example bootstrap navbar, we should just work off of that -->
-<body layout="row" ng-app="routerApp">
-    <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
+<body layout="row" ng-app="routerApp" layout-fill>
+    <md-sidenav style="height: 100%" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
         <md-toolbar class="md-theme-indigo">
             <h1 class="md-toolbar-tools">Rush Hound</h1>
         </md-toolbar>
@@ -54,7 +57,7 @@ https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.4.0/css/pikaday.css" />
                 <md-list-item ui-sref="brothers.list">Chapter Management</md-list-item>
             </md-list>
     </md-sidenav>
-    <div layout="column" layout-fill ui-view></div>
+    <div layout="column" layout-fill ui-view flex></div>
 </body>
 
 {% endverbatim %}

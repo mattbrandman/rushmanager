@@ -1,17 +1,27 @@
-<md-dialog>
+<style>
+.md-button.md-icon-button {
+    padding: 0px;
+    width: 22px;
+    margin: 0px;
+}
+.md-datepicker-input-container {
+    width: 83%;
+}
+</style>
+<md-dialog class="myd">
     <md-dialog-content class="md-dialog-content">
         <h2 class="md-title">Add Recruitment Period</h2>
-        <form>
+        <form layout="column">
             <md-input-container flex>
                 <label>Name</label>
-                <input>
+                <input ng-model="ctrl.newRecruitmentPeriod.name">
             </md-input-container>
-            <md-datepicker ng-model="ctrl.start_date" md-placeholder="Enter date">
-            </md-datepicker>
-
-            <md-datepicker ng-model="ctrl.end_date" md-placeholder="Enter date">
-            </md-datepicker>
-            
+            <md-datepicker md-placeholder="Start Date" ng-model="ctrl.newRecruitmentPeriod.start_date"></md-datepicker>
+            <md-datepicker md-placeholder="End Date" ng-model="ctrl.newRecruitmentPeriod.end_date" style="margin-top: 30px"></md-datepicker>
         </form>
     </md-dialog-content>
+    <md-dialog-actions>
+        <md-button ng-click="ctrl.save()" class="md-primary">Add Recruitment Period</md-button>
+        <md-button ng-click="ctrl.close()" class="md-primary">Close</md-button>
+    </md-dialog-actions>
 </md-dialog>
