@@ -1,12 +1,11 @@
 <div class="container" ng-controller="CommentViewController as ctr">
-<h1 class="text-center"> {{::ctr.rush.first_name}} {{::ctr.rush.last_name}}</h1>
     <div class="row">
         <div class="col-md-4">
-            <div class="card">
-                <div class="card-header">
-                    Profile
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {{::ctr.rush.first_name}} {{::ctr.rush.last_name}}
                 </div>
-                <div class="card-block">
+                <div class="panel-body">
                     <img style="margin: 0px 0px 10px 0px; width: 300px; height: 300px" class="center-block" ng-src="{{ctr.rush.picture || 'https://rushmanagerbucket.s3.amazonaws.com/media/profile_picture/default_picture.png'}}" />
                     <p ng-cloak> Primary Contact: {{ctr.rush.primary_contact.name || "Not Available "}}</p>
                     <p ng-cloak> Date Contacted: {{ctr.rush.date_contacted || "Not Available"}}</p>
@@ -17,11 +16,11 @@
             </div>
         </div>
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
+            <div class="panel panel-default">
+                <div class="panel-heading">
                     Leave a comment
                 </div>
-                <div class="card-block">
+                <div class="panel-body">
                     <form name="commentForm" style="margin-top: 15px" novalidate ng-submit="ctr.submit(ctr.comment)" ng-cloak>
                         <fieldset>
                             <div class="iform-group row">
@@ -51,13 +50,13 @@
                     </form>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-header">
+            <div class="panel panel-default">
+                <div class="panel-heading">
                     Comments
                 </div>
-                <div class="card-block">
+                <div class="panel-body">
                     <div ng-if="ctr.all_comments.length == 0">
-                    No comments at this time.
+                        No comments at this time.
                     </div>
                     <div style="border-bottom: 1px solid" ng-repeat="item in ctr.all_comments | orderBy:'created_at'">
                         <div ng-if="ctr.isEqual(item) || ctr.is_admin">

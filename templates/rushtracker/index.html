@@ -1,8 +1,8 @@
-<div class="container">
-    <div class="row">
-        <div class="page-header">
-            <h1> Recruits </h1>
-        </div>
+<div class="container" >
+    <div class="row col-md-12">
+        <h1>
+            Recruits
+        </h1>
     </div>
     <div class="row">
         <div class="col-md-8">
@@ -12,22 +12,26 @@
             <button class="btn btn-primary form-control" style="margin-bottom: 10px" ng-click="ctrl.open()"> New Recruit </button>
         </div>
     </div>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Phone Number</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="rush in ctrl.rushes" ui-sref="rush.detail({id: rush.id})">
-                <td>{{rush.first_name}}</td>
-                <td>{{rush.last_name}}</td>
-                <td>{{rush.phone_number || "N/A"}}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-hover" style="background-color: #ffffff">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Phone Number</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="rush in ctrl.rushes" ui-sref="rush.detail({id: rush.id})">
+                        <td>{{rush.first_name}}</td>
+                        <td>{{rush.last_name}}</td>
+                        <td>{{rush.phone_number || "N/A"}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
     <div class="row col-md-12">
         <uib-pagination total-items="ctrl.totalRushes" ng-model="ctrl.UibPaginationControl" ng-change="ctrl.sort()" items-per-page="ctrl.perPage"></uib-pagination>
     </div>
