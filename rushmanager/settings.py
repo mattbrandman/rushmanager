@@ -36,22 +36,28 @@ CRISPY_FAIL_SILENTLY = not DEBUG
 ALLOWED_HOSTS = [
     'www.rushhound.com',
     'rushhound.com',
+    '127.0.0.1'
 ]
 #this is the profile for Users
 
 
 # Application definition
 
-INSTALLED_APPS = (
-    'django.contrib.admin',
-    'django.contrib.auth',
+SHARED_APPS = (
+    'tenant_schemas',
+    'organization',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.postgres',
     'django_extensions',
-    'crispy_forms',
+    'crispy_forms'
+    )
+TENANT_APPS = (
+    'django.contrib.contenttypes',
+    'django.contrib.admin',
+    'django.contrib.auth',
     'rushtracker',
     'comments',
     'events',
@@ -60,11 +66,13 @@ INSTALLED_APPS = (
     'authentication',
     'organization',
     'rushperiod',
-    'tenancy',
     'ranking',
     'rest_framework',
     'autofixture'
 )
+INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
+
+TENANT_MODEL = "organization.organization"
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
@@ -77,6 +85,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'tenant_schemas.middleware.TenantMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -84,7 +93,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'tenancy.middleware.ThreadLocals',
+
 )
 
 STATICFILES_FINDERS = (
@@ -99,9 +108,6 @@ STATICFILES_DIRS = (
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'authentication.permissions.SameOrganizationPermission',
-    ],
     'DEFAULT_FILTER_BACKENDS':('rest_framework.filters.DjangoFilterBackend', 'rest_framework.filters.OrderingFilter', 'rest_framework.filters.SearchFilter')
 }
 
@@ -116,17 +122,26 @@ AUTHENTICATION_BACKENDS = ( 'django.contrib.auth.backends.ModelBackend',
 
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 
+
 ANONYMOUS_USER_ID = None
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'tenant_schemas.postgresql_backend',
+        'NAME': 'mydb',
+        'USER': 'joe',
+        'PASSWORD': ''
     }
 }
-DATABASES['default'] = dj_database_url.config(default='postgres://joe@localhost:5432/mydb')
+
+# DATABASES['default'] = dj_database_url.config(default='postgres://joe@localhost:5432/mydb')
+
+DATABASE_ROUTERS = (
+    'tenant_schemas.routers.TenantSyncRouter',
+)
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/

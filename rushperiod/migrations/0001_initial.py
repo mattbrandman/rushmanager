@@ -7,7 +7,6 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('organization', '0001_initial'),
     ]
 
     operations = [
@@ -18,10 +17,9 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=200)),
                 ('start_date', models.DateField()),
                 ('end_date', models.DateField()),
-                ('organization', models.ForeignKey(to='organization.Organization')),
             ],
             options={
+                'abstract': False,
             },
-            bases=(models.Model,),
         ),
     ]

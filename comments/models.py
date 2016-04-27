@@ -7,17 +7,15 @@ from rushtracker.models import Rush
 from rushperiod.models import RushPeriod
 from organization.models import Organization
 from django.conf import settings
-from tenancy.models import TenantAware
 from django.db import models
 
-class Comment(TenantAware):
+class Comment(models.Model):
 
     rush = models.ForeignKey(Rush)
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     event = models.ForeignKey(Event, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     comment = models.TextField()
-    organization = models.ForeignKey(Organization)
     rush_period = models.ForeignKey(RushPeriod)
 
 

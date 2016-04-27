@@ -3,9 +3,9 @@ from django.contrib.auth.models import User
 from organization.models import Organization
 from rushperiod.models import RushPeriod
 from django.conf import settings
-from tenancy.models import TenantAware
 
-class Rush(TenantAware):
+
+class Rush(models.Model):
 	first_name = models.CharField('First Name', max_length=200, blank=False )
 	last_name = models.CharField('Last Name', max_length=200, blank=True, null=True )
 	primary_contact = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Brotherhood Contact', blank=True, null=True, related_name='primary_contact_set')
@@ -18,7 +18,6 @@ class Rush(TenantAware):
 	dorm = models.CharField('Dorm', max_length=200, blank=True, null=True)
 	picture = models.CharField(max_length=500, blank=True, null=True)
 	rush_period = models.ManyToManyField(RushPeriod, related_name="rushes")
-	organization = models.ForeignKey(Organization, blank=True)
 	graduating_year = models.IntegerField(blank=True, null=True)
 	is_available = models.BooleanField('Is Available To Rush', default=True)
 	is_legacy = models.BooleanField('Legacy', default=False)

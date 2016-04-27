@@ -15,7 +15,6 @@ import json
 class SignUpFormView(generic.CreateView):
 	template_name = 'authentication/register.html'
 	form_class = ChapterAdminForm
-	model = User
 
 	def get_success_url(self):
 		return reverse('rushtracker:index')

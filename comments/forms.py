@@ -80,7 +80,7 @@ class CreateCommentFormAdmin(ModelForm):
         }
     def clean_rush(self):
         data = self.cleaned_data['rush']
-        if not Rush.tenant_objects.filter(id=data.id).exists():
+        if not Rush.objects.filter(id=data.id).exists():
             raise forms.ValidationError("You are trying to commend on a non-existant rush!")
         return data
     def save(self, commit=True):

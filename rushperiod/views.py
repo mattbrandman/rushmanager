@@ -11,7 +11,7 @@ class IndexView(LoginRequiredMixin, PermissionRequiredMixin, generic.ListView):
 	context_object_name = 'rush_periods'
 
 	def get_queryset(self):
-		return RushPeriod.tenant_objects.all().order_by('start_date')
+		return RushPeriod.objects.all().order_by('start_date')
 
 class CreateRushPeriodView(LoginRequiredMixin, UserFormKwargsMixin, generic.CreateView):
 	template_name = 'rushperiod/create_rushperiod.html'

@@ -10,7 +10,6 @@ class Migration(migrations.Migration):
     dependencies = [
         ('rushperiod', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('organization', '0001_initial'),
     ]
 
     operations = [
@@ -26,14 +25,16 @@ class Migration(migrations.Migration):
                 ('email_address', models.EmailField(max_length=100, null=True, verbose_name=b'Email Address', blank=True)),
                 ('rank', models.IntegerField(default=5, null=True, verbose_name=b'Rank', blank=True)),
                 ('dorm', models.CharField(max_length=200, null=True, verbose_name=b'Dorm', blank=True)),
-                ('picture', models.ImageField(null=True, upload_to=b'profile_picture', blank=True)),
-                ('organization', models.ForeignKey(to='organization.Organization')),
+                ('picture', models.CharField(max_length=500, null=True, blank=True)),
+                ('graduating_year', models.IntegerField(null=True, blank=True)),
+                ('is_available', models.BooleanField(default=True, verbose_name=b'Is Available To Rush')),
+                ('is_legacy', models.BooleanField(default=False, verbose_name=b'Legacy')),
                 ('primary_contact', models.ForeignKey(related_name='primary_contact_set', verbose_name=b'Brotherhood Contact', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
-                ('rush_period', models.ManyToManyField(to='rushperiod.RushPeriod')),
+                ('rush_period', models.ManyToManyField(related_name='rushes', to='rushperiod.RushPeriod')),
                 ('secondary_contact', models.ForeignKey(related_name='secondary_contact_set', verbose_name=b'Secondary Brotherhood Contact', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
             ],
             options={
+                'abstract': False,
             },
-            bases=(models.Model,),
         ),
     ]

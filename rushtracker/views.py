@@ -18,7 +18,7 @@ class IndexView(LoginRequiredMixin, generic.ListView):
 	template_name = 'base.html'
 	context_object_name = 'all_rushes'
 	def get_queryset(self):
-		return Rush.tenant_objects.all()
+		return Rush.objects.all()
 
 	def get_context_data(self):
 		context = super(IndexView, self).get_context_data()
@@ -26,7 +26,7 @@ class IndexView(LoginRequiredMixin, generic.ListView):
 		return context
 
 
-class UpdateView(LoginRequiredMixin, CorrectOrganizationMixin, generic.UpdateView):
+class UpdateView(LoginRequiredMixin, generic.UpdateView):
 	template_name = 'rushtracker/update.html'
 	form_class = UpdateForm
 	model = Rush
@@ -66,7 +66,7 @@ class RushDetailView(LoginRequiredMixin, generic.DetailView):
 		 	context['comments'] = False
 		 	
  	 	 return context
-class RushDeleteView(LoginRequiredMixin, generic.DeleteView, CorrectOrganizationMixin):
+class RushDeleteView(LoginRequiredMixin, generic.DeleteView):
 	model = Rush
 	success_url = reverse_lazy('rushtracker:index')
 	def delete(self, request, *args, **kwargs):

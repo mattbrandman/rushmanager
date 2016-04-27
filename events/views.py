@@ -21,10 +21,10 @@ class EventIndexView(LoginRequiredMixin, generic.ListView):
 	template_name = 'events/take_attendance.html'
 	context_object_name = 'events'
 	def get_queryset(self):
-		return Event.tenant_objects.all().order_by('date')
+		return Event.objects.all().order_by('date')
 
 class EventAttendanceView(LoginRequiredMixin, generic.ListView):
 	template_name = 'events/take_attendance.html'
 	context_object_name = 'rushes'
 	def get_queryset(self):
-		return Rush.tenant_objects.all()
+		return Rush.objects.all()

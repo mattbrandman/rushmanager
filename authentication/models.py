@@ -1,15 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User, PermissionsMixin
 from organization.models import Organization
+from rushperiod.models import RushPeriod
 from django.contrib.auth.models import Permission, AbstractBaseUser, BaseUserManager
 from django.utils import timezone
 from django.db import connection
 from django.conf import settings
 from django.contrib.auth.models import check_password
-from tenancy.models import TenantAware, TenantManager
 from django.contrib.postgres.fields import HStoreField
 from django.db.models.query import QuerySet
-from tenancy.middleware import _thread_locals
 # TODO no class with an underscore should be accessed as it could be changed
 # this should probably all be in just the create user field
 # or if this is our class its fine and we can leave it
@@ -39,24 +38,19 @@ class BrotherUserManager(BaseUserManager):
     
     
     def get_queryset(self):
-        if not hasattr (_thread_locals, 'user') or not isinstance(_thread_locals.user, BrotherUser):
-            return super(BrotherUserManager, self).get_queryset()
-        else:
-            self.organization = _thread_locals.user.organization 
-            return super(BrotherUserManager, self).get_queryset().filter(organization = self.organization )
+        return super(BrotherUserManager, self).get_queryset()
 
 
 
-
-class BrotherUser(AbstractBaseUser, PermissionsMixin, TenantAware):
+class BrotherUser(AbstractBaseUser, PermissionsMixin, models.Model):
     email = models.CharField(max_length=100, unique=True)
     is_staff = models.BooleanField(default=False)
     first_name = models.CharField(max_length=30, blank=True, null=True)
     last_name = models.CharField(max_length=30, blank=True, null=True)
     date_created = models.DateTimeField(default=timezone.now, blank=True)
     is_active = models.BooleanField(default=True)
-    organization = models.ForeignKey('organization.Organization', blank=True)
     is_rush_committee = models.BooleanField(default=False)
+    settings = models.ForeignKey('Settings', null=True, blank=True)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
     objects = BrotherUserManager()
@@ -85,3 +79,5 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.email
+class Settings(models.Model):
+    active_rush_period = models.ForeignKey(RushPeriod, blank=True, null=True)

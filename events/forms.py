@@ -14,7 +14,7 @@ class CreateEventForm(ModelForm):
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
         super(CreateEventForm, self).__init__(*args, **kwargs)
-        self.fields['attendance'].queryset = Rush.tenant_objects.all()
+        self.fields['attendance'].queryset = Rush.objects.all()
         self.helper = FormHelper(self)
 
         self.helper.layout = Layout(

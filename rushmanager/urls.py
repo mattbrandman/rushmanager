@@ -13,7 +13,6 @@ from django.db.models import Q
 from comments.models import Comment
 from rest_framework import serializers, permissions
 from rest_framework.decorators import detail_route
-from authentication.permissions import SameOrganizationPermission
 from api import serializers
 from landing.views import HomePage
 
